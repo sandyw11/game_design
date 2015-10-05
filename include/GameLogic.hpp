@@ -16,12 +16,11 @@ namespace lava
 			GAME_OVER
 		};
 		void update(float delta);
-		GameLogic();
+		GameLogic(std::vector<Actor*>* actors);
 		
 	private:
 		GameState gameState;
-		
-		std::vector<lava::Actor*> actors;
+		std::vector<Actor*>* actors;
 		Player player;
 	};
 }

@@ -2,6 +2,7 @@
 #define GAME_VIEW_HPP
 
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "Actor.hpp"
 
 namespace lava
@@ -11,10 +12,11 @@ namespace lava
 	public:
 		void update(float delta);
 		void processIntput();
-		GameView();
+		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors);
 		
 	protected:
-		sf::RenderWindow window;
+		sf::RenderWindow* window;
+		std::vector<Actor*>* actors;
 	};
 }
 
