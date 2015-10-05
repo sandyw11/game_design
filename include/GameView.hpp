@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "Actor.hpp"
+#include "Player.hpp"
 
 namespace lava
 {
@@ -11,13 +11,16 @@ namespace lava
 	{
 	public:
 		void update(float delta);
-		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors);
+		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player);
 		
 	protected:
 		sf::RenderWindow* window;
-		std::vector<Actor*>* actors;
 		void processInput();
 		void draw();
+	
+	private:
+		std::vector<Actor*>* actors;
+		Player* player;
 	};
 }
 

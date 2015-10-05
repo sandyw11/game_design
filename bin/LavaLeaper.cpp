@@ -15,8 +15,8 @@ int main(int argc, char** argv)
   actors.push_back(&player);
   
   // init game view and logic
-  lava::GameView gameView(&window, &actors);
-  lava::GameLogic gameLogic(&actors);
+  lava::GameView gameView(&window, &actors, &player);
+  lava::GameLogic gameLogic(&actors, &player);
 
   // start main loop
   while(window.isOpen())

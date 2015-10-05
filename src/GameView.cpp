@@ -2,10 +2,11 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors)
+	GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player)
 	{
 		this->window = window;
 		this->actors = actors;
+		this->player = player;
 	}
 	
 	void GameView::update(float delta)

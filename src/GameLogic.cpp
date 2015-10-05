@@ -2,9 +2,10 @@
 
 namespace lava
 {
-	GameLogic::GameLogic(std::vector<Actor*>* actors)
+	GameLogic::GameLogic(std::vector<Actor*>* actors, Player* player)
 	{
 		this->actors = actors;
+		this->player = player;
 	}
 	
 	void GameLogic::update(float delta)
