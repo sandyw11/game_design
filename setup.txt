@@ -1,0 +1,4 @@
+set CMAKE_MODULE_PATH=C:/SFML/cmake/Modules
+set LIB=C:/SFML/lib
+set INCLUDE=C:/SFML/include
+cmake -G "MinGW Makefiles" .
