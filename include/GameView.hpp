@@ -11,12 +11,13 @@ namespace lava
 	{
 	public:
 		void update(float delta);
-		void processIntput();
 		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors);
 		
 	protected:
 		sf::RenderWindow* window;
 		std::vector<Actor*>* actors;
+		void processInput();
+		void draw();
 	};
 }
 

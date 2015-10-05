@@ -110,44 +110,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Main
+# Target rules for targets named LavaLeaper
 
 # Build rule for target.
-Main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 Main
-.PHONY : Main
+LavaLeaper: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 LavaLeaper
+.PHONY : LavaLeaper
 
 # fast build rule for target.
-Main/fast:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/build
-.PHONY : Main/fast
+LavaLeaper/fast:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/build
+.PHONY : LavaLeaper/fast
 
-bin/Main.obj: bin/Main.cpp.obj
+bin/LavaLeaper.obj: bin/LavaLeaper.cpp.obj
 
-.PHONY : bin/Main.obj
+.PHONY : bin/LavaLeaper.obj
 
 # target to build an object file
-bin/Main.cpp.obj:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/bin/Main.cpp.obj
-.PHONY : bin/Main.cpp.obj
+bin/LavaLeaper.cpp.obj:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/bin/LavaLeaper.cpp.obj
+.PHONY : bin/LavaLeaper.cpp.obj
 
-bin/Main.i: bin/Main.cpp.i
+bin/LavaLeaper.i: bin/LavaLeaper.cpp.i
 
-.PHONY : bin/Main.i
+.PHONY : bin/LavaLeaper.i
 
 # target to preprocess a source file
-bin/Main.cpp.i:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/bin/Main.cpp.i
-.PHONY : bin/Main.cpp.i
+bin/LavaLeaper.cpp.i:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/bin/LavaLeaper.cpp.i
+.PHONY : bin/LavaLeaper.cpp.i
 
-bin/Main.s: bin/Main.cpp.s
+bin/LavaLeaper.s: bin/LavaLeaper.cpp.s
 
-.PHONY : bin/Main.s
+.PHONY : bin/LavaLeaper.s
 
 # target to generate assembly for a file
-bin/Main.cpp.s:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/bin/Main.cpp.s
-.PHONY : bin/Main.cpp.s
+bin/LavaLeaper.cpp.s:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/bin/LavaLeaper.cpp.s
+.PHONY : bin/LavaLeaper.cpp.s
 
 src/GameLogic.obj: src/GameLogic.cpp.obj
 
@@ -155,7 +155,7 @@ src/GameLogic.obj: src/GameLogic.cpp.obj
 
 # target to build an object file
 src/GameLogic.cpp.obj:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameLogic.cpp.obj
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameLogic.cpp.obj
 .PHONY : src/GameLogic.cpp.obj
 
 src/GameLogic.i: src/GameLogic.cpp.i
@@ -164,7 +164,7 @@ src/GameLogic.i: src/GameLogic.cpp.i
 
 # target to preprocess a source file
 src/GameLogic.cpp.i:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameLogic.cpp.i
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameLogic.cpp.i
 .PHONY : src/GameLogic.cpp.i
 
 src/GameLogic.s: src/GameLogic.cpp.s
@@ -173,7 +173,7 @@ src/GameLogic.s: src/GameLogic.cpp.s
 
 # target to generate assembly for a file
 src/GameLogic.cpp.s:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameLogic.cpp.s
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameLogic.cpp.s
 .PHONY : src/GameLogic.cpp.s
 
 src/GameView.obj: src/GameView.cpp.obj
@@ -182,7 +182,7 @@ src/GameView.obj: src/GameView.cpp.obj
 
 # target to build an object file
 src/GameView.cpp.obj:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameView.cpp.obj
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameView.cpp.obj
 .PHONY : src/GameView.cpp.obj
 
 src/GameView.i: src/GameView.cpp.i
@@ -191,7 +191,7 @@ src/GameView.i: src/GameView.cpp.i
 
 # target to preprocess a source file
 src/GameView.cpp.i:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameView.cpp.i
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameView.cpp.i
 .PHONY : src/GameView.cpp.i
 
 src/GameView.s: src/GameView.cpp.s
@@ -200,7 +200,7 @@ src/GameView.s: src/GameView.cpp.s
 
 # target to generate assembly for a file
 src/GameView.cpp.s:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/GameView.cpp.s
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameView.cpp.s
 .PHONY : src/GameView.cpp.s
 
 src/Player.obj: src/Player.cpp.obj
@@ -209,7 +209,7 @@ src/Player.obj: src/Player.cpp.obj
 
 # target to build an object file
 src/Player.cpp.obj:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/Player.cpp.obj
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Player.cpp.obj
 .PHONY : src/Player.cpp.obj
 
 src/Player.i: src/Player.cpp.i
@@ -218,7 +218,7 @@ src/Player.i: src/Player.cpp.i
 
 # target to preprocess a source file
 src/Player.cpp.i:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/Player.cpp.i
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Player.cpp.i
 .PHONY : src/Player.cpp.i
 
 src/Player.s: src/Player.cpp.s
@@ -227,7 +227,7 @@ src/Player.s: src/Player.cpp.s
 
 # target to generate assembly for a file
 src/Player.cpp.s:
-	$(MAKE) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/src/Player.cpp.s
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Player.cpp.s
 .PHONY : src/Player.cpp.s
 
 # Help Target
@@ -238,10 +238,10 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Main
-	@echo ... bin/Main.obj
-	@echo ... bin/Main.i
-	@echo ... bin/Main.s
+	@echo ... LavaLeaper
+	@echo ... bin/LavaLeaper.obj
+	@echo ... bin/LavaLeaper.i
+	@echo ... bin/LavaLeaper.s
 	@echo ... src/GameLogic.obj
 	@echo ... src/GameLogic.i
 	@echo ... src/GameLogic.s
