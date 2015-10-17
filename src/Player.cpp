@@ -5,7 +5,7 @@
 namespace lava
 {
 	Player::Player():
-	rect(sf::Vector2f(50, 50)),
+	rect(sf::Vector2f(20, 40)),
 	vx(0),
 	vy(0),
 	charge(false),
@@ -21,10 +21,10 @@ namespace lava
 		if (charging) charge += delta;
 		
 		// don't leave level
-		if (rect.getPosition().y > 550){
+		if (this->getY() > 560){
 			vy = 0;
-			rect.setPosition(rect.getPosition().x, 550);
-		} else if (rect.getPosition().y != 550) {
+			rect.setPosition(this->getX(), 560);
+		} else if (this->getY() != 560) {
 			vy += A * delta;
 		}
 		
@@ -39,7 +39,6 @@ namespace lava
 	
 	void Player::jump()
 	{
-		std::cout << "Jump!\n";
 		float dvy = 2 * charge * 600;
 		
 		if (dvy > MAXJUMP) dvy = MAXJUMP;
@@ -47,7 +46,6 @@ namespace lava
 		
 		vy -= dvy;
 		
-		std::cout << charge;
 		charge = 0;
 	}
 }

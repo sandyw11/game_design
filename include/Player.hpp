@@ -13,7 +13,7 @@ namespace lava
 		sf::RectangleShape rect;
 		float charge;
 		
-		static const float A = 800.0;
+		static const float A = 1100.0;
 		static const float MINJUMP = 200.0;
 		static const float MAXJUMP = 1000.0;
 		
@@ -25,6 +25,9 @@ namespace lava
 		void jump();
 		float getCharge();
 		bool charging;
+		
+		float getX() { return rect.getPosition().x; }
+		float getY() { return rect.getPosition().y; }
 	};
 }
 
