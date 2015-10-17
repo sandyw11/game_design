@@ -31,6 +31,7 @@ namespace lava
 		}
 		
 		// left and right movement, only move in air
+		vx = 0;
 		if (vy != 0)
 		{
 			if (moveLeft && moveRight) vx = 0;
@@ -38,7 +39,6 @@ namespace lava
 			else if (moveRight) vx = -200;
 			else vx = 0;
 		}
-		
 		
 		// move player
 		rect.move(delta * vx, delta * vy);
