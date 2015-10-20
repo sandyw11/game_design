@@ -4,7 +4,6 @@
 #include "GameView.hpp"
 #include "Platform.hpp"
 
-
 int main(int argc, char** argv)
 {
   // create main window
