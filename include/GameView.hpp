@@ -4,11 +4,8 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
-<<<<<<< HEAD
 #include "GameLogic.hpp"
 
-=======
->>>>>>> origin/master
 #include "Platform.hpp"
 
 namespace lava
