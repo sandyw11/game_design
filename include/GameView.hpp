@@ -33,9 +33,9 @@ namespace lava
 		std::vector<Actor*>* actors;
 		Player* player;
         sf::Font font;
-        bool isWait = false;
-        bool isPlaying = false;
-        bool isGameover = false;
+        bool isWait;
+        bool isPlaying;
+        bool isGameover;
         
 	};
 }
