@@ -2,10 +2,10 @@
 
 namespace lava
 {
-	Platform::Platform(int width, int height):
-	rect(sf::Vector2f(width, height))
+	Platform::Platform(int x, int y):
+	rect(sf::Vector2f(100, 10))
 	{
-		rect.setPosition(300, 300);
+		rect.setPosition(x, y);
 	}
 	
 	void Platform::update(float delta)

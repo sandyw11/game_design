@@ -10,7 +10,8 @@ namespace lava
 	charge(false),
 	charging(false),
 	moveLeft(false),
-	moveRight(false)
+	moveRight(false),
+	landed(true)
 	{
 		// test start position
 		rect.setPosition(550, 550);
@@ -22,10 +23,12 @@ namespace lava
 		if (charging) charge += delta;
 		
 		// don't leave level
-		if (this->getY() > 560){
-			vy = 0;
-			rect.setPosition(this->getX(), 560);
-		} else if (this->getY() != 560) {
+		if (this->getY() > 560) {
+			land(600);
+		}
+		
+		// if not landed, fall
+		if (!landed) {
 			vy += A * delta;
 		}
 		
@@ -50,15 +53,28 @@ namespace lava
 	
 	void Player::jump()
 	{
-		// TODO: non-linear function for charging power?
-		float dvy = 2 * charge * 600;
-		
-		// filter for min and max
-		if (dvy > MAXJUMP) dvy = MAXJUMP;
-		if (dvy < MINJUMP) dvy = MINJUMP;
-		
-		vy -= dvy;
-		
-		charge = 0;
+		if (vy == 0) {
+			// TODO: non-linear function for charging power?
+			float dvy = 2 * charge * 600;
+
+			// filter for min and max
+			if (dvy > MAXJUMP) dvy = MAXJUMP;
+			if (dvy < MINJUMP) dvy = MINJUMP;
+
+			vy -= dvy;
+
+			charge = 0;
+			landed = false;
+		}
+	}
+
+	void Player::land(float y)
+	{
+		if (vy > 0)
+		{
+			vy = 0;
+			rect.setPosition(this->getX(), y - this->getRect().getSize().y);
+			landed = true;
+		}
 	}
 }
