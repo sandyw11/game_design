@@ -1,6 +1,5 @@
 #include "Player.hpp"
 #include <iostream>
-#include <iomanip>
 
 namespace lava
 {
