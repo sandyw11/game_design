@@ -7,7 +7,11 @@
 int main(int argc, char** argv)
 { 
   // create main window
+  sf::View view;
+  view.reset(sf::FloatRect(0, 0, 800, 600));
+  view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
   sf::RenderWindow window(sf::VideoMode(800,600,32), "Lava Leaper");
+  window.setView(view);
   sf::Clock clock;
   
   // add player to entities
