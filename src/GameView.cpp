@@ -70,12 +70,16 @@ namespace lava
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
-        
+
+		sf::View view;
+		view.reset(sf::FloatRect(0, 0, 800, 600));
+
         window->clear(sf::Color::Black);
         if(isPlaying)
         {
             if(isWait)
             {
+				window->setView(view);
                 setPause();
             }
             else
@@ -87,10 +91,12 @@ namespace lava
         {
             if(isGameover)
             {
+				window->setView(view);
                 setGameover();
             }
             else
             {
+				window->setView(view);
                 setStart();
             }
         }
