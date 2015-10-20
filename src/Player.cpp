@@ -1,6 +1,5 @@
 #include "Player.hpp"
 #include <iostream>
-#include <iomanip>
 
 namespace lava
 {
@@ -9,7 +8,9 @@ namespace lava
 	vx(0),
 	vy(0),
 	charge(false),
-	charging(false)
+	charging(false),
+	moveLeft(false),
+	moveRight(false)
 	{
 		// test start position
 		rect.setPosition(550, 550);
@@ -28,6 +29,16 @@ namespace lava
 			vy += A * delta;
 		}
 		
+		// left and right movement, only move in air
+		vx = 0;
+		if (vy != 0)
+		{
+			if (moveLeft && moveRight) vx = 0;
+			else if (moveLeft) vx = 200;
+			else if (moveRight) vx = -200;
+			else vx = 0;
+		}
+		
 		// move player
 		rect.move(delta * vx, delta * vy);
 	}
@@ -39,8 +50,10 @@ namespace lava
 	
 	void Player::jump()
 	{
+		// TODO: non-linear function for charging power?
 		float dvy = 2 * charge * 600;
 		
+		// filter for min and max
 		if (dvy > MAXJUMP) dvy = MAXJUMP;
 		if (dvy < MINJUMP) dvy = MINJUMP;
 		

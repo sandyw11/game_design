@@ -25,6 +25,8 @@ namespace lava
 		void jump();
 		float getCharge();
 		bool charging;
+		bool moveLeft;
+		bool moveRight;
 		
 		float getX() { return rect.getPosition().x; }
 		float getY() { return rect.getPosition().y; }
