@@ -172,27 +172,4 @@ namespace lava
 		
 		//window->display();
 	}
-    
-    
-    /*void GameView::drawBackground()
-    {
-        window->clear(sf::Color::Black);
-        window->draw(start);
-        // draw background
-        switch(gamestate)
-        {
-            case START:
-                setStart;
-                break;
-            case PLAY:
-                setPlay;
-                break;
-            case PAUSE:
-                setPause;
-                break;
-            case GAMEOVER:
-                setGameover
-                break;
-        }
-    }*/
 }
