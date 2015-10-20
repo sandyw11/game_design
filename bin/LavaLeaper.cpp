@@ -3,8 +3,9 @@
 #include "GameLogic.hpp"
 #include "GameView.hpp"
 
+
 int main(int argc, char** argv)
-{ 
+{
   // create main window
   sf::RenderWindow window(sf::VideoMode(800,600,32), "Lava Leaper");
   sf::Clock clock;
@@ -19,13 +20,13 @@ int main(int argc, char** argv)
   lava::GameLogic gameLogic(&actors, &player);
 
   // start main loop
-  while(window.isOpen())
-  {
-    float delta = clock.restart().asSeconds();
-    gameLogic.update(delta);
-    gameView.update(delta);
-  }
-
-  // Done.
+    while(window.isOpen())
+    {
+        float delta = clock.restart().asSeconds();
+        gameLogic.update(delta);
+        gameView.update(clock);
+    }
+    
+    // Done.
   return 0;
 }
