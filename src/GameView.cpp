@@ -80,7 +80,7 @@ namespace lava
 			position.y = 0;
 		}
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
-		
+
     	window->setView(view);
 		window->display();
 	}

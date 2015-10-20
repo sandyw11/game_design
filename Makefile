@@ -203,6 +203,33 @@ src/GameView.cpp.s:
 	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/GameView.cpp.s
 .PHONY : src/GameView.cpp.s
 
+src/Platform.obj: src/Platform.cpp.obj
+
+.PHONY : src/Platform.obj
+
+# target to build an object file
+src/Platform.cpp.obj:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Platform.cpp.obj
+.PHONY : src/Platform.cpp.obj
+
+src/Platform.i: src/Platform.cpp.i
+
+.PHONY : src/Platform.i
+
+# target to preprocess a source file
+src/Platform.cpp.i:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Platform.cpp.i
+.PHONY : src/Platform.cpp.i
+
+src/Platform.s: src/Platform.cpp.s
+
+.PHONY : src/Platform.s
+
+# target to generate assembly for a file
+src/Platform.cpp.s:
+	$(MAKE) -f CMakeFiles\LavaLeaper.dir\build.make CMakeFiles/LavaLeaper.dir/src/Platform.cpp.s
+.PHONY : src/Platform.cpp.s
+
 src/Player.obj: src/Player.cpp.obj
 
 .PHONY : src/Player.obj
@@ -248,6 +275,9 @@ help:
 	@echo ... src/GameView.obj
 	@echo ... src/GameView.i
 	@echo ... src/GameView.s
+	@echo ... src/Platform.obj
+	@echo ... src/Platform.i
+	@echo ... src/Platform.s
 	@echo ... src/Player.obj
 	@echo ... src/Player.i
 	@echo ... src/Player.s
