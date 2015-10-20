@@ -104,6 +104,7 @@ namespace lava
             if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
 				window->close();
 			
+<<<<<<< HEAD
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
@@ -136,6 +137,8 @@ namespace lava
                 }
             }
 			
+=======
+>>>>>>> origin/master
 			// key press events
 			if(Event.type == sf::Event::KeyPressed)
 			{
@@ -175,9 +178,13 @@ namespace lava
 	
 	void GameView::draw()
 	{
+<<<<<<< HEAD
 		//window->clear(sf::Color::Black);
 		sf::View view;
   		view.reset(sf::FloatRect(0, 0, 800, 600));
+=======
+		sf::View view;
+>>>>>>> origin/master
 		window->clear(sf::Color::Black);
 		
 		// draw actors
@@ -194,6 +201,7 @@ namespace lava
 			}
 			view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 		}
+<<<<<<< HEAD
 		sf::RectangleShape platform(sf::Vector2f(70, 20));
 		platform.setFillColor(sf::Color::Green);
     	platform.setPosition(525, 300);
@@ -203,3 +211,18 @@ namespace lava
 	}
 }
 }
+=======
+		sf::Vector2f position(0, 0);
+		position.x = player->getX() + 10 - (800 / 2);
+		position.y = player->getY() + 20 - (600 / 2);
+		if (position.y < 0)
+		{
+			position.y = 0;
+		}
+		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
+		
+    	window->setView(view);
+		window->display();
+	}
+}
+>>>>>>> origin/master

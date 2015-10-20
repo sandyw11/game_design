@@ -1,7 +1,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "actor.hpp"
+#include "Actor.hpp"
 
 namespace lava
 {
