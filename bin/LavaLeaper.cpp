@@ -2,6 +2,7 @@
 #include <vector>
 #include "GameLogic.hpp"
 #include "GameView.hpp"
+#include "Platform.hpp"
 
 int main(int argc, char** argv)
 { 
@@ -13,6 +14,10 @@ int main(int argc, char** argv)
   std::vector<lava::Actor*> actors;
   lava::Player player;
   actors.push_back(&player);
+  
+  // create some platforms
+  lava::Platform platform(150, 10);
+  actors.push_back(&platform);
   
   // init game view and logic
   lava::GameView gameView(&window, &actors, &player);

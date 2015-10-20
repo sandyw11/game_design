@@ -23,7 +23,8 @@ namespace lava
 			// exit
 			if(Event.type == sf::Event::Closed)
 				window->close();
-				
+			
+			// key press events
 			if(Event.type == sf::Event::KeyPressed)
 			{
 				switch(Event.key.code)
@@ -31,9 +32,16 @@ namespace lava
 					case sf::Keyboard::Space:
 						player->charging = true;
 						break;
+					case sf::Keyboard::D:
+						player->moveLeft = true;
+						break;
+					case sf::Keyboard::A:
+						player->moveRight = true;
+						break;
 				}
 			}
 			
+			// key release events
 			if(Event.type == sf::Event::KeyReleased)
 			{
 				switch(Event.key.code)
@@ -41,6 +49,12 @@ namespace lava
 					case sf::Keyboard::Space:
 						player->charging = false;
 						player->jump();
+						break;
+					case sf::Keyboard::D:
+						player->moveLeft = false;
+						break;
+					case sf::Keyboard::A:
+						player->moveRight = false;
 						break;
 				}
 			}
