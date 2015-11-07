@@ -2,7 +2,10 @@
 #define GAME_LOGIC_HPP
 
 #include <vector>
+#include <iostream>
 #include "Player.hpp"
+//#include "EventInterface.hpp"
+#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
@@ -16,6 +19,7 @@ namespace lava
 			GAME_OVER
 		};
 		void update(float delta);
+		void respond(const EventInterface& events);
 		GameLogic(std::vector<Actor*>* actors, Player* player);
 		
 	private:
