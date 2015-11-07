@@ -1,14 +1,11 @@
 #include "GameLogic.hpp"
 
-
 namespace lava
 {
-	
 	GameLogic::GameLogic(std::vector<Actor*>* actors, Player* player)
 	{
 		this->actors = actors;
 		this->player = player;
-	
 	}
 	
 	void GameLogic::update(float delta)
@@ -33,14 +30,6 @@ namespace lava
 					if (player->isFalling()) player->land(actor->getY());
 				}
 			}
-		}
-	}
-	void GameLogic::respond(const EventInterface& events){
-		if (events.getEventType() == ActorDestroyedEvent::eventId){
-			std::cout << "HELLO WORLD\n";
-		}
-		else{
-			std::cout << "NO EVENT \n";
 		}
 	}
 }
