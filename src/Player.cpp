@@ -36,8 +36,8 @@ namespace lava
 			if (vy != 0)
 			{
 				if (moveLeft && moveRight) vx = 0;
-				else if (moveLeft) vx = 200;
-				else if (moveRight) vx = -200;
+				else if (moveLeft) vx = VX;
+				else if (moveRight) vx = -VX;
 				else vx = 0;
 			}
 

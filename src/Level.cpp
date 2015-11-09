@@ -1,4 +1,5 @@
 #include "Level.hpp"
+#include <cmath>
 
 namespace lava
 {
@@ -7,13 +8,17 @@ namespace lava
 	lavaY(START_Y+400),
 	lavaVy(START_LAVA_VY)
 	{
+		// seed random number generator
 		srand(seed);
-		chunkNum = 0;
-		nextChunkY = START_Y - CHUNKHEIGHT/2;
-		generateChunk();
 
 		// starting platform
-		platforms.push_back(new Platform(525, START_Y + 40, 200));
+		lastX = 525;
+		lastY = START_Y + 40;
+		platforms.push_back(new Platform(lastX, lastY, 200));
+
+		chunkNum = 0;
+		nextChunkY = START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
+		generateChunk();
 	}
 
 	Level::~Level() 
@@ -24,16 +29,35 @@ namespace lava
 
 	void Level::generateChunk()
 	{
-		// generate up to chunk height
-		for (int h = 0; h <= CHUNKHEIGHT; h += rand() % 100 + 100)
-		{
-				int x = rand() % WIDTH;
-				int width = rand() % 100 + 75;
-				platforms.push_back(new Platform(x, START_Y - h - chunkNum * CHUNKHEIGHT, width));
-				std::cout << "Platform at " << x << ", " << h << "\n";
-		}
+		int width, dx, dy;
+		float theta, distance;
 		chunkNum++;
-		std::cout << "Chunk " << chunkNum << "\n";
+
+		// generate up to chunk height
+		while(lastY > START_Y - chunkNum * CHUNK_HEIGHT)
+		{
+			// get random angle between 0 and 180
+			theta = (float)(rand() % 180)/180 * 3.14159;
+			distance = rand() % 150 + 100;
+			width = rand() % 100 + 75;
+
+			dx = distance * std::cos(theta);
+			dy = distance * std::sin(theta);
+
+			// double the dx -- more fun sequences
+			lastX += dx*2;
+			lastY -= dy;
+
+			// keep x within bounds
+			if (lastX + width > 800 || lastX < 0) {
+				lastX -= dx*4;
+			}
+
+			platforms.push_back(new Platform(lastX, lastY, width));
+			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
+		}
+
+		std::cout << "Chunk " << chunkNum << " generated\n";
 	}
 
 	void Level::update(float playerY, float delta)
@@ -42,7 +66,7 @@ namespace lava
 		{
 			generateChunk();
 			deleteChunks();
-			nextChunkY -= CHUNKHEIGHT;
+			nextChunkY -= CHUNK_HEIGHT;
 		}
 
 		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + 1 * delta : MAX_LAVA_VY;

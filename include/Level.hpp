@@ -12,10 +12,10 @@ namespace lava
 	{
 	private:
 		static const int WIDTH = 800;
-		static const int CHUNKHEIGHT = 1200;
+		static const int CHUNK_HEIGHT = 1200;
 		static const int START_Y = 50000;
 		static const int START_LAVA_VY = 60;
-		static const int MAX_LAVA_VY = 160;
+		static const int MAX_LAVA_VY = 150;
 		int chunkNum;
 
 		std::vector<Platform*> platforms;
@@ -23,6 +23,10 @@ namespace lava
 		float nextChunkY;
 		float lavaY;
 		float lavaVy;
+
+		// remember X, Y positions of last platform
+		float lastX;
+		float lastY;
 
 		void deleteChunks();
 		void generateChunk();

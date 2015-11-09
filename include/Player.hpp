@@ -17,6 +17,7 @@ namespace lava
 		static const int A = 1100;
 		static const int MINJUMP = 200;
 		static const int MAXJUMP = 1000;
+		static const int VX = 200;
 		
 	public:
 		Player();
