@@ -2,33 +2,35 @@
 
 namespace lava
 {
-	GameLogic::GameLogic(std::vector<Actor*>* actors, Player* player)
+	GameLogic::GameLogic(Level* level, Player* player)
 	{
-		this->actors = actors;
+		this->level = level;
 		this->player = player;
 	}
 	
 	void GameLogic::update(float delta)
 	{
-		// update actors
-		for(int i=0; i < actors->size(); i++)
+		// update level
+		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
-			Actor* actor = actors->at(i);
-			actor->update(delta);
+			Platform* platform = level->getPlatforms()->at(i);
+			platform->update(delta);
 		}
+		level->update(player->getY());
+
+		// update player
+		player->update(delta);
 
 		// check for landings
-		for (int i = 0; i < actors->size(); i++)
+		for (int i = 0; i < level->getPlatforms()->size(); i++)
 		{
-			Actor* actor = actors->at(i);
-			if (player != actor)
+			Platform* platform = level->getPlatforms()->at(i);
+
+			// if they intersect and the player is high enough
+			if (platform->getRect().getGlobalBounds().intersects(player->getRect().getGlobalBounds()) 
+				&& player->getY() + player->getRect().getSize().y < platform->getY() + platform->getRect().getSize().y)
 			{
-				// if they intersect and the player is high enough
-				if (actor->getRect().getGlobalBounds().intersects(player->getRect().getGlobalBounds()) 
-					&& player->getY() + player->getRect().getSize().y < actor->getY() + actor->getRect().getSize().y)
-				{
-					if (player->isFalling()) player->land(actor->getY());
-				}
+				if (player->isFalling()) player->land(platform->getY());
 			}
 		}
 	}

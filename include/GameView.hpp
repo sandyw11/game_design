@@ -13,7 +13,7 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player);
+		GameView(sf::RenderWindow* window, Level* level, Player* player);
         void update(sf::Clock clock);
                 
         void setFont();
@@ -30,13 +30,12 @@ namespace lava
 		void draw();
 	
 	private:
-		std::vector<Actor*>* actors;
+		Level* level;
 		Player* player;
         sf::Font font;
         bool isWait;
         bool isPlaying;
         bool isGameover;
-        
 	};
 }
 

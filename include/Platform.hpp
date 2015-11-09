@@ -11,7 +11,7 @@ namespace lava
 		sf::RectangleShape rect;
 		
 	public:
-		Platform(int x, int y);
+		Platform(int x, int y, int width);
 	
 		void update(float delta);
 		void render(sf::RenderWindow* window);

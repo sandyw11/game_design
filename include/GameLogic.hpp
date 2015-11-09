@@ -2,6 +2,7 @@
 #define GAME_LOGIC_HPP
 
 #include <vector>
+#include "Level.hpp"
 #include "Player.hpp"
 
 namespace lava
@@ -16,11 +17,11 @@ namespace lava
 			GAME_OVER
 		};
 		void update(float delta);
-		GameLogic(std::vector<Actor*>* actors, Player* player);
+		GameLogic(Level* level, Player* player);
 		
 	private:
 		GameState gameState;
-		std::vector<Actor*>* actors;
+		Level* level;
 		Player* player;
 	};
 }

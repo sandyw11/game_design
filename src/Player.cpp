@@ -14,7 +14,7 @@ namespace lava
 	landed(true)
 	{
 		// test start position
-		rect.setPosition(550, 550);
+		rect.setPosition(550, 50000);
 	}
 	
 	void Player::update(float delta)
@@ -22,10 +22,11 @@ namespace lava
 		// update charge
 		if (charging) charge += delta;
 		
-		// don't leave level
-		if (this->getY() > 560) {
-			land(600);
-		}
+		// Don't need this anymore--fall into lava!
+		//// don't leave level
+		//if (this->getY() > 560) {
+		//	land(600);
+		//}
 		
 		// if not landed, fall
 		if (!landed) {

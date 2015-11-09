@@ -2,8 +2,8 @@
 
 namespace lava
 {
-	Platform::Platform(int x, int y):
-	rect(sf::Vector2f(100, 10))
+	Platform::Platform(int x, int y, int width):
+	rect(sf::Vector2f(width, 10))
 	{
 		rect.setPosition(x, y);
 	}

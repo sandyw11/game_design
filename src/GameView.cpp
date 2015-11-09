@@ -3,13 +3,13 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player):
 	isWait(false),
 	isPlaying(false),
 	isGameover(false)
 	{
 		this->window = window;
-		this->actors = actors;
+		this->level = level;
 		this->player = player;
 	}
     
@@ -188,12 +188,15 @@ namespace lava
   		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
-		// draw actors
-		for(int i=0; i < actors->size(); i++)
+		// draw platforms
+		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
-			Actor* actor = actors->at(i);
-			actor->render(window);
+			Platform* platform = level->getPlatforms()->at(i);
+			platform->render(window);
 		}
+
+		// draw player
+		player->render(window);
 
 		sf::Vector2f position(0, 0);
 		position.x = player->getX() + 10 - (800 / 2);
