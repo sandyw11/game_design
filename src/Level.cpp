@@ -4,8 +4,8 @@ namespace lava
 {
 	Level::Level(int seed):
 	chunkNum(0),
-	lavaY(START_Y+500),
-	lavaVy(20)
+	lavaY(START_Y+400),
+	lavaVy(60)
 	{
 		srand(seed);
 		chunkNum = 0;
@@ -32,17 +32,34 @@ namespace lava
 		std::cout << "Chunk " << chunkNum << "\n";
 	}
 
-	void Level::update(float playerY)
+	void Level::update(float playerY, float delta)
 	{
 		if (playerY < nextChunkY)
 		{
 			generateChunk();
+			deleteChunks();
 			nextChunkY -= CHUNKHEIGHT;
 		}
+
+		lavaY = lavaY - lavaVy * delta;
+		lavaVy += 1 * delta;
 	}
 
 	void Level::deleteChunks()
 	{
 		// delete unreachable chunks
+		std::vector<Platform*>::iterator it = platforms.begin();
+		while (it != platforms.end())
+		{
+			Platform* platform = *it;
+			if (platform->getY() > lavaY)
+			{
+				std::cout << "Deleting platform\n";
+				it = platforms.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
 	}
 }

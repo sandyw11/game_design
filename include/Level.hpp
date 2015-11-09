@@ -30,7 +30,8 @@ namespace lava
 		~Level();
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; };
-		void update(float playerY);
+		int getLavaY() { return lavaY; }
+		void update(float playerY, float delta);
 	};
 }
 

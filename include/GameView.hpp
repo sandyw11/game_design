@@ -36,6 +36,7 @@ namespace lava
         bool isWait;
         bool isPlaying;
         bool isGameover;
+		sf::RectangleShape lava;
 	};
 }
 

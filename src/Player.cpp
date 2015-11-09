@@ -56,7 +56,7 @@ namespace lava
 	{
 		if (vy == 0) {
 			// TODO: non-linear function for charging power?
-			float dvy = 2 * charge * 600;
+			float dvy = 2 * charge * 400;
 
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;

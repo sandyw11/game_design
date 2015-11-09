@@ -16,7 +16,7 @@ namespace lava
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->update(delta);
 		}
-		level->update(player->getY());
+		level->update(player->getY(), delta);
 
 		// update player
 		player->update(delta);

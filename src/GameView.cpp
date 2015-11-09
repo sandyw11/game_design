@@ -6,11 +6,14 @@ namespace lava
 	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player):
 	isWait(false),
 	isPlaying(false),
-	isGameover(false)
+	isGameover(false),
+	lava(sf::Vector2f(1600, 600))
 	{
 		this->window = window;
 		this->level = level;
 		this->player = player;
+
+		lava.setFillColor(sf::Color::Red);
 	}
     
     void GameView::setFont()
@@ -205,6 +208,10 @@ namespace lava
 		{
 			position.y = 0;
 		}
+
+		// draw lava
+		lava.setPosition(sf::Vector2f(-400, level->getLavaY()));
+		window->draw(lava);
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 
