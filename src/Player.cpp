@@ -11,7 +11,8 @@ namespace lava
 	charging(false),
 	moveLeft(false),
 	moveRight(false),
-	landed(true)
+	landed(true),
+	alive(true)
 	{
 		// test start position
 		rect.setPosition(550, 50000);
@@ -19,32 +20,29 @@ namespace lava
 	
 	void Player::update(float delta)
 	{
-		// update charge
-		if (charging) charge += delta;
-		
-		// Don't need this anymore--fall into lava!
-		//// don't leave level
-		//if (this->getY() > 560) {
-		//	land(600);
-		//}
-		
-		// if not landed, fall
-		if (!landed) {
-			vy += A * delta;
-		}
-		
-		// left and right movement, only move in air
-		vx = 0;
-		if (vy != 0)
+		if (alive)
 		{
-			if (moveLeft && moveRight) vx = 0;
-			else if (moveLeft) vx = 200;
-			else if (moveRight) vx = -200;
-			else vx = 0;
+			// update charge
+			if (charging) charge += delta;
+
+			// if not landed, fall
+			if (!landed) {
+				vy += A * delta;
+			}
+
+			// left and right movement, only move in air
+			vx = 0;
+			if (vy != 0)
+			{
+				if (moveLeft && moveRight) vx = 0;
+				else if (moveLeft) vx = 200;
+				else if (moveRight) vx = -200;
+				else vx = 0;
+			}
+
+			// move player
+			rect.move(delta * vx, delta * vy);
 		}
-		
-		// move player
-		rect.move(delta * vx, delta * vy);
 	}
 	
 	void Player::render(sf::RenderWindow* window)
@@ -77,5 +75,12 @@ namespace lava
 			rect.setPosition(this->getX(), y - this->getRect().getSize().y);
 			landed = true;
 		}
+	}
+
+	void Player::die()
+	{
+		vy = 0;
+		vy = 0;
+		alive = false;
 	}
 }

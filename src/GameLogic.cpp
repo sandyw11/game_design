@@ -1,4 +1,5 @@
 #include "GameLogic.hpp"
+#include <iostream>
 
 namespace lava
 {
@@ -31,6 +32,16 @@ namespace lava
 				&& player->getY() + player->getRect().getSize().y < platform->getY() + platform->getRect().getSize().y)
 			{
 				if (player->isFalling()) player->land(platform->getY());
+			}
+		}
+
+		// check for death
+		if (player->getY() > level->getLavaY())
+		{
+			if (player->alive)
+			{
+				std::cout << "PLAYER IS SO DEAD LOL\n";
+				player->die();
 			}
 		}
 	}

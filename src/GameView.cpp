@@ -7,7 +7,7 @@ namespace lava
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
-	lava(sf::Vector2f(1600, 600))
+	lava(sf::Vector2f(1600, 2000))
 	{
 		this->window = window;
 		this->level = level;

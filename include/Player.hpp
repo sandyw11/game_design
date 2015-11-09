@@ -24,11 +24,13 @@ namespace lava
 		void update(float delta);
 		void render(sf::RenderWindow* window);
 		void jump();
+		void die();
 		void land(float y);
 		bool charging;
 		bool moveLeft;
 		bool moveRight;
 		bool isFalling() { return vy > 0; }
+		bool alive;
 		
 		float getX() { return rect.getPosition().x; }
 		float getY() { return rect.getPosition().y; }
