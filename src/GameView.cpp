@@ -7,7 +7,7 @@ namespace lava
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
-	lava(sf::Vector2f(1600, 2000))
+	lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
 		this->level = level;
@@ -210,7 +210,7 @@ namespace lava
 		}
 
 		// draw lava
-		lava.setPosition(sf::Vector2f(-400, level->getLavaY()));
+		lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
 		window->draw(lava);
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));

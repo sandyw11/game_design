@@ -5,7 +5,7 @@ namespace lava
 	Level::Level(int seed):
 	chunkNum(0),
 	lavaY(START_Y+400),
-	lavaVy(60)
+	lavaVy(START_LAVA_VY)
 	{
 		srand(seed);
 		chunkNum = 0;
@@ -13,10 +13,14 @@ namespace lava
 		generateChunk();
 
 		// starting platform
-		platforms.push_back(new Platform(525, START_Y + 30, 200));
+		platforms.push_back(new Platform(525, START_Y + 40, 200));
 	}
 
-	Level::~Level() {}
+	Level::~Level() 
+	{
+		// remove all platforms
+		platforms.empty();
+	}
 
 	void Level::generateChunk()
 	{
@@ -41,8 +45,8 @@ namespace lava
 			nextChunkY -= CHUNKHEIGHT;
 		}
 
+		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + 1 * delta : MAX_LAVA_VY;
 		lavaY = lavaY - lavaVy * delta;
-		lavaVy += 1 * delta;
 	}
 
 	void Level::deleteChunks()

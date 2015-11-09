@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include <iostream>
+#include <cmath>
 
 namespace lava
 {
@@ -53,8 +54,9 @@ namespace lava
 	void Player::jump()
 	{
 		if (vy == 0) {
-			// TODO: non-linear function for charging power?
-			float dvy = 2 * charge * 400;
+			// TODO: non-linear function for charging power? sqrt?
+			float dvy = std::sqrt(charge) * 720;
+			std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
 
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;
