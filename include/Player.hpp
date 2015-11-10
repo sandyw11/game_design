@@ -32,11 +32,7 @@ namespace lava
 		bool moveRight;
 		bool isFalling() { return vy > 0; }
 		bool alive;
-<<<<<<< HEAD
-        
-=======
-		
->>>>>>> master
+
 		float getX() { return rect.getPosition().x; }
 		float getY() { return rect.getPosition().y; }
 		sf::RectangleShape getRect() { return rect; }
