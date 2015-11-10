@@ -35,6 +35,7 @@ namespace lava
 			}
 		}
 	}
+
 	void GameLogic::respond(const EventInterface& events){
 		if (events.getEventType() == ActorDestroyedEvent::eventId){
 			std::cout << "HELLO WORLD\n";
