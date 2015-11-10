@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "Platform.hpp"
+#include "Powerup.hpp"
 
 namespace lava
 {

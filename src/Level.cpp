@@ -45,7 +45,7 @@ namespace lava
 			dy = distance * std::sin(theta);
 
 			// double the dx -- more fun sequences
-			lastX += dx*2;
+			lastX += 2*dx;
 			lastY -= dy;
 
 			// keep x within bounds
