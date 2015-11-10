@@ -1,5 +1,4 @@
 #include "Powerup.hpp"
-#include "SFML/Graphics.hpp"
 
 namespace lava
 {

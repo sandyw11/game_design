@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "GameGUI.hpp"
 
 namespace lava
