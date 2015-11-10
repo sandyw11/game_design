@@ -5,6 +5,10 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 #include "Platform.hpp"
 
 namespace lava
@@ -13,7 +17,6 @@ namespace lava
 	{
 	public:
 		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player);
-        ~GameView();
         void update(sf::Clock clock);
 
         void setInstructionMessage();
@@ -42,7 +45,6 @@ namespace lava
         
 		sf::RectangleShape lava;
 		sf::View view;
-
 	};
 }
 

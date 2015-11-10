@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
+
 #include "GameGUI.hpp"
+
 //#include "ActorDestroyedEvent.hpp"
 
 namespace lava
@@ -40,11 +42,10 @@ namespace lava
     {
         setInstructionMessage();
 	}
-    
+
     void GameView::setStartMessage()
     {
-        setFont();
-        sf::Text startMessage("          START\n\n\npress Enter to start", font, 30);
+        sf::Text startMessage("          START\n\n\npress Enter to start", gameGUI.font, 30);
         startMessage.setPosition(300, 200);
         startMessage.setColor(sf::Color::Red);
         window->draw(startMessage);
@@ -57,7 +58,7 @@ namespace lava
     
     void GameView::setPauseMessage()
     {
-        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI.font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -106,7 +107,7 @@ namespace lava
             if(isGameover)
             {
 				window->setView(view);
-
+                
                 setGameover();
             }
             else
@@ -154,7 +155,7 @@ namespace lava
                     gameGUI.MoveDown();
                 }
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
@@ -183,6 +184,9 @@ namespace lava
                 if(!isPlaying)
                 {
                     isWait = false;
+                    isPlaying = true;
+                    isGameover = false;
+                    clock.restart();
                 }
             }
             
@@ -198,7 +202,6 @@ namespace lava
                     isPlaying = false;
                 }
             }
-            
             
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
             {
