@@ -9,7 +9,10 @@
 #include "ActorDestroyedEvent.hpp"
 #include <ctime>
 //#include "boost\bind.hpp"
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
 
 int main(int argc, char** argv)
 {
