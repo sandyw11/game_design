@@ -4,8 +4,6 @@
 
 #include "GameGUI.hpp"
 
-//#include "ActorDestroyedEvent.hpp"
-
 namespace lava
 {
 	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view):
@@ -144,7 +142,7 @@ namespace lava
                     gameGUI.MoveDown();
                 }
             }
-				window->close();
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
