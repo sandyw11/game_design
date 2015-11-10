@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	lava::Level level(1);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player);
+	lava::GameView gameView(&window, &level, &player, view);
 	lava::GameLogic gameLogic(&level, &player);
 
 	/*

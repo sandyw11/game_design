@@ -13,7 +13,7 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, Level* level, Player* player);
+		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view);
         void update(sf::Clock clock);
                 
         void setFont();
@@ -38,6 +38,7 @@ namespace lava
         bool isPlaying;
         bool isGameover;
 		sf::RectangleShape lava;
+		sf::View view;
 	};
 }
 

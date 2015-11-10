@@ -4,7 +4,7 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view):
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
@@ -13,6 +13,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
+        view = view;
 
 		lava.setFillColor(sf::Color::Red);
 	}
@@ -189,7 +190,6 @@ namespace lava
 	
 	void GameView::draw()
 	{
-		sf::View view;
   		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
@@ -201,24 +201,29 @@ namespace lava
 		}
 
 		// draw player
-		player->render(window);
+        if (player->getX() <= 0)
+        {
+            std::cout << "GAME OVER" << std::endl;
+        }
+        else if (player->getX() >= 800)
+        {
+            std::cout << "GAME OVER" << std::endl;
+        }
+        else
+        {
+            player->render(window);
+        }
 
-		sf::Vector2f position(0, 0);
-		position.x = player->getX() + 10 - (800 / 2);
-		position.y = player->getY() + 20 - (600 / 2);
-		if (position.y < 0)
-		{
-			position.y = 0;
-		}
-
-		// draw lava
-		lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
-		window->draw(lava);
-
-		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
-
-    	window->setView(view);
-	}
+        sf::Vector2f position(0, 0);
+        position.y = player->getY() + 20 - (250);
+        std::cout << position.y << std::endl;
+        // draw lava
+        lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
+        window->draw(lava);
+        view.reset(sf::FloatRect(position.x, position.y, 800, 600));
+        window->setView(view);
+        window->display();
+    }
 
 	void GameView::respond(const EventInterface& events){
 		if (events.getEventType() == ActorDestroyedEvent::eventId){
