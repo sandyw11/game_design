@@ -1,9 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
-//#include "ActorDestroyedEvent.hpp"
-
 #include "GameGUI.hpp"
-
 //#include "ActorDestroyedEvent.hpp"
 
 namespace lava
@@ -144,7 +141,7 @@ namespace lava
                     gameGUI.MoveDown();
                 }
             }
-				window->close();
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
