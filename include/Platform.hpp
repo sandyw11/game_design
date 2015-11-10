@@ -11,8 +11,7 @@ namespace lava
 		sf::RectangleShape rect;
 		
 	public:
-		Platform(int x, int y);
-	
+		Platform(int x, int y);                            
 		void update(float delta);
 		void render(sf::RenderWindow* window);
 		float getX() { return rect.getPosition().x; }
