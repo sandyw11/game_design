@@ -5,11 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
-<<<<<<< HEAD
-=======
-
 #include "Platform.hpp"
->>>>>>> master
+
 
 namespace lava
 {
@@ -18,8 +15,7 @@ namespace lava
 	public:
 		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player);
         void update(sf::Clock clock);
-                
-        void setFont();
+        
         void setPauseMessage();
         void setPause();
         void setStartMessage();
@@ -35,16 +31,10 @@ namespace lava
 	private:
 		std::vector<Actor*>* actors;
 		Player* player;
-        sf::Font font;
-<<<<<<< HEAD
+
         bool isWait = false;
         bool isPlaying = false;
         bool isGameover = false;
-=======
-        bool isWait;
-        bool isPlaying;
-        bool isGameover;
->>>>>>> master
         
 	};
 }
