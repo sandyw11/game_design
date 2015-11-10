@@ -1,46 +1,46 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
+#include "GameGUI.hpp"
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player):
-	isWait(false),
-	isPlaying(false),
-	isGameover(false)
+    GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player)
 	{
 		this->window = window;
 		this->actors = actors;
 		this->player = player;
-	}
-    
-    void GameView::setFont()
-    {
-        font.loadFromFile("font.ttf");
-        /*if(!font.loadFromFile("font.ttf"))
-        {
-            return 0;
-        }*/
     }
     
-    void GameView::setStartMessage()
+    GameView::~GameView()
     {
-        setFont();
-        sf::Text startMessage("          START\n\n\npress Enter to start", font, 30);
-        startMessage.setPosition(300, 200);
-        startMessage.setColor(sf::Color::Red);
-        window->draw(startMessage);
+
     }
+
+    GameGUI gameGUI(800, 600);
     
     void GameView::setStart()
     {
-        //window->clear(sf::Color::Black);
-        setStartMessage();
+        gameGUI.draw(window);
+    }
+    
+    void GameView::setInstructionMessage()
+    {
+        sf::Texture texture;
+        texture.loadFromFile("graph/instruction.jpg");
+        sf::Sprite sprite;
+        sprite.setTexture(texture);
+        sprite.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
+        window->draw(sprite);
+    }
+    
+    void GameView::setInstruction()
+    {
+        setInstructionMessage();
     }
     
     void GameView::setPauseMessage()
     {
-        setFont();
-        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI.font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -48,14 +48,12 @@ namespace lava
     
     void GameView::setPause()
     {
-        //window->clear(sf::Color::Black);
         setPauseMessage();
     }
     
     void GameView::setGameoverMessage()
     {
-        setFont();
-        sf::Text gameoverMessage("      GAME OVER\n\npress Enter to restart\n    press Esc to quit", font, 30);
+        sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI.font, 30);
         gameoverMessage.setPosition(300, 200);
         gameoverMessage.setColor(sf::Color::Red);
         window->draw(gameoverMessage);
@@ -63,24 +61,30 @@ namespace lava
     
     void GameView::setGameover()
     {
-        //window->clear(sf::Color::Black);
         setGameoverMessage();
     }
 
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
+<<<<<<< HEAD
 
 		sf::View view;
 		view.reset(sf::FloatRect(0, 0, 800, 600));
 
+=======
+        
+>>>>>>> origin/game-state
         window->clear(sf::Color::Black);
         if(isPlaying)
         {
             if(isWait)
             {
+<<<<<<< HEAD
 				window->setView(view);
 
+=======
+>>>>>>> origin/game-state
                 setPause();
             }
             else
@@ -92,15 +96,29 @@ namespace lava
         {
             if(isGameover)
             {
+<<<<<<< HEAD
 				window->setView(view);
 
+=======
+>>>>>>> origin/game-state
                 setGameover();
             }
             else
             {
+<<<<<<< HEAD
 				window->setView(view);
 
                 setStart();
+=======
+                if(isWait)
+                {
+                    setInstruction();
+                }
+                else
+                {
+                    setStart();
+                }
+>>>>>>> origin/game-state
             }
         }
         window->display();
@@ -114,15 +132,57 @@ namespace lava
 		{
 			// exit
             if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
+            {
 				window->close();
+<<<<<<< HEAD
+=======
+            }
+>>>>>>> origin/game-state
 			
+            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Up))
+            {
+                if(!isPlaying)
+                {
+                    gameGUI.MoveUp();
+                }
+            }
+            
+            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Down))
+            {
+                if(!isPlaying)
+                {
+                    gameGUI.MoveDown();
+                }
+            }
+            
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
                 {
-                    isPlaying = true;
-                    isGameover = false;
-                    clock.restart();
+                    switch(gameGUI.GetPressedItem())
+                    {
+                        case 0:
+                            isPlaying = true;
+                            isGameover = false;
+                            clock.restart();
+                            break;
+                            
+                        case 1:
+                            isWait = true;
+                            break;
+                            
+                        case 2:
+                            window->close();
+                            break;
+                    }
+                }
+            }
+            
+            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
+            {
+                if(!isPlaying)
+                {
+                    isWait = false;
                 }
             }
             
@@ -138,6 +198,7 @@ namespace lava
                     isPlaying = false;
                 }
             }
+            
             
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
             {
@@ -168,6 +229,7 @@ namespace lava
                         break;
                 }
             }
+<<<<<<< HEAD
 			
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
@@ -235,22 +297,28 @@ namespace lava
 						break;
 				}
 			}
+=======
+>>>>>>> origin/game-state
 		}
 	}
 	
 	void GameView::draw()
 	{
+<<<<<<< HEAD
 
 		sf::View view;
   		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
+=======
+>>>>>>> origin/game-state
 		// draw actors
 		for(int i=0; i < actors->size(); i++)
 		{
 			Actor* actor = actors->at(i);
 			actor->render(window);
 		}
+<<<<<<< HEAD
 
 		sf::Vector2f position(0, 0);
 		position.x = player->getX() + 10 - (800 / 2);
@@ -264,4 +332,7 @@ namespace lava
 
     	window->setView(view);
 	}
+=======
+	}s
+>>>>>>> origin/game-state
 }
