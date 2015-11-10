@@ -23,6 +23,7 @@ namespace lava
         void setStart();
         void setGameoverMessage();
         void setGameover();
+		void GameView::respond(const EventInterface& events);
 		
 	protected:
 		sf::RenderWindow* window;
@@ -33,9 +34,9 @@ namespace lava
 		std::vector<Actor*>* actors;
 		Player* player;
         sf::Font font;
-        bool isWait = false;
-        bool isPlaying = false;
-        bool isGameover = false;
+        bool isWait;
+        bool isPlaying;
+        bool isGameover;
         
 	};
 }

@@ -11,14 +11,12 @@ namespace lava
 		sf::RectangleShape rect;
 		
 	public:
-		Platform(int height, int width);
-	
+		Platform(int x, int y);
 		void update(float delta);
-		void render(sf::RenderWindow* window);
-		float getX() {}
-		float getY() {}
-		float getWidth() { return rect.getSize().x; }
-		float getHeight() { return rect.getSize().y; }
+		void render(sf::RenderWindow* window);                                
+		float getX() { return rect.getPosition().x; }
+		float getY() { return rect.getPosition().y; }
+		sf::RectangleShape getRect() { return rect; }
 	};
 }
 

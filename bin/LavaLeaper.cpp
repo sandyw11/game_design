@@ -5,8 +5,7 @@
 #include "Platform.hpp"
 #include "EventManager.hpp"
 #include "ActorDestroyedEvent.hpp"
-
-using namespace std::placeholders;
+//#include "boost\bind.hpp"
 
 int main(int argc, char** argv)
 {
@@ -38,18 +37,25 @@ int main(int argc, char** argv)
 	// init game view and logic
 	lava::GameView gameView(&window, &actors, &player);
 	lava::GameLogic gameLogic(&actors, &player);
-	EventDelegate delegates = std::bind(&lava::GameLogic::respond, &gameLogic, _1);
+	/*
+	EventDelegate delegates = std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1);
+	EventDelegate delegates2 = std::bind(&lava::GameView::respond, &gameView, std::placeholders::_1);
+	//method_hash pairID(reinterpret_cast < intptr_t > (&gameLogic), reinterpret_cast <intptr_t> (&lava::GameLogic::respond));
 	ActorDestroyedEvent events;
 	ActorDestroyedEvent* pointer = &events;
+	eventManager.enterMapValue(ActorDestroyedEvent::eventId, events);
 	eventManager.registerEvent(delegates, events);
+	eventManager.registerEvent(delegates2, events);
+	eventManager.registerEvent(delegates2, events);
+	eventManager.queueEvent(pointer);*/
 	// start main loop
 	while(window.isOpen())
 	{
-		eventManager.queueEvent(pointer);
+		//eventManager.queueEvent(pointer);
 		float delta = clock.restart().asSeconds();
 		gameLogic.update(delta);
 		gameView.update(clock);
-		eventManager.processEvents();
+		//eventManager.processEvents();
 	}
     
 	// Done.
