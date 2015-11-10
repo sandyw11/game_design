@@ -7,6 +7,7 @@
 #include "GameLogic.hpp"
 #include "ActorDestroyedEvent.hpp"
 #include "Platform.hpp"
+#include "GameGUI.hpp"
 
 namespace lava
 {

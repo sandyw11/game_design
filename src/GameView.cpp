@@ -1,5 +1,4 @@
 #include "GameView.hpp"
-#include "GameGUI.hpp"
 
 namespace lava
 {
