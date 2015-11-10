@@ -5,10 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 #include "Platform.hpp"
 
 namespace lava

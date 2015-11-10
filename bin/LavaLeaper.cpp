@@ -2,9 +2,6 @@
 #include <vector>
 #include "GameLogic.hpp"
 #include "GameView.hpp"
-
-#include "GameGUI.hpp"
-
 #include "Platform.hpp"
 #include "Level.hpp"
 #include "Player.hpp"

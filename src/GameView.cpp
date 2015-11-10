@@ -42,19 +42,6 @@ namespace lava
     {
         setInstructionMessage();
 	}
-
-    void GameView::setStartMessage()
-    {
-        sf::Text startMessage("          START\n\n\npress Enter to start", gameGUI.font, 30);
-        startMessage.setPosition(300, 200);
-        startMessage.setColor(sf::Color::Red);
-        window->draw(startMessage);
-    }
-    
-    void GameView::setStart()
-    {
-        gameGUI.draw(window);
-    }
     
     void GameView::setPauseMessage()
     {
@@ -94,7 +81,6 @@ namespace lava
             if(isWait)
             {
 				window->setView(view);
-
                 setPause();
             }
             else
@@ -107,21 +93,21 @@ namespace lava
             if(isGameover)
             {
 				window->setView(view);
-                
                 setGameover();
             }
             else
             {
 				window->setView(view);
-
                 setStart();
                 
                 if(isWait)
                 {
+                    window->setView(view);
                     setInstruction();
                 }
                 else
                 {
+                    window->setView(view);
                     setStart();
                 }
             }
@@ -184,9 +170,6 @@ namespace lava
                 if(!isPlaying)
                 {
                     isWait = false;
-                    isPlaying = true;
-                    isGameover = false;
-                    clock.restart();
                 }
             }
             
