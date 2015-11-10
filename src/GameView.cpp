@@ -1,19 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
 #include "GameGUI.hpp"
+//#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
-    GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player)
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view):
+	isWait(false),
+	isPlaying(false),
+	isGameover(false),
+	lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
-		this->actors = actors;
+		this->level = level;
 		this->player = player;
-    }
-    
-    GameView::~GameView()
-    {
-
+        view = view;
+        
+        lava.setFillColor(sf::Color::Red);
     }
 
     GameGUI gameGUI(800, 600);
@@ -36,11 +39,25 @@ namespace lava
     void GameView::setInstruction()
     {
         setInstructionMessage();
+	}
+    
+    void GameView::setStartMessage()
+    {
+        setFont();
+        sf::Text startMessage("          START\n\n\npress Enter to start", font, 30);
+        startMessage.setPosition(300, 200);
+        startMessage.setColor(sf::Color::Red);
+        window->draw(startMessage);
+    }
+    
+    void GameView::setStart()
+    {
+        gameGUI.draw(window);
     }
     
     void GameView::setPauseMessage()
     {
-        sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI.font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -67,24 +84,16 @@ namespace lava
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
-<<<<<<< HEAD
-
 		sf::View view;
 		view.reset(sf::FloatRect(0, 0, 800, 600));
 
-=======
-        
->>>>>>> origin/game-state
         window->clear(sf::Color::Black);
         if(isPlaying)
         {
             if(isWait)
             {
-<<<<<<< HEAD
 				window->setView(view);
 
-=======
->>>>>>> origin/game-state
                 setPause();
             }
             else
@@ -96,20 +105,16 @@ namespace lava
         {
             if(isGameover)
             {
-<<<<<<< HEAD
 				window->setView(view);
 
-=======
->>>>>>> origin/game-state
                 setGameover();
             }
             else
             {
-<<<<<<< HEAD
 				window->setView(view);
 
                 setStart();
-=======
+                
                 if(isWait)
                 {
                     setInstruction();
@@ -118,11 +123,9 @@ namespace lava
                 {
                     setStart();
                 }
->>>>>>> origin/game-state
             }
         }
         window->display();
-        
 	}
 	
     void GameView::processInput(sf::Clock clock)
@@ -134,11 +137,8 @@ namespace lava
             if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
             {
 				window->close();
-<<<<<<< HEAD
-=======
             }
->>>>>>> origin/game-state
-			
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Up))
             {
                 if(!isPlaying)
@@ -208,60 +208,6 @@ namespace lava
                     isPlaying = false;
                 }
             }
-            
-            if(Event.type == sf::Event::KeyPressed)
-            {
-                switch(Event.key.code)
-                {
-                    case sf::Keyboard::Space:
-                        player->charging = true;
-                        break;
-                }
-            }
-            
-            if(Event.type == sf::Event::KeyReleased)
-            {
-                switch(Event.key.code)
-                {
-                    case sf::Keyboard::Space:
-                        player->charging = false;
-                        player->jump();
-                        break;
-                }
-            }
-<<<<<<< HEAD
-			
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
-            {
-                if(!isPlaying)
-                {
-                    isPlaying = true;
-                    isGameover = false;
-                    clock.restart();
-                }
-            }
-            
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
-            {
-                isWait = !isWait;
-            }
-            
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
-            {
-                if(isPlaying)
-                {
-                    isPlaying = false;
-                }
-            }
-            
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
-            {
-                if(!isGameover && isPlaying)
-                {
-                    isGameover = true;
-                    isPlaying = false;
-                }
-            }
 			
 			// key press events
 			if(Event.type == sf::Event::KeyPressed)
@@ -297,42 +243,51 @@ namespace lava
 						break;
 				}
 			}
-=======
->>>>>>> origin/game-state
 		}
 	}
 	
 	void GameView::draw()
 	{
-<<<<<<< HEAD
-
-		sf::View view;
-  		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
-=======
->>>>>>> origin/game-state
-		// draw actors
-		for(int i=0; i < actors->size(); i++)
+		// draw platforms
+		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
-			Actor* actor = actors->at(i);
-			actor->render(window);
-		}
-<<<<<<< HEAD
-
-		sf::Vector2f position(0, 0);
-		position.x = player->getX() + 10 - (800 / 2);
-		position.y = player->getY() + 20 - (600 / 2);
-		if (position.y < 0)
-		{
-			position.y = 0;
+			Platform* platform = level->getPlatforms()->at(i);
+			platform->render(window);
 		}
 
+		// draw player
+        if (player->getX() <= 0)
+        {
+            std::cout << "GAME OVER" << std::endl;
+        }
+        else if (player->getX() >= 800)
+        {
+            std::cout << "GAME OVER" << std::endl;
+        }
+        else
+        {
+            player->render(window);
+        }
+
+        sf::Vector2f position(0, 0);
+        position.y = player->getY() + 20 - (250);
+
+		// draw lava
+        lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
+        window->draw(lava);
+        
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
+        window->setView(view);
+    }
 
-    	window->setView(view);
+	void GameView::respond(const EventInterface& events){
+		if (events.getEventType() == ActorDestroyedEvent::eventId){
+			std::cout << "HELLO VIEW\n";
+		}
+		else{
+			std::cout << "NO EVENT \n";
+		}
 	}
-=======
-	}s
->>>>>>> origin/game-state
 }

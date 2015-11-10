@@ -4,30 +4,53 @@
 #include "GameView.hpp"
 #include "GameGUI.hpp"
 #include "Platform.hpp"
+#include "Level.hpp"
+#include "Player.hpp"
+#include "EventManager.hpp"
+#include "ActorDestroyedEvent.hpp"
+#include <ctime>
+//#include "boost\bind.hpp"
 
 int main(int argc, char** argv)
 {
-  // create main window
-  sf::RenderWindow window(sf::VideoMode(800,600,32), "Lava Leaper");    
-  sf::Clock clock;
+	// create main window
+	lava::eventManager eventManager;
+	sf::View view;
+	view.reset(sf::FloatRect(0, 0, 800, 600));
+	view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	sf::RenderWindow window(sf::VideoMode(800,600,32), "Lava Leaper");
+	window.setView(view);
+	sf::Clock clock;
   
-  // add player to entities
-  std::vector<lava::Actor*> actors;
-  lava::Player player;
-  actors.push_back(&player);
-  
-  // init game view and logic
-  lava::GameView gameView(&window, &actors, &player);
-  lava::GameLogic gameLogic(&actors, &player);
+	// create player and level
+	lava::Player player;
+	lava::Level level(std::time(NULL));
 
-  // start main loop
-    while(window.isOpen())
-    {
-        float delta = clock.restart().asSeconds();
-        gameLogic.update(delta);
-        gameView.update(clock);
-    }
+	// init game view and logic
+	lava::GameView gameView(&window, &level, &player, view);
+	lava::GameLogic gameLogic(&level, &player);
+
+	/*
+	EventDelegate delegates = std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1);
+	EventDelegate delegates2 = std::bind(&lava::GameView::respond, &gameView, std::placeholders::_1);
+	//method_hash pairID(reinterpret_cast < intptr_t > (&gameLogic), reinterpret_cast <intptr_t> (&lava::GameLogic::respond));
+	ActorDestroyedEvent events;
+	ActorDestroyedEvent* pointer = &events;
+	eventManager.enterMapValue(ActorDestroyedEvent::eventId, events);
+	eventManager.registerEvent(delegates, events);
+	eventManager.registerEvent(delegates2, events);
+	eventManager.registerEvent(delegates2, events);
+	eventManager.queueEvent(pointer);*/
+	// start main loop
+	while(window.isOpen())
+	{
+		//eventManager.queueEvent(pointer);
+		float delta = clock.restart().asSeconds();
+		gameLogic.update(delta);
+		gameView.update(clock);
+		//eventManager.processEvents();
+	}
     
-    // Done.
-  return 0;
+	// Done.
+	return 0;
 }
