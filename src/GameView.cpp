@@ -4,14 +4,17 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player):
 	isWait(false),
 	isPlaying(false),
-	isGameover(false)
+	isGameover(false),
+	lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
-		this->actors = actors;
+		this->level = level;
 		this->player = player;
+
+		lava.setFillColor(sf::Color::Red);
 	}
     
     void GameView::setFont()
@@ -190,12 +193,15 @@ namespace lava
   		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
-		// draw actors
-		for(int i=0; i < actors->size(); i++)
+		// draw platforms
+		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
-			Actor* actor = actors->at(i);
-			actor->render(window);
+			Platform* platform = level->getPlatforms()->at(i);
+			platform->render(window);
 		}
+
+		// draw player
+		player->render(window);
 
 		sf::Vector2f position(0, 0);
 		position.x = player->getX() + 10 - (800 / 2);
@@ -204,6 +210,10 @@ namespace lava
 		{
 			position.y = 0;
 		}
+
+		// draw lava
+		lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
+		window->draw(lava);
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 

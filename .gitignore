@@ -8,3 +8,5 @@ setup.txt
 *.sdf
 *.sln
 .vs/
+Makefile
+*.opensdf
