@@ -5,6 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
+<<<<<<< HEAD
+=======
+
+#include "Platform.hpp"
+>>>>>>> master
 
 namespace lava
 {
@@ -31,9 +36,15 @@ namespace lava
 		std::vector<Actor*>* actors;
 		Player* player;
         sf::Font font;
+<<<<<<< HEAD
         bool isWait = false;
         bool isPlaying = false;
         bool isGameover = false;
+=======
+        bool isWait;
+        bool isPlaying;
+        bool isGameover;
+>>>>>>> master
         
 	};
 }
