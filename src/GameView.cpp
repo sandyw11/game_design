@@ -190,7 +190,7 @@ namespace lava
 	
 	void GameView::draw()
 	{
-  		view.reset(sf::FloatRect(0, 0, 800, 600));
+  		//view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
 		// draw platforms
@@ -222,7 +222,6 @@ namespace lava
         window->draw(lava);
         view.reset(sf::FloatRect(position.x, position.y, 800, 600));
         window->setView(view);
-        window->display();
     }
 
 	void GameView::respond(const EventInterface& events){
