@@ -12,7 +12,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        view = view;
+        this->view = view;
         
         lava.setFillColor(sf::Color::Red);
     }
