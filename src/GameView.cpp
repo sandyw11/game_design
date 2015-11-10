@@ -1,8 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
-//#include "ActorDestroyedEvent.hpp"
-
 #include "GameGUI.hpp"
+//#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
