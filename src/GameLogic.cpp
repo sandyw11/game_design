@@ -1,12 +1,15 @@
 #include "GameLogic.hpp"
 #include <iostream>
 
+
 namespace lava
 {
+
 	GameLogic::GameLogic(Level* level, Player* player)
 	{
 		this->level = level;
 		this->player = player;
+	
 	}
 	
 	void GameLogic::update(float delta)
@@ -43,6 +46,15 @@ namespace lava
 				std::cout << "PLAYER IS SO DEAD LOL\n";
 				player->die();
 			}
+		}
+	}
+
+	void GameLogic::respond(const EventInterface& events){
+		if (events.getEventType() == ActorDestroyedEvent::eventId){
+			std::cout << "HELLO WORLD\n";
+		}
+		else{
+			std::cout << "NO EVENT \n";
 		}
 	}
 }

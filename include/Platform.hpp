@@ -12,7 +12,7 @@ namespace lava
 		
 	public:
 		Platform(int x, int y, int width);
-	
+
 		void update(float delta);
 		void render(sf::RenderWindow* window);
 		float getX() { return rect.getPosition().x; }

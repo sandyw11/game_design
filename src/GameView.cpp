@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
+//#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
@@ -23,6 +24,7 @@ namespace lava
         {
             return 0;
         }*/
+		
     }
     
     void GameView::setStartMessage()
@@ -216,5 +218,14 @@ namespace lava
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 
     	window->setView(view);
+	}
+
+	void GameView::respond(const EventInterface& events){
+		if (events.getEventType() == ActorDestroyedEvent::eventId){
+			std::cout << "HELLO VIEW\n";
+		}
+		else{
+			std::cout << "NO EVENT \n";
+		}
 	}
 }

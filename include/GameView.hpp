@@ -23,6 +23,7 @@ namespace lava
         void setStart();
         void setGameoverMessage();
         void setGameover();
+		void GameView::respond(const EventInterface& events);
 		
 	protected:
 		sf::RenderWindow* window;

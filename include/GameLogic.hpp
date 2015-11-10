@@ -3,7 +3,10 @@
 
 #include <vector>
 #include "Level.hpp"
+#include <iostream>
 #include "Player.hpp"
+//#include "EventInterface.hpp"
+#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
@@ -18,6 +21,8 @@ namespace lava
 		};
 		void update(float delta);
 		GameLogic(Level* level, Player* player);
+		void respond(const EventInterface& events);
+
 		
 	private:
 		GameState gameState;
