@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "GameView.hpp"
+//#include "ActorDestroyedEvent.hpp"
 
 #include "GameGUI.hpp"
 
@@ -17,6 +18,7 @@ namespace lava
 		this->level = level;
 		this->player = player;
         view = view;
+<<<<<<< HEAD
         
         lava.setFillColor(sf::Color::Red);
     }
@@ -46,6 +48,41 @@ namespace lava
     void GameView::setPauseMessage()
     {
         sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI.font, 30);
+=======
+
+		lava.setFillColor(sf::Color::Red);
+	}
+    
+    void GameView::setFont()
+    {
+        font.loadFromFile("font.ttf");
+        /*if(!font.loadFromFile("font.ttf"))
+        {
+            return 0;
+        }*/
+		
+    }
+    
+    void GameView::setStartMessage()
+    {
+        setFont();
+        sf::Text startMessage("          START\n\n\npress Enter to start", font, 30);
+        startMessage.setPosition(300, 200);
+        startMessage.setColor(sf::Color::Red);
+        window->draw(startMessage);
+    }
+    
+    void GameView::setStart()
+    {
+        //window->clear(sf::Color::Black);
+        setStartMessage();
+    }
+    
+    void GameView::setPauseMessage()
+    {
+        setFont();
+        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", font, 30);
+>>>>>>> master
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -53,12 +90,21 @@ namespace lava
     
     void GameView::setPause()
     {
+<<<<<<< HEAD
+=======
+        //window->clear(sf::Color::Black);
+>>>>>>> master
         setPauseMessage();
     }
     
     void GameView::setGameoverMessage()
     {
+<<<<<<< HEAD
         sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI.font, 30);
+=======
+        setFont();
+        sf::Text gameoverMessage("      GAME OVER\n\npress Enter to restart\n    press Esc to quit", font, 30);
+>>>>>>> master
         gameoverMessage.setPosition(300, 200);
         gameoverMessage.setColor(sf::Color::Red);
         window->draw(gameoverMessage);
@@ -66,12 +112,20 @@ namespace lava
     
     void GameView::setGameover()
     {
+<<<<<<< HEAD
+=======
+        //window->clear(sf::Color::Black);
+>>>>>>> master
         setGameoverMessage();
     }
 
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 		sf::View view;
 		view.reset(sf::FloatRect(0, 0, 800, 600));
 
@@ -99,6 +153,7 @@ namespace lava
             {
 				window->setView(view);
                 setStart();
+<<<<<<< HEAD
                 
                 if(isWait)
                 {
@@ -110,6 +165,8 @@ namespace lava
                     window->setView(view);
                     setStart();
                 }
+=======
+>>>>>>> master
             }
         }
         window->display();
@@ -122,6 +179,7 @@ namespace lava
 		{
 			// exit
             if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
+<<<<<<< HEAD
             {
 				window->close();
             }
@@ -142,10 +200,15 @@ namespace lava
                 }
             }
 
+=======
+				window->close();
+			
+>>>>>>> master
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             {
                 if(!isPlaying)
                 {
+<<<<<<< HEAD
                     switch(gameGUI.GetPressedItem())
                     {
                         case 0:
@@ -170,6 +233,11 @@ namespace lava
                 if(!isPlaying)
                 {
                     isWait = false;
+=======
+                    isPlaying = true;
+                    isGameover = false;
+                    clock.restart();
+>>>>>>> master
                 }
             }
             
