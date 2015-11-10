@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
-
+#include "ActorDestroyedEvent.hpp"
 #include "Platform.hpp"
 
 namespace lava
@@ -13,7 +13,7 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, std::vector<Actor*>* actors, Player* player);
+		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view);
         void update(sf::Clock clock);
 
         void setInstructionMessage();
@@ -25,7 +25,7 @@ namespace lava
         void setStart();
         void setGameoverMessage();
         void setGameover();
-		void GameView::respond(const EventInterface& events);
+		void respond(const EventInterface& events);
 		
 	protected:
 		sf::RenderWindow* window;

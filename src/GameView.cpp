@@ -1,7 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include "GameView.hpp"
 #include "GameGUI.hpp"
-//#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
@@ -14,7 +12,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        view = view;
+        this->view = view;
         
         lava.setFillColor(sf::Color::Red);
     }

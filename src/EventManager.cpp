@@ -3,7 +3,7 @@
 //bool operator==(const EventDelegate &a, const EventDelegate &b){
 //	if (a)
 //}
-namespace lava{
+namespace lava {
 	eventManager::eventManager(){
 		this->register_queue = &eventManager::queues[0];
 		this->process_queue = &eventManager::queues[1];
