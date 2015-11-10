@@ -16,7 +16,7 @@ namespace lava
 	alive(true)
 	{
 		// test start position
-		rect.setPosition(550, 50000);
+		rect.setPosition(400, 50000);
 	}
 	
 	void Player::update(float delta)

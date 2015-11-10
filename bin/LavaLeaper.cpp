@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "EventManager.hpp"
 #include "ActorDestroyedEvent.hpp"
+#include <ctime>
 //#include "boost\bind.hpp"
 
 
@@ -23,7 +24,7 @@ int main(int argc, char** argv)
   
 	// create player and level
 	lava::Player player;
-	lava::Level level(1);
+	lava::Level level(std::time(NULL));
 
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view);

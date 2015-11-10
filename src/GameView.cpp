@@ -107,7 +107,6 @@ namespace lava
             }
         }
         window->display();
-        
 	}
 	
     void GameView::processInput(sf::Clock clock)
@@ -190,7 +189,6 @@ namespace lava
 	
 	void GameView::draw()
 	{
-  		view.reset(sf::FloatRect(0, 0, 800, 600));
 		window->clear(sf::Color::Black);
 		
 		// draw platforms
@@ -216,13 +214,13 @@ namespace lava
 
         sf::Vector2f position(0, 0);
         position.y = player->getY() + 20 - (250);
-        std::cout << position.y << std::endl;
-        // draw lava
+
+		// draw lava
         lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
         window->draw(lava);
-        view.reset(sf::FloatRect(position.x, position.y, 800, 600));
+        
+		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
         window->setView(view);
-        window->display();
     }
 
 	void GameView::respond(const EventInterface& events){

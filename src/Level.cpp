@@ -12,7 +12,7 @@ namespace lava
 		srand(seed);
 
 		// starting platform
-		lastX = 525;
+		lastX = 300;
 		lastY = START_Y + 40;
 		platforms.push_back(new Platform(lastX, lastY, 200));
 
