@@ -5,11 +5,18 @@
 #include <functional>
 
 class EventDelegate{
-	const int delegateId;
+public:
+	EventDelegate();
+	EventDelegate(std::function<void(const EventInterface&)> input, int ID);
+	int delegateId;
 	std::function<void(const EventInterface&)> callback;
 
-	bool operator==(const EventDelegate &other) const{
+	bool operator==(EventDelegate &other) const{
 		return delegateId == other.delegateId;
+	}
+
+	bool operator!=(EventDelegate &other) const{
+		return delegateId != other.delegateId;
 	}
 };
 
