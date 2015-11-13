@@ -8,13 +8,9 @@
 #include <functional>
 #include <iostream>
 #include <map>
-//#include "boost\function.hpp"
-//#include "boost\range\algorithm\find.hpp"
-//#include "boost\function_equal.hpp"
+#include "EventDelegate.hpp"
 
-typedef std::function<void(const EventInterface&)> EventDelegate;
-typedef std::pair < intptr_t, intptr_t > method_hash;
-typedef std::list<method_hash> position_list;
+//typedef std::function<void(const EventInterface&)> EventDelegates;
 typedef std::list<const EventInterface*> event_queue;
 typedef std::list<EventDelegate> delegates_list;
 typedef std::map<int, delegates_list> event_map;

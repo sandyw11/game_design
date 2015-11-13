@@ -18,14 +18,18 @@ namespace lava {
 	}
 	void eventManager::registerEvent(EventDelegate& d, EventInterface& events){
 		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
-		//std::cout << delegates.size() << std::endl;
-		//std::cout << events.getEventType() << std::endl;
 		//auto findIter = std::find(delegates.begin(),delegates.end(), d);
-		//if (findIter == delegates.end()){
-		//	auto findIter = delegates.end();
-		//}
-		delegates.push_back(d);
-		//eventManager::eventDelegateMap.insert(std::pair<int, delegates_list>(events.getEventType(),delegates));
+		int last = 0;
+		auto first = delegates.begin();
+		while (first != delegates.end()){
+			if (*first == d){
+				break;
+			}
+			++first;
+		}
+		if (first == delegates.end()){
+			delegates.push_back(d);
+		}
 		eventManager::eventDelegateMap[events.getEventType()] = delegates;
 		//}
 	}
@@ -36,7 +40,7 @@ namespace lava {
 		}
 		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
 		for (auto current = delegates.begin(); current != delegates.end(); current++){
-			(*current)(events);
+			(current->callback)(events);
 		}
 
 	}
