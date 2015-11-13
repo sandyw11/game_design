@@ -2,7 +2,10 @@
 #define GAME_LOGIC_HPP
 
 #include <vector>
+#include "Level.hpp"
+#include <iostream>
 #include "Player.hpp"
+#include "ActorDestroyedEvent.hpp"
 
 namespace lava
 {
@@ -11,16 +14,18 @@ namespace lava
 	public:
 		enum GameState
 		{
+            START,
 			PLAY,
 			PAUSE,
 			GAME_OVER
 		};
 		void update(float delta);
-		GameLogic(std::vector<Actor*>* actors, Player* player);
+		GameLogic(Level* level, Player* player);
+		void respond(const EventInterface& events);
 		
 	private:
 		GameState gameState;
-		std::vector<Actor*>* actors;
+		Level* level;
 		Player* player;
 	};
 }
