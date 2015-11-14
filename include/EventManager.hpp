@@ -28,7 +28,7 @@ namespace lava{
 		virtual void enterMapValue(int key, const EventInterface& event);
 		virtual void registerEvent(EventDelegate& d, EventInterface& events);
 		virtual void executeEvent(const EventInterface& events);
-		virtual void removeEvent(const EventInterface* events);
+		virtual void removeDelegate(EventDelegate& d, const EventInterface& events);
 		virtual void processEvents(void);
 
 	};

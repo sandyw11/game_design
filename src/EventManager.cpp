@@ -44,8 +44,22 @@ namespace lava {
 		}
 
 	}
-	void eventManager::removeEvent(const EventInterface* events){
-
+	void eventManager::removeDelegate(EventDelegate& d, const EventInterface& events){
+		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
+		//auto findIter = std::find(delegates.begin(),delegates.end(), d);
+		int last = 0;
+		auto first = delegates.begin();
+		while (first != delegates.end()){
+			if (*first == d){
+				delegates.erase(first);
+				break;
+			}
+			++first;
+		}
+		if (first == delegates.end() && *first == d){
+			delegates.erase(first);
+		}
+		eventManager::eventDelegateMap[events.getEventType()] = delegates;
 	}
 	void eventManager::processEvents(void){
 		std::swap(process_queue, register_queue);

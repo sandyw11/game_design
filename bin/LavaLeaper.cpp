@@ -60,6 +60,8 @@ int main(int argc, char** argv)
 	eventManager.registerEvent(example, event3);
 	eventManager.registerEvent(example3, event3);
 
+	eventManager.removeDelegate(example3, event3);
+
 	//IF YOU WANT TO TRIGGER AN EVENT
 	//Make sure to queue the event.
 	eventManager.queueEvent(&event3);
