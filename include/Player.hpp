@@ -10,7 +10,9 @@ namespace lava
 	private:
 		float vx;
 		float vy;
-		sf::RectangleShape rect;
+		//sf::RectangleShape rect;
+		sf::Texture playerTexture;
+		sf::Sprite playerSprite; 
 		float charge;
 		bool landed;
 
@@ -33,9 +35,10 @@ namespace lava
 		bool isFalling() { return vy > 0; }
 		bool alive;
 
-		float getX() { return rect.getPosition().x; }
-		float getY() { return rect.getPosition().y; }
-		sf::RectangleShape getRect() { return rect; }
+		float getX() { return playerSprite.getPosition().x; }
+		float getY() { return playerSprite.getPosition().y; }
+		//sf::RectangleShape getRect() { return rect; }
+		sf::Sprite getSprite() { return playerSprite; }
 	};
 }
 

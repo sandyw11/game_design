@@ -5,7 +5,7 @@
 namespace lava
 {
 	Player::Player():
-	rect(sf::Vector2f(20, 40)),
+	//rect(sf::Vector2f(20, 40)),
 	vx(0),
 	vy(0),
 	charge(false),
@@ -16,7 +16,17 @@ namespace lava
 	alive(true)
 	{
 		// test start position
-		rect.setPosition(400, 50000);
+		//rect.setPosition(400, 50000);
+		if (!playerTexture.loadFromFile("Guy.png"))
+		{
+			std::cout << "WHY NO LOAD" << std::endl;
+		}
+		playerSprite.setTexture(playerTexture);
+		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
+		playerSprite.setPosition(400, 50000);
+		std::cout << playerSprite.getTextureRect().height << std::endl;
+		playerSprite.setScale(1.5f,1.5f);
+		std::cout << playerSprite.getGlobalBounds().height << std::endl;
 	}
 	
 	void Player::update(float delta)
@@ -42,13 +52,14 @@ namespace lava
 			}
 
 			// move player
-			rect.move(delta * vx, delta * vy);
+			playerSprite.move(delta * vx, delta * vy);
 		}
 	}
 	
 	void Player::render(sf::RenderWindow* window)
 	{
-		window->draw(rect);
+		//window->draw(rect);
+		window->draw(playerSprite);
 	}
 	
 	void Player::jump()
@@ -74,7 +85,8 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
-			rect.setPosition(this->getX(), y - this->getRect().getSize().y);
+			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
+			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
 		}
 	}
