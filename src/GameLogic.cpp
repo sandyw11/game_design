@@ -31,8 +31,8 @@ namespace lava
 			Platform* platform = level->getPlatforms()->at(i);
 
 			// if they intersect and the player is high enough
-			if (platform->getRect().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) 
-				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getRect().getSize().y)
+			if (platform->getSprite().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) 
+				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getSprite().getGlobalBounds().height - 17)
 			{
 				if (player->isFalling()) player->land(platform->getY());
 			}

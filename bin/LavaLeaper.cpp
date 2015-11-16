@@ -20,10 +20,23 @@ int main(int argc, char** argv)
 	sf::RenderWindow window(sf::VideoMode(800,600,32), "Lava Leaper");
 	window.setView(view);
 	sf::Clock clock;
-  
+
+	//Init Sprite sheet
+	sf::Texture playerTexture;
+	sf::Texture platformTexture;
+	if (!playerTexture.loadFromFile("Guy.png"))
+	{
+		std::cout << "Cannot load Player image" << std::endl;
+	}
+	if (!platformTexture.loadFromFile("Platform.png"))
+	{
+		std::cout << "Cannot load Player image" << std::endl;
+	}
+	platformTexture.setRepeated(true);
+
 	// create player and level
-	lava::Player player;
-	lava::Level level(std::time(NULL));
+	lava::Player player(&playerTexture);
+	lava::Level level(std::time(NULL),&platformTexture);
 
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view);

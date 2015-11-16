@@ -4,7 +4,7 @@
 
 namespace lava
 {
-	Player::Player():
+	Player::Player(sf::Texture* playerTexture):
 	//rect(sf::Vector2f(20, 40)),
 	vx(0),
 	vy(0),
@@ -17,16 +17,10 @@ namespace lava
 	{
 		// test start position
 		//rect.setPosition(400, 50000);
-		if (!playerTexture.loadFromFile("Guy.png"))
-		{
-			std::cout << "WHY NO LOAD" << std::endl;
-		}
-		playerSprite.setTexture(playerTexture);
+		playerSprite.setTexture(*playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
-		playerSprite.setPosition(400, 50000);
-		std::cout << playerSprite.getTextureRect().height << std::endl;
+		playerSprite.setPosition(400, 49995);
 		playerSprite.setScale(1.5f,1.5f);
-		std::cout << playerSprite.getGlobalBounds().height << std::endl;
 	}
 	
 	void Player::update(float delta)
@@ -67,7 +61,7 @@ namespace lava
 		if (vy == 0) {
 			// TODO: non-linear function for charging power? sqrt?
 			float dvy = std::sqrt(charge) * 720;
-			std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
+			//std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
 
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;

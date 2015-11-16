@@ -8,16 +8,19 @@ namespace lava
 	class Platform : public Actor
 	{
 	private:
-		sf::RectangleShape rect;
+		//sf::RectangleShape rect;
+		sf::Sprite platformSprite;
+
 		
 	public:
-		Platform(int x, int y, int width);
+		Platform(int x, int y, int width, sf::Texture* platformTexture);
 
 		void update(float delta);
 		void render(sf::RenderWindow* window);
-		float getX() { return rect.getPosition().x; }
-		float getY() { return rect.getPosition().y; }
-		sf::RectangleShape getRect() { return rect; }
+		float getX() { return platformSprite.getPosition().x; }
+		float getY() { return platformSprite.getPosition().y; }
+		//sf::RectangleShape getRect() { return rect; }
+		sf::Sprite getSprite(){ return platformSprite; }
 	};
 }
 

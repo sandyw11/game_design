@@ -22,7 +22,7 @@ namespace lava
 		static const int VX = 200;
 		
 	public:
-		Player();
+		Player(sf::Texture *playerTexture);
 		
 		void update(float delta);
 		void render(sf::RenderWindow* window);
