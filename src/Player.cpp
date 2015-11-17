@@ -30,20 +30,36 @@ namespace lava
 			// update charge
 			if (charging) {
 				charge += delta;
-				if (moveLeft){
+				if (!faceLeft){
 					playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
 					playerSprite.setScale(1.5f, 1.5f);
 				}
-				if (moveRight){
+				else{
 					playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+			}
+			else{
+				if (!faceLeft){
+					playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+				else{
+					playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 					playerSprite.setScale(1.5f, 1.5f);
 				}
 			}
 			// if not landed, fall
 			if (!landed) {
 				if (!charging){
-					playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
-					playerSprite.setScale(1.5f, 1.5f);
+					if (!faceLeft){
+						playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+					else{
+						playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
 				}
 				vy += A * delta;
 			}
@@ -87,8 +103,14 @@ namespace lava
 			// TODO: non-linear function for charging power? sqrt?
 			float dvy = std::sqrt(charge) * 720;
 			//std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
-			playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
-			playerSprite.setScale(1.5f, 1.5f);
+			if (faceLeft){
+				playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
+			else{
+				playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;
 			if (dvy < MINJUMP) dvy = MINJUMP;
@@ -105,11 +127,18 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
+			std::cout << faceLeft << "\n";
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
-			playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-			playerSprite.setScale(1.5f, 1.5f);
+			if (faceLeft){
+				playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
+			else{
+				playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
 		}
 	}
 

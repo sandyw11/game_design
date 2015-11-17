@@ -32,7 +32,7 @@ namespace lava
 
 			// if they intersect and the player is high enough
 			if (platform->getSprite().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) 
-				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getSprite().getGlobalBounds().height - 17)
+				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getSprite().getGlobalBounds().height)
 			{
 				if (player->isFalling()) player->land(platform->getY());
 			}

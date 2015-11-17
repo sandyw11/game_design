@@ -2,18 +2,21 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture,sf::Texture *backgroundTexture):
 	isWait(false),
 	isPlaying(false),
-	isGameover(false),
-	lava(sf::Vector2f(2400, 2000))
+	isGameover(false)
+	//lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
 		this->level = level;
 		this->player = player;
         this->view = view;
-        
-        lava.setFillColor(sf::Color::Red);
+		background.setTexture(*backgroundTexture);
+        //lava.setFillColor(sf::Color::Red);
+		lavaSprite.setTexture(*lavaTexture);
+		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
+		lavaSprite.setScale(1, 1.5f);
     }
 
     GameGUI gameGUI(800, 600);
@@ -204,10 +207,13 @@ namespace lava
 						player->charging = true;
 						break;
 					case sf::Keyboard::D:
+					
+						player->faceLeft = false;
 						player->moveLeft = true;
 						break;
 					case sf::Keyboard::A:
 						player->moveRight = true;
+						player->faceLeft = true;
 						break;
 				}
 			}
@@ -225,7 +231,7 @@ namespace lava
 						player->moveLeft = false;
 						break;
 					case sf::Keyboard::A:
-						player->moveRight = false;
+						player->moveRight = false; 
 						break;
 				}
 			}
@@ -235,7 +241,14 @@ namespace lava
 	void GameView::draw()
 	{
 		window->clear(sf::Color::Black);
-		
+		sf::Vector2f position(0, 0);
+		position.y = player->getY() + 20 - (250);
+
+		//draw background 
+		background.setPosition(sf::Vector2f(position.x, position.y));
+		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
+		window->draw(background);
+
 		// draw platforms
 		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
@@ -257,14 +270,13 @@ namespace lava
             player->render(window);
         }
 
-        sf::Vector2f position(0, 0);
-        position.y = player->getY() + 20 - (250);
-
 		// draw lava
-        lava.setPosition(sf::Vector2f(-600, level->getLavaY()));
-        window->draw(lava);
-        
+		//std::cout << "Printing Lava\n";
+        lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
+        window->draw(lavaSprite);
+
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
+
         window->setView(view);
     }
 

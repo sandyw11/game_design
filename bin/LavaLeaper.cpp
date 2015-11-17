@@ -24,22 +24,34 @@ int main(int argc, char** argv)
 	//Init Sprite sheet
 	sf::Texture playerTexture;
 	sf::Texture platformTexture;
+	sf::Texture lavaTexture;
+	sf::Texture backgroundTexture;
 	if (!playerTexture.loadFromFile("graph/Guy.png"))
 	{
 		std::cout << "Cannot load Player image" << std::endl;
 	}
 	if (!platformTexture.loadFromFile("graph/Platform.png"))
 	{
-		std::cout << "Cannot load Player image" << std::endl;
+		std::cout << "Cannot load Platform image" << std::endl;
+	}
+	if (!lavaTexture.loadFromFile("graph/Lava.png"))
+	{
+		std::cout << "Cannot load Lava image" << std::endl;
+	}
+	if (!backgroundTexture.loadFromFile("graph/volcanic_underground_background.png"))
+	{
+		std::cout << "Cannot load Background image" << std::endl;
 	}
 	platformTexture.setRepeated(true);
+	lavaTexture.setRepeated(true);
+	backgroundTexture.setRepeated(true);
 
 	// create player and level
 	lava::Player player(&playerTexture);
 	lava::Level level(std::time(NULL),&platformTexture);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture);
 	lava::GameLogic gameLogic(&level, &player);
 
 	/*
