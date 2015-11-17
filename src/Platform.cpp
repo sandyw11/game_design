@@ -7,7 +7,7 @@ namespace lava
 	{
 		//rect.setPosition(x, y);
 		platformSprite.setTexture(*platformTexture);
-		platformSprite.setTextureRect(sf::IntRect(0, 0, width, 32));
+		platformSprite.setTextureRect(sf::IntRect(0, 0, width, 30));
 		platformSprite.setPosition(x,y);
 		platformSprite.setScale(1, 1.5f); 
 	}

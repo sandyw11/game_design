@@ -19,8 +19,8 @@ namespace lava
 		//rect.setPosition(400, 50000);
 		playerSprite.setTexture(*playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
-		playerSprite.setPosition(400, 49995);
 		playerSprite.setScale(1.5f,1.5f);
+		playerSprite.setPosition(400, 49995);
 	}
 	
 	void Player::update(float delta)
@@ -28,10 +28,23 @@ namespace lava
 		if (alive)
 		{
 			// update charge
-			if (charging) charge += delta;
-
+			if (charging) {
+				charge += delta;
+				if (moveLeft){
+					playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+				if (moveRight){
+					playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+			}
 			// if not landed, fall
 			if (!landed) {
+				if (!charging){
+					playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
 				vy += A * delta;
 			}
 
@@ -40,8 +53,20 @@ namespace lava
 			if (vy != 0)
 			{
 				if (moveLeft && moveRight) vx = 0;
-				else if (moveLeft) vx = VX;
-				else if (moveRight) vx = -VX;
+				else if (moveLeft){
+					vx = VX;
+					if (!charging){
+						playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
+				else if (moveRight){
+					vx = -VX;
+					if (!charging){
+						playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
 				else vx = 0;
 			}
 
@@ -62,7 +87,8 @@ namespace lava
 			// TODO: non-linear function for charging power? sqrt?
 			float dvy = std::sqrt(charge) * 720;
 			//std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
-
+			playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+			playerSprite.setScale(1.5f, 1.5f);
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;
 			if (dvy < MINJUMP) dvy = MINJUMP;
@@ -82,6 +108,8 @@ namespace lava
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
+			playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+			playerSprite.setScale(1.5f, 1.5f);
 		}
 	}
 

@@ -24,11 +24,11 @@ int main(int argc, char** argv)
 	//Init Sprite sheet
 	sf::Texture playerTexture;
 	sf::Texture platformTexture;
-	if (!playerTexture.loadFromFile("Guy.png"))
+	if (!playerTexture.loadFromFile("graph/Guy.png"))
 	{
 		std::cout << "Cannot load Player image" << std::endl;
 	}
-	if (!platformTexture.loadFromFile("Platform.png"))
+	if (!platformTexture.loadFromFile("graph/Platform.png"))
 	{
 		std::cout << "Cannot load Player image" << std::endl;
 	}
