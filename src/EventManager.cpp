@@ -18,14 +18,18 @@ namespace lava {
 	}
 	void eventManager::registerEvent(EventDelegate& d, EventInterface& events){
 		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
-		//std::cout << delegates.size() << std::endl;
-		//std::cout << events.getEventType() << std::endl;
 		//auto findIter = std::find(delegates.begin(),delegates.end(), d);
-		//if (findIter == delegates.end()){
-		//	auto findIter = delegates.end();
-		//}
-		delegates.push_back(d);
-		//eventManager::eventDelegateMap.insert(std::pair<int, delegates_list>(events.getEventType(),delegates));
+		int last = 0;
+		auto first = delegates.begin();
+		while (first != delegates.end()){
+			if (*first == d){
+				break;
+			}
+			++first;
+		}
+		if (first == delegates.end()){
+			delegates.push_back(d);
+		}
 		eventManager::eventDelegateMap[events.getEventType()] = delegates;
 		//}
 	}
@@ -36,12 +40,26 @@ namespace lava {
 		}
 		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
 		for (auto current = delegates.begin(); current != delegates.end(); current++){
-			(*current)(events);
+			(current->callback)(events);
 		}
 
 	}
-	void eventManager::removeEvent(const EventInterface* events){
-
+	void eventManager::removeDelegate(EventDelegate& d, const EventInterface& events){
+		delegates_list delegates = eventManager::eventDelegateMap[events.getEventType()];
+		//auto findIter = std::find(delegates.begin(),delegates.end(), d);
+		int last = 0;
+		auto first = delegates.begin();
+		while (first != delegates.end()){
+			if (*first == d){
+				delegates.erase(first);
+				break;
+			}
+			++first;
+		}
+		if (first == delegates.end() && *first == d){
+			delegates.erase(first);
+		}
+		eventManager::eventDelegateMap[events.getEventType()] = delegates;
 	}
 	void eventManager::processEvents(void){
 		std::swap(process_queue, register_queue);

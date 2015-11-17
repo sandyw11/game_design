@@ -7,6 +7,8 @@ class ActorDestroyedEvent : public EventInterface{
 
 public: 
 	int timeStamp;
+	static const int eventId;
+	int getEventType(void) const { return eventId; }
 	virtual float getTimeStamp(void) const {return timeStamp;}
 
 };

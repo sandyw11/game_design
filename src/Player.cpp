@@ -4,8 +4,8 @@
 
 namespace lava
 {
-	Player::Player():
-	rect(sf::Vector2f(20, 40)),
+	Player::Player(sf::Texture* playerTexture):
+	//rect(sf::Vector2f(20, 40)),
 	vx(0),
 	vy(0),
 	charge(false),
@@ -16,7 +16,11 @@ namespace lava
 	alive(true)
 	{
 		// test start position
-		rect.setPosition(400, 50000);
+		//rect.setPosition(400, 50000);
+		playerSprite.setTexture(*playerTexture);
+		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
+		playerSprite.setScale(1.5f,1.5f);
+		playerSprite.setPosition(400, 49995);
 	}
 	
 	void Player::update(float delta)
@@ -24,10 +28,39 @@ namespace lava
 		if (alive)
 		{
 			// update charge
-			if (charging) charge += delta;
-
+			if (charging) {
+				charge += delta;
+				if (!faceLeft){
+					playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+				else{
+					playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+			}
+			else{
+				if (!faceLeft){
+					playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+				else{
+					playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+					playerSprite.setScale(1.5f, 1.5f);
+				}
+			}
 			// if not landed, fall
 			if (!landed) {
+				if (!charging){
+					if (!faceLeft){
+						playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+					else{
+						playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
 				vy += A * delta;
 			}
 
@@ -36,19 +69,32 @@ namespace lava
 			if (vy != 0)
 			{
 				if (moveLeft && moveRight) vx = 0;
-				else if (moveLeft) vx = VX;
-				else if (moveRight) vx = -VX;
+				else if (moveLeft){
+					vx = VX;
+					if (!charging){
+						playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
+				else if (moveRight){
+					vx = -VX;
+					if (!charging){
+						playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
 				else vx = 0;
 			}
 
 			// move player
-			rect.move(delta * vx, delta * vy);
+			playerSprite.move(delta * vx, delta * vy);
 		}
 	}
 	
 	void Player::render(sf::RenderWindow* window)
 	{
-		window->draw(rect);
+		//window->draw(rect);
+		window->draw(playerSprite);
 	}
 	
 	void Player::jump()
@@ -56,8 +102,15 @@ namespace lava
 		if (vy == 0) {
 			// TODO: non-linear function for charging power? sqrt?
 			float dvy = std::sqrt(charge) * 720;
-			std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
-
+			//std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
+			if (faceLeft){
+				playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
+			else{
+				playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;
 			if (dvy < MINJUMP) dvy = MINJUMP;
@@ -74,8 +127,18 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
-			rect.setPosition(this->getX(), y - this->getRect().getSize().y);
+			std::cout << faceLeft << "\n";
+			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
+			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
+			if (faceLeft){
+				playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
+			else{
+				playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+			}
 		}
 	}
 
