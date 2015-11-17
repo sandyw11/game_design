@@ -18,6 +18,7 @@ namespace lava
 		static const int START_LAVA_VY = 60;
 		static const int MAX_LAVA_VY = 150;
 		int chunkNum;
+		sf::Texture *texture;
 
 		std::vector<Platform*> platforms;
 		float playerY;
@@ -30,10 +31,10 @@ namespace lava
 		float lastY;
 
 		void deleteChunks();
-		void generateChunk();
+		void generateChunk(sf::Texture *platformTexture);
 
 	public:
-		Level(int seed);
+		Level(int seed, sf::Texture* platformTexture);
 		~Level();
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; };

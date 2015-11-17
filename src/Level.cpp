@@ -3,22 +3,23 @@
 
 namespace lava
 {
-	Level::Level(int seed):
+	Level::Level(int seed, sf::Texture *platformTexture) :
 	chunkNum(0),
 	lavaY(START_Y+400),
 	lavaVy(START_LAVA_VY)
 	{
+		this->texture = platformTexture;
 		// seed random number generator
 		srand(seed);
 
 		// starting platform
 		lastX = 300;
 		lastY = START_Y + 40;
-		platforms.push_back(new Platform(lastX, lastY, 200));
+		platforms.push_back(new Platform(lastX, lastY, 200,this->texture));
 
 		chunkNum = 0;
 		nextChunkY = START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
-		generateChunk();
+		generateChunk(this->texture);
 	}
 
 	Level::~Level() 
@@ -27,7 +28,7 @@ namespace lava
 		platforms.empty();
 	}
 
-	void Level::generateChunk()
+	void Level::generateChunk(sf::Texture *platformTexture)
 	{
 		int width, dx, dy;
 		float theta, distance;
@@ -53,7 +54,7 @@ namespace lava
 				lastX -= dx*4;
 			}
 
-			platforms.push_back(new Platform(lastX, lastY, width));
+			platforms.push_back(new Platform(lastX, lastY, width,platformTexture));
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 		}
 
@@ -64,7 +65,7 @@ namespace lava
 	{
 		if (playerY < nextChunkY)
 		{
-			generateChunk();
+			generateChunk(this->texture);
 			deleteChunks();
 			nextChunkY -= CHUNK_HEIGHT;
 		}

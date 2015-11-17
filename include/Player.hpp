@@ -10,7 +10,9 @@ namespace lava
 	private:
 		float vx;
 		float vy;
-		sf::RectangleShape rect;
+		//sf::RectangleShape rect;
+		sf::Texture playerTexture;
+		sf::Sprite playerSprite; 
 		float charge;
 		bool landed;
 
@@ -20,7 +22,7 @@ namespace lava
 		static const int VX = 200;
 		
 	public:
-		Player();
+		Player(sf::Texture *playerTexture);
 		
 		void update(float delta);
 		void render(sf::RenderWindow* window);
@@ -32,10 +34,12 @@ namespace lava
 		bool moveRight;
 		bool isFalling() { return vy > 0; }
 		bool alive;
+		bool faceLeft;
 
-		float getX() { return rect.getPosition().x; }
-		float getY() { return rect.getPosition().y; }
-		sf::RectangleShape getRect() { return rect; }
+		float getX() { return playerSprite.getPosition().x; }
+		float getY() { return playerSprite.getPosition().y; }
+		//sf::RectangleShape getRect() { return rect; }
+		sf::Sprite getSprite() { return playerSprite; }
 	};
 }
 

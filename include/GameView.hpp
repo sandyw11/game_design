@@ -14,7 +14,7 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view);
+		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture);
         void update(sf::Clock clock);
 
         void setInstructionMessage();
@@ -41,7 +41,9 @@ namespace lava
         bool isPlaying;
         bool isGameover;
 
-        sf::RectangleShape lava;
+        //sf::RectangleShape lava;
+		sf::Sprite background;
+		sf::Sprite lavaSprite;
 		sf::View view;
 	};
 }
