@@ -17,6 +17,14 @@ namespace lava
 		lavaSprite.setTexture(*lavaTexture);
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
 		lavaSprite.setScale(1, 1.5f);
+
+		font.loadFromFile("pixel_font.ttf");
+		text.setFont(font);
+		text.setColor(sf::Color::White);
+		text.setString("0");
+		text.setCharacterSize(50);
+		text.setPosition(sf::Vector2f(300, 200));
+
     }
 
     GameGUI gameGUI(800, 600);
@@ -249,6 +257,7 @@ namespace lava
 		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
 		window->draw(background);
 
+		//std::cout << text.getCharacterSize() << "\n";
 		// draw platforms
 		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
@@ -267,13 +276,18 @@ namespace lava
         }
         else
         {
-            player->render(window);
+           player->render(window);
         }
 
 		// draw lava
 		//std::cout << "Printing Lava\n";
         lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
         window->draw(lavaSprite);
+
+		text.setPosition(sf::Vector2f(position.x + 20, position.y - 10));
+		std::string scores = static_cast<std::ostringstream*>(&(std::ostringstream() << player->score))->str();
+		text.setString(scores);
+		window->draw(text);
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 

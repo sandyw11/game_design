@@ -55,10 +55,10 @@ namespace lava
 			}
 
 			platforms.push_back(new Platform(lastX, lastY, width,platformTexture));
-			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
+			//std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 		}
 
-		std::cout << "Chunk " << chunkNum << " generated\n";
+		//std::cout << "Chunk " << chunkNum << " generated\n";
 	}
 
 	void Level::update(float playerY, float delta)

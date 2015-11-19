@@ -35,6 +35,8 @@ namespace lava
 		bool isFalling() { return vy > 0; }
 		bool alive;
 		bool faceLeft;
+		
+		int score; 
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }

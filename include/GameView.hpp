@@ -2,6 +2,8 @@
 #define GAME_VIEW_HPP
 
 #include <vector>
+#include <iostream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "GameLogic.hpp"
@@ -36,7 +38,8 @@ namespace lava
 	private:
 		Level* level;
 		Player* player;
-
+		sf::Font font;
+		sf::Text text;
         bool isWait;
         bool isPlaying;
         bool isGameover;

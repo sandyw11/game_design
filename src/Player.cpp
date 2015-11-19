@@ -17,6 +17,7 @@ namespace lava
 	{
 		// test start position
 		//rect.setPosition(400, 50000);
+		score = 0;
 		playerSprite.setTexture(*playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
 		playerSprite.setScale(1.5f,1.5f);
@@ -127,7 +128,7 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
-			std::cout << faceLeft << "\n";
+			score += 1;
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
