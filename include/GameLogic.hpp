@@ -2,10 +2,11 @@
 #define GAME_LOGIC_HPP
 
 #include <vector>
-#include "Level.hpp"
 #include <iostream>
+#include "Level.hpp"
 #include "Player.hpp"
 #include "ActorDestroyedEvent.hpp"
+#include "Platform.hpp"
 
 namespace lava
 {
@@ -27,6 +28,7 @@ namespace lava
 		GameState gameState;
 		Level* level;
 		Player* player;
+		Platform* landedPlatform;
 	};
 }
 

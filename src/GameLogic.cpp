@@ -35,7 +35,14 @@ namespace lava
 				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getSprite().getGlobalBounds().height)
 			{
 				if (player->isFalling()) player->land(platform->getY());
+				landedPlatform = platform;
 			}
+		}
+
+		// move player with platform
+		if (player->landed)
+		{
+			player->stickToPlatform(delta, landedPlatform->getVelocityX());
 		}
 
 		// check for death

@@ -257,18 +257,7 @@ namespace lava
 		}
 
 		// draw player
-        if (player->getX() <= 0)
-        {
-            std::cout << "GAME OVER" << std::endl;
-        }
-        else if (player->getX() >= 800)
-        {
-            std::cout << "GAME OVER" << std::endl;
-        }
-        else
-        {
-            player->render(window);
-        }
+        player->render(window);
 
 		// draw lava
 		//std::cout << "Printing Lava\n";
