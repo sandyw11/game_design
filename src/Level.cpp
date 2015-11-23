@@ -22,7 +22,7 @@ namespace lava
 		generateChunk(this->texture);
 	}
 
-	Level::~Level() 
+	Level::~Level()
 	{
 		// remove all platforms
 		platforms.empty();
