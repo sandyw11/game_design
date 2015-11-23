@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "Actor.hpp"
+#include "Platform.hpp"
 
 namespace lava
 {
@@ -10,11 +11,9 @@ namespace lava
 	private:
 		float vx;
 		float vy;
-		//sf::RectangleShape rect;
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite; 
 		float charge;
-		bool landed;
 
 		static const int A = 1100;
 		static const int MINJUMP = 200;
@@ -25,6 +24,7 @@ namespace lava
 		Player(sf::Texture *playerTexture);
 		
 		void update(float delta);
+		void stickToPlatform(float delta, float vx);
 		void render(sf::RenderWindow* window);
 		void jump();
 		void die();
@@ -33,12 +33,12 @@ namespace lava
 		bool moveLeft;
 		bool moveRight;
 		bool isFalling() { return vy > 0; }
-		bool alive;
 		bool faceLeft;
+		bool alive;
+		bool landed;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }
-		//sf::RectangleShape getRect() { return rect; }
 		sf::Sprite getSprite() { return playerSprite; }
 	};
 }
