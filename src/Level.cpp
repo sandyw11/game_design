@@ -24,8 +24,9 @@ namespace lava
 
 	Level::~Level()
 	{
-		// remove all platforms
+		// remove all platforms and powerups
 		platforms.empty();
+		powerups.empty();
 	}
 
 	void Level::generateChunk(sf::Texture *platformTexture)
@@ -55,8 +56,18 @@ namespace lava
 				lastX -= 3*dx;
 			}
 
-			platforms.push_back(new Platform(lastX, lastY, width,platformTexture));
+			platforms.push_back(new Platform(lastX, lastY, width, platformTexture));
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
+
+			// random chance of a powerup
+			// TODO: not hardcoded
+			// TODO: stick to platforms that move
+			if (rand() % 20 == 0)
+			{
+				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
+				int powerupY = lastY - Powerup::HEIGHT;
+				powerups.push_back(new Powerup(powerupX, powerupY));
+			}
 		}
 
 		std::cout << "Chunk " << chunkNum << " generated\n";
@@ -91,5 +102,7 @@ namespace lava
 				++it;
 			}
 		}
+
+		// TODO: clean up powerups
 	}
 }

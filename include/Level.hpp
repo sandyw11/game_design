@@ -21,6 +21,7 @@ namespace lava
 		sf::Texture *texture;
 
 		std::vector<Platform*> platforms;
+		std::vector<Powerup*> powerups;
 		float playerY;
 		float nextChunkY;
 		float lavaY;
@@ -37,7 +38,8 @@ namespace lava
 		Level(int seed, sf::Texture* platformTexture);
 		~Level();
 
-		std::vector<Platform*>* getPlatforms() { return &platforms; };
+		std::vector<Platform*>* getPlatforms() { return &platforms; }
+		std::vector<Powerup*>* getPowerups() { return &powerups; }
 		int getLavaY() { return lavaY; }
 		void update(float playerY, float delta);
 	};

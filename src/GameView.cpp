@@ -2,18 +2,16 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture,sf::Texture *backgroundTexture):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture,sf::Texture *backgroundTexture):
 	isWait(false),
 	isPlaying(false),
 	isGameover(false)
-	//lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
 		this->level = level;
 		this->player = player;
         this->view = view;
 		background.setTexture(*backgroundTexture);
-        //lava.setFillColor(sf::Color::Red);
 		lavaSprite.setTexture(*lavaTexture);
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
 		lavaSprite.setScale(1, 1.5f);
@@ -207,7 +205,6 @@ namespace lava
 						player->charging = true;
 						break;
 					case sf::Keyboard::D:
-					
 						player->faceLeft = false;
 						player->moveLeft = true;
 						break;
@@ -250,10 +247,17 @@ namespace lava
 		window->draw(background);
 
 		// draw platforms
-		for(int i=0; i < level->getPlatforms()->size(); i++)
+		for (int i=0; i < level->getPlatforms()->size(); i++)
 		{
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
+		}
+
+		// draw powerups
+		for (int i = 0; i < level->getPowerups()->size(); i++)
+		{
+			Powerup* powerup = level->getPowerups()->at(i);
+			powerup->render(window);
 		}
 
 		// draw player
