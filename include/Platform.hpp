@@ -2,16 +2,17 @@
 #define PLATFORM_HPP
 
 #include "Actor.hpp"
+#include <cstdlib>
 
 namespace lava
 {
 	class Platform : public Actor
 	{
 	private:
-		//sf::RectangleShape rect;
 		sf::Sprite platformSprite;
+		float vx;
+		int platformWidth;
 
-		
 	public:
 		Platform(int x, int y, int width, sf::Texture* platformTexture);
 
@@ -19,8 +20,8 @@ namespace lava
 		void render(sf::RenderWindow* window);
 		float getX() { return platformSprite.getPosition().x; }
 		float getY() { return platformSprite.getPosition().y; }
-		//sf::RectangleShape getRect() { return rect; }
 		sf::Sprite getSprite(){ return platformSprite; }
+		float getVelocityX() { return vx; }
 	};
 }
 

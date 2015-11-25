@@ -56,6 +56,7 @@ namespace lava
 					playerSprite.setScale(1.5f, 1.5f);
 				}
 			}
+
 			// if not landed, fall
 			if (!landed) {
 				if (!charging){
@@ -109,7 +110,7 @@ namespace lava
 		if (vy == 0) {
 			// TODO: non-linear function for charging power? sqrt?
 			float dvy = std::sqrt(charge) * 720;
-			//std::cout << "charge: " << charge << ", dvy: " << dvy << "\n";
+
 			if (faceLeft){
 				playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
 				playerSprite.setScale(1.5f, 1.5f);
@@ -118,6 +119,7 @@ namespace lava
 				playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
 				playerSprite.setScale(1.5f, 1.5f);
 			}
+
 			// filter for min and max
 			if (dvy > MAXJUMP) dvy = MAXJUMP;
 			if (dvy < MINJUMP) dvy = MINJUMP;
@@ -138,6 +140,7 @@ namespace lava
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;
+
 			if (faceLeft){
 				playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 				playerSprite.setScale(1.5f, 1.5f);
@@ -147,6 +150,11 @@ namespace lava
 				playerSprite.setScale(1.5f, 1.5f);
 			}
 		}
+	}
+
+	void Player::stickToPlatform(float delta, float vx)
+	{
+		playerSprite.move(delta * vx, 0);
 	}
 
 	void Player::die()

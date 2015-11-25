@@ -267,7 +267,9 @@ namespace lava
 			platform->render(window);
 		}
 		// draw player
+
 		player->render(window);
+
 
 		// draw lava
 		//std::cout << "Printing Lava\n";

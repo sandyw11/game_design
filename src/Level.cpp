@@ -38,8 +38,9 @@ namespace lava
 		// generate up to chunk height
 		while(lastY > START_Y - chunkNum * CHUNK_HEIGHT)
 		{
-			// get random angle between 0 and 180
-			theta = (float)(rand() % 180)/180 * 3.14159;
+			// get random angle between 20 and 160
+			// TODO: not hardcoded
+			theta = (float)(rand() % 140 + 20)/180 * 3.14159;
 			distance = rand() % 150 + 100;
 			width = rand() % 100 + 75;
 
@@ -52,7 +53,7 @@ namespace lava
 
 			// keep x within bounds
 			if (lastX + width > 800 || lastX < 0) {
-				lastX -= dx*4;
+				lastX -= 3*dx;
 			}
 
 			platforms.push_back(new Platform(lastX, lastY, width,platformTexture));
