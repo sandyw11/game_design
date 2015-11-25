@@ -5,6 +5,7 @@ namespace lava
     GameGUI::GameGUI(float width, float height)
     {
         font.loadFromFile("font.ttf");
+
         
         menu[0].setFont(font);
         menu[0].setColor(sf::Color::Red);

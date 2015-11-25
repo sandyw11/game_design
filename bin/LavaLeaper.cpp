@@ -8,11 +8,15 @@
 #include "ActorDestroyedEvent.hpp"
 #include "GameOverEvent.hpp"
 #include "EventDelegate.hpp"
+#include "ScoreBoard.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
 {
 	// create main window
+	ScoreBoard scores;
+	char* message = "Hi there";
+	scores.sendInformation(message);
 	lava::eventManager eventManager;
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -47,12 +51,15 @@ int main(int argc, char** argv)
 	backgroundTexture.setRepeated(true);
 
 	// create player and level
-	lava::Player player(&playerTexture);
-	lava::Level level(std::time(NULL),&platformTexture);
+	lava::Player player(&playerTexture, &eventManager);
+	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
+
+	GameOverEvent event;
+	eventManager.enterMapValue(GameOverEvent::eventId, event);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture);
-	lava::GameLogic gameLogic(&level, &player);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
+	lava::GameLogic gameLogic(&level, &player, &eventManager);
 
 	/*
 	//Below is a Tutorial of The Event Manager System. Feel free to uncomment the section below and run the code and play around with it to get

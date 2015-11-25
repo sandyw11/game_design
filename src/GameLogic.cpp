@@ -5,11 +5,13 @@
 namespace lava
 {
 
-	GameLogic::GameLogic(Level* level, Player* player)
+	GameLogic::GameLogic(Level* level, Player* player, lava::eventManager *manager)
 	{
 		this->level = level;
 		this->player = player;
-	
+		this->manager = manager;
+		EventDelegate example(std::bind(&lava::GameLogic::respond, this, std::placeholders::_1), (int)this);
+		this->manager->registerEvent(example, gameOver);
 	}
 	
 	void GameLogic::update(float delta)
@@ -43,7 +45,7 @@ namespace lava
 		{
 			if (player->alive)
 			{
-				std::cout << "PLAYER IS SO DEAD LOL\n";
+				manager->queueEvent(&gameOver);
 				player->die();
 			}
 		}
@@ -54,7 +56,7 @@ namespace lava
 			std::cout << "HELLO WORLD\n";
 		}
 		else{
-			std::cout << "NO EVENT \n";
+			std::cout << "GAME OVER \n";
 		}
 	}
 }
