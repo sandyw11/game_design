@@ -2,7 +2,7 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture,sf::Texture *backgroundTexture):
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager) :
 	isWait(false),
 	isPlaying(false),
 	isGameover(false)
@@ -12,8 +12,9 @@ namespace lava
 		this->level = level;
 		this->player = player;
         this->view = view;
+		this->manager = manager;
 		background.setTexture(*backgroundTexture);
-        //lava.setFillColor(sf::Color::Red);
+
 		lavaSprite.setTexture(*lavaTexture);
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
 		lavaSprite.setScale(1, 1.5f);
@@ -24,6 +25,8 @@ namespace lava
 		text.setString("0");
 		text.setCharacterSize(50);
 		text.setPosition(sf::Vector2f(300, 200));
+		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
+		this->manager->registerEvent(example, gameOver);
 
     }
 
@@ -79,7 +82,6 @@ namespace lava
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
-
 		sf::View view;
 		view.reset(sf::FloatRect(0, 0, 800, 600));
 
@@ -264,20 +266,10 @@ namespace lava
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
 		}
-
 		// draw player
-        if (player->getX() <= 0)
-        {
-            std::cout << "GAME OVER" << std::endl;
-        }
-        else if (player->getX() >= 800)
-        {
-            std::cout << "GAME OVER" << std::endl;
-        }
-        else
-        {
-           player->render(window);
-        }
+
+		player->render(window);
+
 
 		// draw lava
 		//std::cout << "Printing Lava\n";
@@ -295,11 +287,12 @@ namespace lava
     }
 
 	void GameView::respond(const EventInterface& events){
-		if (events.getEventType() == ActorDestroyedEvent::eventId){
-			std::cout << "HELLO VIEW\n";
+		if (events.getEventType() == GameOverEvent::eventId){
+			isGameover = true;
+			isPlaying = false;
 		}
 		else{
-			std::cout << "NO EVENT \n";
+			std::cout << "UNKOWN EVENT \n";
 		}
 	}
 }
