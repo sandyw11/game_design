@@ -33,7 +33,7 @@ namespace lava
 		}
 
 		// move platform
-		platformSprite.move(sf::Vector2f(delta * vx, 0));
+		platformSprite.move(delta * vx, 0);
 	}
 	
 	void Platform::render(sf::RenderWindow* window)

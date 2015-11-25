@@ -1,5 +1,12 @@
 #include "Level.hpp"
 #include <cmath>
+#include <iostream>
+#include <cstdlib>
+
+long Equilikely(long a, long b)
+{
+	return (a + (long)((b - a + 1) * rand() / RAND_MAX));
+}
 
 namespace lava
 {
@@ -13,7 +20,7 @@ namespace lava
 		srand(seed);
 
 		// starting platform
-		lastX = 300;
+		lastX = START_X;
 		lastY = START_Y + 40;
 		platforms.push_back(new Platform(lastX, lastY, 200,this->texture));
 
@@ -38,12 +45,12 @@ namespace lava
 		// generate up to chunk height
 		while(lastY > START_Y - chunkNum * CHUNK_HEIGHT)
 		{
-			// get random angle between 20 and 160
-			// TODO: not hardcoded
-			theta = (float)(rand() % 140 + 20)/180 * 3.14159;
-			distance = rand() % 150 + 100;
-			width = rand() % 100 + 75;
+			// random angle between 20 and 160
+			theta = (float) Equilikely(MIN_THETA, MAX_THETA)/180 * 3.14159;
+			distance = Equilikely(MIN_DIST, MAX_DIST);
+			width = Equilikely(MIN_WIDTH, MAX_WIDTH);
 
+			// get x/y distance from last platform
 			dx = distance * std::cos(theta);
 			dy = distance * std::sin(theta);
 
@@ -60,9 +67,8 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			// TODO: not hardcoded
 			// TODO: stick to platforms that move
-			if (rand() % 20 == 0)
+			if (Equilikely(0, 20) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
 				int powerupY = lastY - Powerup::HEIGHT;
