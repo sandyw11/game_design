@@ -33,7 +33,7 @@ namespace lava
 		this->manager->registerEvent(example, jump);
 		this->manager->registerEvent(example, loser);
 		this->manager->registerEvent(example, startMusic);
-
+		this->manager->registerEvent(example, pauseMusic);
     }
 
     GameGUI gameGUI(800, 600);
@@ -230,6 +230,15 @@ namespace lava
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
             {
                 isWait = !isWait;
+                if (isWait == true)
+                {
+                    manager->queueEvent(&pauseMusic);
+                }
+                else
+                {
+                    musicPlaying = false;
+                    manager->queueEvent(&playingMusic);
+                }
             }
 
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
@@ -360,6 +369,7 @@ namespace lava
     {
         noLoopBuffer.loadFromFile(noLoopSoundName);
         noLoopSound.setBuffer(noLoopBuffer);
+        noLoopSound.setVolume(90);
         noLoopSound.play();
     }
 
@@ -388,6 +398,7 @@ namespace lava
         music.stop();
         music.openFromFile(musicName);
         music.setLoop(true);
+        music.setVolume(40);
         music.play();
         musicPlaying = true;
     }
@@ -398,7 +409,7 @@ namespace lava
 			isPlaying = false;
 			manager->queueEvent(&loser);
 		}
-		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true))
+		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true) && (isWait == false))
         {
             playSound("earthquake.wav");
             soundPlaying = true;
@@ -413,15 +424,18 @@ namespace lava
             playMusic("Start_Screen.ogg");
             musicPlaying = true;
         }
-        else if ((events.getEventType() == JumpSoundEvent::eventId) && (isPlaying == true))
+        else if ((events.getEventType() == JumpSoundEvent::eventId) && (isPlaying == true) && (isWait == false))
         {
             playNonLoopSound("jump.wav");
+        }
+        else if ((events.getEventType() == PauseSoundEvent::eventId) && (isWait == true))
+        {
+            playMusic("Pause_Screen.ogg");
         }
         else if ((events.getEventType() == GameOverSoundEvent::eventId) && (isGameover == true))
         {
             music.stop();
             sound.stop();
-            std::cout<<"Made it"<< std::endl;
             soundPlaying = false;
             playNonLoopSound("Game_Over.ogg");
             musicPlaying = false;
