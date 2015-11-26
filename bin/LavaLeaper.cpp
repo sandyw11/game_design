@@ -14,6 +14,7 @@
 #include "JumpSoundEvent.hpp"
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
+#include "PauseSoundEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
@@ -66,12 +67,14 @@ int main(int argc, char** argv)
 	JumpSoundEvent jump;
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
+	PauseSoundEvent pauseMusic;
 	eventManager.enterMapValue(GameOverEvent::eventId, event);
 	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
 	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
 	eventManager.enterMapValue(JumpSoundEvent::eventId, jump);
 	eventManager.enterMapValue(GameOverSoundEvent::eventId, loser);
 	eventManager.enterMapValue(StartSoundEvent::eventId, startMusic);
+	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
 
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
