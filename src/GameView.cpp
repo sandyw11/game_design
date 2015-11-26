@@ -114,10 +114,6 @@ namespace lava
             {
 				window->setView(view);
                 setStart();
-                if (musicPlaying == false)
-                {
-                    manager->queueEvent(&playingMusic);
-                }
 
                 if(isWait)
                 {
@@ -170,6 +166,7 @@ namespace lava
                         case 0:
                             isPlaying = true;
                             isGameover = false;
+                            manager->queueEvent(&playingMusic);
                             clock.restart();
                             break;
 
