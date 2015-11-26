@@ -17,15 +17,19 @@ namespace lava
 		platformSprite.setScale(1, 1.5f); 
 
 		// random chance of being a moving platform
-		int platformType = rand() % 10;
+		// right now, 10% chance of falling and 10% chance of moving
+		int platformType = Equilikely(0, 9);
 		if (platformType == 0)
 		{
 			vx = Equilikely(MIN_VX, MAX_VX);
 		}
-		else
+		else if (platformType == 1)
 		{
 			fallingPlatform = true;
 			fallTime = FALL_TIME;
+
+			// different look for falling platforms?
+			platformSprite.setColor(sf::Color::Yellow);
 		}
 	}
 	
