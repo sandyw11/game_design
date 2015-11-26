@@ -32,6 +32,7 @@ namespace lava
 		this->manager->registerEvent(example, playingMusic);
 		this->manager->registerEvent(example, jump);
 		this->manager->registerEvent(example, loser);
+		this->manager->registerEvent(example, startMusic);
 
     }
 
@@ -124,6 +125,10 @@ namespace lava
                 {
                     window->setView(view);
                     setStart();
+                    if (musicPlaying == false)
+                    {
+                        manager->queueEvent(&startMusic);
+                    }
                 }
             }
         }
@@ -166,6 +171,8 @@ namespace lava
                         case 0:
                             isPlaying = true;
                             isGameover = false;
+                            musicPlaying = false;
+                            music.stop();
                             manager->queueEvent(&playingMusic);
                             clock.restart();
                             break;
@@ -347,6 +354,7 @@ namespace lava
 
     void GameView::playMusic(const char* musicName)
     {
+        music.stop();
         music.openFromFile(musicName);
         music.setLoop(true);
         music.play();
@@ -369,7 +377,12 @@ namespace lava
             playMusic("Game_Play_Music.ogg");
             musicPlaying = true;
         }
-        else if ((events.getEventType() == JumpSoundEvent::eventId))
+        else if (events.getEventType() == StartSoundEvent::eventId)
+        {
+            playMusic("Start_Screen.ogg");
+            musicPlaying = true;
+        }
+        else if ((events.getEventType() == JumpSoundEvent::eventId) && (isPlaying == true))
         {
             playNonLoopSound("jump.wav");
         }

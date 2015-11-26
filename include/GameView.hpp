@@ -15,6 +15,7 @@
 #include "PlayMusicEvent.hpp"
 #include "JumpSoundEvent.hpp"
 #include "GameOverSoundEvent.hpp"
+#include "StartSoundEvent.hpp"
 #include <SFML/Audio.hpp>
 
 namespace lava
@@ -45,6 +46,7 @@ namespace lava
 		PlayMusicEvent playingMusic;
 		JumpSoundEvent jump;
 		GameOverSoundEvent loser;
+		StartSoundEvent startMusic;
 
 	protected:
 		sf::RenderWindow* window;
