@@ -11,12 +11,13 @@ long Equilikely(long a, long b)
 
 namespace lava
 {
-	Level::Level(int seed, sf::Texture *platformTexture) :
+	Level::Level(int seed, sf::Texture *platformTexture, lava::eventManager *manager) :
 	chunkNum(0),
 	lavaY(START_Y+400),
 	lavaVy(START_LAVA_VY)
 	{
 		this->texture = platformTexture;
+		this->manager = manager;
 
 		// seed random number generator
 		srand(seed);
@@ -78,7 +79,7 @@ namespace lava
 			}
 		}
 
-		std::cout << "Chunk " << chunkNum << " generated\n";
+		//std::cout << "Chunk " << chunkNum << " generated\n";
 	}
 
 	void Level::update(float playerY, float delta)

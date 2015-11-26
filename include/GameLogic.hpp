@@ -6,7 +6,10 @@
 #include "Level.hpp"
 #include "Player.hpp"
 #include "ActorDestroyedEvent.hpp"
+#include "EventManager.hpp"
+#include "GameOverEvent.hpp"
 #include "Platform.hpp"
+
 
 namespace lava
 {
@@ -21,13 +24,15 @@ namespace lava
 			GAME_OVER
 		};
 		void update(float delta);
-		GameLogic(Level* level, Player* player);
+		GameLogic(Level* level, Player* player,lava::eventManager *manager);
 		void respond(const EventInterface& events);
+		GameOverEvent gameOver;
 		
 	private:
 		GameState gameState;
 		Level* level;
 		Player* player;
+		lava::eventManager *manager;
 		Platform* landedPlatform;
 	};
 }

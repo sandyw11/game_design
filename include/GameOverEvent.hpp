@@ -13,5 +13,5 @@ public:
 
 };
 #endif
-//const int ActorDestroyedEvent::eventId = int(&ActorDestroyedEvent::eventId);
-//const int ActorDestroyedEvent::eventId = (int)(&ActorDestroyedEvent::eventId);
+//const int GameOverEvent::eventId = int(&GameOverEvent::eventId);
+//const int GameOverEvent::eventId = (int)(&GameOverEvent::eventId);

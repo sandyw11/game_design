@@ -4,6 +4,8 @@
 #include <vector>
 #include "Platform.hpp"
 #include "Powerup.hpp"
+#include "GameOverEvent.hpp"
+#include "EventManager.hpp"
 
 namespace lava
 {
@@ -29,6 +31,8 @@ namespace lava
 
 		std::vector<Platform*> platforms;
 		std::vector<Powerup*> powerups;
+		lava::eventManager *manager;
+
 		float playerY;
 		float nextChunkY;
 		float lavaY;
@@ -42,7 +46,7 @@ namespace lava
 		void generateChunk(sf::Texture *platformTexture);
 
 	public:
-		Level(int seed, sf::Texture* platformTexture);
+		Level(int seed, sf::Texture* platformTexture,lava::eventManager *manager);
 		~Level();
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; }

@@ -2,6 +2,8 @@
 #define PLAYER_HPP
 
 #include "Actor.hpp"
+#include "GameOverEvent.hpp"
+#include "EventManager.hpp"
 #include "Platform.hpp"
 
 namespace lava
@@ -21,7 +23,7 @@ namespace lava
 		static const int VX = 200;
 		
 	public:
-		Player(sf::Texture *playerTexture);
+		Player(sf::Texture *playerTexture, lava::eventManager *manager);
 		
 		void update(float delta);
 		void stickToPlatform(float delta, float vx);
@@ -34,6 +36,8 @@ namespace lava
 		bool moveRight;
 		bool isFalling() { return vy > 0; }
 		bool faceLeft;
+		
+		int score; 
 		bool alive;
 		bool landed;
 
