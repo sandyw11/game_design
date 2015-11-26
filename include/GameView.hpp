@@ -52,6 +52,7 @@ namespace lava
 		sf::RenderWindow* window;
         void processInput(sf::Clock clock);
 		void draw();
+		void drawChargeBar();
 
 	private:
 		Level* level;

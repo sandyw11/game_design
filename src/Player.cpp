@@ -163,4 +163,9 @@ namespace lava
 		vy = 0;
 		alive = false;
 	}
+	
+	float Player::getCharge()
+	{
+	    return charge;
+	}
 }
