@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
+// helper function for random variables
 long Equilikely(long a, long b)
 {
 	return (a + (long)((b - a + 1) * rand() / RAND_MAX));
@@ -16,6 +17,7 @@ namespace lava
 	lavaVy(START_LAVA_VY)
 	{
 		this->texture = platformTexture;
+
 		// seed random number generator
 		srand(seed);
 
@@ -95,20 +97,33 @@ namespace lava
 	void Level::deleteChunks()
 	{
 		// delete unreachable chunks
-		std::vector<Platform*>::iterator it = platforms.begin();
-		while (it != platforms.end())
+		std::vector<Platform*>::iterator platformIt = platforms.begin();
+		while (platformIt != platforms.end())
 		{
-			Platform* platform = *it;
+			Platform* platform = *platformIt;
 			if (platform->getY() > lavaY)
 			{
 				std::cout << "Deleting platform\n";
-				it = platforms.erase(it);
+				platformIt = platforms.erase(platformIt);
 			}
 			else {
-				++it;
+				++platformIt;
 			}
 		}
 
-		// TODO: clean up powerups
+		// clean up unreachable powerups
+		std::vector<Powerup*>::iterator powerupIt = powerups.begin();
+		while (powerupIt != powerups.end())
+		{
+			Powerup* powerup = *powerupIt;
+			if (powerup->getY() > lavaY)
+			{
+				std::cout << "Deleting powerup\n";
+				powerupIt = powerups.erase(powerupIt);
+			}
+			else {
+				++powerupIt;
+			}
+		}
 	}
 }

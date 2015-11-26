@@ -101,7 +101,7 @@ namespace lava
 	void Player::jump()
 	{
 		if (vy == 0) {
-			// TODO: non-linear function for charging power? sqrt?
+			// non-linear function for charging power, sqrt
 			float dvy = std::sqrt(charge) * 720;
 
 			if (faceLeft){
