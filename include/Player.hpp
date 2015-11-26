@@ -17,7 +17,6 @@ namespace lava
 		sf::Sprite playerSprite; 
 		float charge;
 
-		static const int A = 1100;
 		static const int MINJUMP = 200;
 		static const int MAXJUMP = 1000;
 		static const int VX = 200;
@@ -26,7 +25,7 @@ namespace lava
 		Player(sf::Texture *playerTexture, lava::eventManager *manager);
 		
 		void update(float delta);
-		void stickToPlatform(float delta, float vx);
+		void stickToPlatform(float delta, float vx, float vy);
 		void render(sf::RenderWindow* window);
 		void jump();
 		void die();

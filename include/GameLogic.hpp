@@ -27,6 +27,8 @@ namespace lava
 		GameLogic(Level* level, Player* player,lava::eventManager *manager);
 		void respond(const EventInterface& events);
 		GameOverEvent gameOver;
+
+		static const int A = 1100;
 		
 	private:
 		GameState gameState;

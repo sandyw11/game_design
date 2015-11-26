@@ -1,9 +1,13 @@
 #include "Platform.hpp"
+#include "GameLogic.hpp"
 
 namespace lava
 {
-	Platform::Platform(int x, int y, int width, sf::Texture* platformTexture):
+	Platform::Platform(int x, int y, int width, sf::Texture* platformTexture) :
 	vx(0),
+	vy(0),
+	fallingPlatform(false),
+	fallStarted(false),
 	platformWidth(width)
 	{
 		platformSprite.setTexture(*platformTexture);
@@ -12,18 +16,24 @@ namespace lava
 		platformSprite.setScale(1, 1.5f); 
 
 		// random chance of being a moving platform
-		if (rand() % 10 == 0)
+		int platformType = rand() % 10;
+		if (platformType == 0)
 		{
 			// TODO: not hardcoded
 			vx = rand() % 50 + 100;
+		}
+		else
+		{
+			fallingPlatform = true;
+			// TODO: not hardcoded
+			fallTime = 3;
 		}
 	}
 	
 	void Platform::update(float delta)
 	{
 		// check bounds
-		if (vx != 0 && 
-			getX() + platformWidth > 800 || getX() < 0)
+		if (vx != 0 && getX() + platformWidth > 800 || getX() < 0)
 		{
 			vx *= -1;
 
@@ -33,7 +43,28 @@ namespace lava
 		}
 
 		// move platform
-		platformSprite.move(delta * vx, 0);
+		platformSprite.move(delta * vx, delta * vy);
+
+		// falling platform timer
+		if (fallingPlatform && fallStarted)
+		{
+			if (fallTime > 0)
+			{
+				fallTime -= delta;
+			}
+			else if (fallTime < 0)
+			{
+				fallTime = 0;
+			}
+			else {
+				vy += GameLogic::A * delta;
+			}
+		}
+	}
+
+	void Platform::startFall()
+	{
+		if (fallingPlatform) fallStarted = true;
 	}
 	
 	void Platform::render(sf::RenderWindow* window)
