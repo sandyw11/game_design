@@ -31,6 +31,8 @@ namespace lava
 		this->manager->registerEvent(example, gameOver);
 		this->manager->registerEvent(example, earthquake);
 		this->manager->registerEvent(example, playingMusic);
+		this->manager->registerEvent(example, jump);
+		this->manager->registerEvent(example, loser);
 
     }
 
@@ -244,6 +246,7 @@ namespace lava
 					case sf::Keyboard::Space:
 						player->charging = false;
 						player->jump();
+						manager->queueEvent(&jump);
 						break;
 					case sf::Keyboard::D:
 						player->moveLeft = false;
@@ -309,9 +312,16 @@ namespace lava
         buffer.loadFromFile(soundName);
         sound.setBuffer(buffer);
         sound.setLoop(true);
-        sound.setVolume(50);
+        sound.setVolume(80);
         sound.play();
         soundPlaying = true;
+    }
+
+    void GameView::playNonLoopSound(const char* noLoopSoundName)
+    {
+        noLoopBuffer.loadFromFile(noLoopSoundName);
+        noLoopSound.setBuffer(noLoopBuffer);
+        noLoopSound.play();
     }
 
     void GameView::stopSound()
@@ -346,6 +356,7 @@ namespace lava
 		if (events.getEventType() == GameOverEvent::eventId){
 			isGameover = true;
 			isPlaying = false;
+			manager->queueEvent(&loser);
 		}
 		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true))
         {
@@ -356,6 +367,19 @@ namespace lava
         {
             playMusic("Game_Play_Music.ogg");
             musicPlaying = true;
+        }
+        else if ((events.getEventType() == JumpSoundEvent::eventId))
+        {
+            playNonLoopSound("jump.wav");
+        }
+        else if ((events.getEventType() == GameOverSoundEvent::eventId) && (isGameover == true))
+        {
+            music.stop();
+            sound.stop();
+            std::cout<<"Made it"<< std::endl;
+            soundPlaying = false;
+            playNonLoopSound("Game_Over.ogg");
+            musicPlaying = false;
         }
         /*
 		else

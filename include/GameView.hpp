@@ -13,6 +13,8 @@
 #include "GameGUI.hpp"
 #include "EventManager.hpp"
 #include "PlayMusicEvent.hpp"
+#include "JumpSoundEvent.hpp"
+#include "GameOverSoundEvent.hpp"
 #include <SFML/Audio.hpp>
 
 namespace lava
@@ -36,10 +38,13 @@ namespace lava
 		void respond(const EventInterface& events);
 		void shakeScreen();
 		void playMusic(const char* musicName);
+		void playNonLoopSound(const char* noLoopSoundName);
 
 		GameOverEvent gameOver;
 		EarthquakeSoundEvent earthquake;
 		PlayMusicEvent playingMusic;
+		JumpSoundEvent jump;
+		GameOverSoundEvent loser;
 
 	protected:
 		sf::RenderWindow* window;
@@ -54,6 +59,8 @@ namespace lava
 		sf::Text text;
 		sf::SoundBuffer buffer;
 		sf::Sound sound;
+		sf::SoundBuffer noLoopBuffer;
+		sf::Sound noLoopSound;
 		sf::Music music;
         bool isWait;
         bool isPlaying;
