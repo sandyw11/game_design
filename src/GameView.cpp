@@ -8,7 +8,6 @@ namespace lava
 	soundPlaying(false),
 	musicPlaying(false),
 	isGameover(false)
-	//lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
 		this->level = level;
@@ -32,6 +31,10 @@ namespace lava
 		this->manager->registerEvent(example, gameOver);
 		this->manager->registerEvent(example, earthquake);
 		this->manager->registerEvent(example, playingMusic);
+		this->manager->registerEvent(example, jump);
+		this->manager->registerEvent(example, loser);
+		this->manager->registerEvent(example, startMusic);
+		this->manager->registerEvent(example, pauseMusic);
 
     }
 
@@ -116,6 +119,34 @@ namespace lava
     {
         setGameoverMessage();
     }
+    
+    void GameView::drawChargeBar()
+    {
+	float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
+        
+        // draw chargebar frame
+        sf::RectangleShape chargeBarFrame;
+        chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
+        chargeBarFrame.setSize(sf::Vector2f(100, 20));
+        chargeBarFrame.setFillColor(sf::Color::Black);
+        chargeBarFrame.setOutlineColor(sf::Color::White);
+        chargeBarFrame.setOutlineThickness(3);
+        
+        // draw charged part
+        sf::RectangleShape chargedBar;
+        chargedBar.setPosition(650, player->getY() + 20 - (250) + 20);
+        if(chargenum > 100)
+        {
+            chargenum = 100;
+        }
+        chargedBar.setSize(sf::Vector2f(chargenum, 20));
+        chargedBar.setFillColor(sf::Color::White);
+        chargedBar.setOutlineColor(sf::Color::White);
+        chargedBar.setOutlineThickness(0);
+        
+        window->draw(chargeBarFrame);
+        window->draw(chargedBar);
+    }
 
     void GameView::update(sf::Clock clock)
 	{
@@ -161,6 +192,10 @@ namespace lava
                 {
                     window->setView(view);
                     setStart();
+                    if (musicPlaying == false)
+                    {
+                        manager->queueEvent(&startMusic);
+                    }
                 }
             }
         }
@@ -203,6 +238,9 @@ namespace lava
                         case 0:
                             isPlaying = true;
                             isGameover = false;
+                            musicPlaying = false;
+                            music.stop();
+                            manager->queueEvent(&playingMusic);
                             clock.restart();
                             break;
 
@@ -231,6 +269,15 @@ namespace lava
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
             {
                 isWait = !isWait;
+                if (isWait == true)
+                {
+                    manager->queueEvent(&pauseMusic);
+                }
+                else
+                {
+                    musicPlaying = false;
+                    manager->queueEvent(&playingMusic);
+                }
             }
 
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
@@ -259,7 +306,6 @@ namespace lava
 						player->charging = true;
 						break;
 					case sf::Keyboard::D:
-
 						player->faceLeft = false;
 						player->moveLeft = true;
 						break;
@@ -278,6 +324,7 @@ namespace lava
 					case sf::Keyboard::Space:
 						player->charging = false;
 						player->jump();
+						manager->queueEvent(&jump);
 						break;
 					case sf::Keyboard::D:
 						player->moveLeft = false;
@@ -303,15 +350,24 @@ namespace lava
 
 		//std::cout << text.getCharacterSize() << "\n";
 		// draw platforms
-		for(int i=0; i < level->getPlatforms()->size(); i++)
+		for (int i=0; i < level->getPlatforms()->size(); i++)
 		{
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
 		}
+
+		// draw powerups
+		for (int i = 0; i < level->getPowerups()->size(); i++)
+		{
+			Powerup* powerup = level->getPowerups()->at(i);
+			powerup->render(window);
+		}
+
 		// draw player
-
 		player->render(window);
-
+		
+		// draw charge bar
+		drawChargeBar();
 
 		// draw lava
 		//std::cout << "Printing Lava\n";
@@ -343,9 +399,17 @@ namespace lava
         buffer.loadFromFile(soundName);
         sound.setBuffer(buffer);
         sound.setLoop(true);
-        sound.setVolume(50);
+        sound.setVolume(80);
         sound.play();
         soundPlaying = true;
+    }
+
+    void GameView::playNonLoopSound(const char* noLoopSoundName)
+    {
+        noLoopBuffer.loadFromFile(noLoopSoundName);
+        noLoopSound.setBuffer(noLoopBuffer);
+        noLoopSound.setVolume(90);
+        noLoopSound.play();
     }
 
     void GameView::stopSound()
@@ -372,6 +436,10 @@ namespace lava
     {
         music.openFromFile(musicName);
         music.setLoop(true);
+        music.stop();
+        music.openFromFile(musicName);
+        music.setLoop(true);
+        music.setVolume(40);
         music.play();
         musicPlaying = true;
     }
@@ -380,8 +448,9 @@ namespace lava
 		if (events.getEventType() == GameOverEvent::eventId){
 			isGameover = true;
 			isPlaying = false;
+			manager->queueEvent(&loser);
 		}
-		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true))
+		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true) && (isWait == false))
         {
             playSound("earthquake.wav");
             soundPlaying = true;
@@ -390,6 +459,27 @@ namespace lava
         {
             playMusic("Game_Play_Music.ogg");
             musicPlaying = true;
+        }
+        else if (events.getEventType() == StartSoundEvent::eventId)
+        {
+            playMusic("Start_Screen.ogg");
+            musicPlaying = true;
+        }
+        else if ((events.getEventType() == JumpSoundEvent::eventId) && (isPlaying == true) && (isWait == false))
+        {
+            playNonLoopSound("jump.wav");
+        }
+        else if ((events.getEventType() == PauseSoundEvent::eventId) && (isWait == true))
+        {
+            playMusic("Pause_Screen.ogg");
+        }
+        else if ((events.getEventType() == GameOverSoundEvent::eventId) && (isGameover == true))
+        {
+            music.stop();
+            sound.stop();
+            soundPlaying = false;
+            playNonLoopSound("Game_Over.ogg");
+            musicPlaying = false;
         }
         /*
 		else

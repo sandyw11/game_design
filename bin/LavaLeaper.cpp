@@ -10,6 +10,12 @@
 #include "EventDelegate.hpp"
 #include "ScoreBoard.hpp"
 #include"JSON.h"
+#include "EarthquakeSoundEvent.hpp"
+#include "PlayMusicEvent.hpp"
+#include "JumpSoundEvent.hpp"
+#include "GameOverSoundEvent.hpp"
+#include "StartSoundEvent.hpp"
+#include "PauseSoundEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
@@ -55,6 +61,7 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Cannot load Background image" << std::endl;
 	}
+
 	platformTexture.setRepeated(true);
 	lavaTexture.setRepeated(true);
 	backgroundTexture.setRepeated(true);
@@ -64,11 +71,24 @@ int main(int argc, char** argv)
 	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
 
 	GameOverEvent event;
+	EarthquakeSoundEvent earthquake;
+	PlayMusicEvent playingMusic;
+	JumpSoundEvent jump;
+	GameOverSoundEvent loser;
+	StartSoundEvent startMusic;
+	PauseSoundEvent pauseMusic;
 	eventManager.enterMapValue(GameOverEvent::eventId, event);
+	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
+	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
+	eventManager.enterMapValue(JumpSoundEvent::eventId, jump);
+	eventManager.enterMapValue(GameOverSoundEvent::eventId, loser);
+	eventManager.enterMapValue(StartSoundEvent::eventId, startMusic);
+	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
 
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
+
 
 	// start main loop
 	while(window.isOpen())
@@ -78,7 +98,7 @@ int main(int argc, char** argv)
 		gameView.update(clock);
 		eventManager.processEvents();
 	}
-    
+
 	// Done.
 	return 0;
 }
