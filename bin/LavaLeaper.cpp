@@ -9,6 +9,8 @@
 #include "GameOverEvent.hpp"
 #include "EventDelegate.hpp"
 #include "ScoreBoard.hpp"
+#include "EarthquakeSoundEvent.hpp"
+#include "PlayMusicEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
@@ -46,6 +48,7 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Cannot load Background image" << std::endl;
 	}
+
 	platformTexture.setRepeated(true);
 	lavaTexture.setRepeated(true);
 	backgroundTexture.setRepeated(true);
@@ -55,7 +58,11 @@ int main(int argc, char** argv)
 	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
 
 	GameOverEvent event;
+	EarthquakeSoundEvent earthquake;
+	PlayMusicEvent playingMusic;
 	eventManager.enterMapValue(GameOverEvent::eventId, event);
+	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
+	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
 
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
@@ -67,7 +74,7 @@ int main(int argc, char** argv)
 	//Make sure to pass the Event Manager object through into your respective classes.
 	//When using an event make sure to include the EVENT HPP FILES and EVENTDELEGATE hpp files, probably pass in the Event Manager hpp files too
 
-	//Create the Events and push them to the map (DO THIS BEFORE THE GAME EVEN STARTS) 
+	//Create the Events and push them to the map (DO THIS BEFORE THE GAME EVEN STARTS)
 	ActorDestroyedEvent events;
 	ActorDestroyedEvent events2;
 	GameOverEvent event3;
@@ -75,17 +82,17 @@ int main(int argc, char** argv)
 	eventManager.enterMapValue(ActorDestroyedEvent::eventId, events);
 	eventManager.enterMapValue(GameOverEvent::eventId, event3);
 
-	//BINDING!!! 
+	//BINDING!!!
 	//The first arguement takes in address of the function, the second arguement is the object address, and finally the third will save the object's
 	//address for future comparisions. Comparisons are still iffy so I'd apperciate it you guys can test it out more.
-	
+
 	EventDelegate example(std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1),(int) &gameLogic);
 	EventDelegate example2(std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1), (int)&gameLogic);
 	EventDelegate example3(std::bind(&lava::GameView::respond, &gameView, std::placeholders::_1), (int)&gameView);
 
 	//REGISTER THE EVENT WITH EACH RESPECTIVE EVENT
-	//First arguement is the event Delegate, the second parameter is the event  itself
-	
+	//First argument is the event Delegate, the second parameter is the event  itself
+
 	eventManager.registerEvent(example, events);
 	eventManager.registerEvent(example, events2);
 	eventManager.registerEvent(example, event3);
@@ -107,7 +114,7 @@ int main(int argc, char** argv)
 		gameView.update(clock);
 		eventManager.processEvents();
 	}
-    
+
 	// Done.
 	return 0;
 }

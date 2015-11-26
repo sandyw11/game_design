@@ -5,6 +5,8 @@ namespace lava
 	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager) :
 	isWait(false),
 	isPlaying(false),
+	soundPlaying(false),
+	musicPlaying(false),
 	isGameover(false)
 	//lava(sf::Vector2f(2400, 2000))
 	{
@@ -27,16 +29,18 @@ namespace lava
 		text.setPosition(sf::Vector2f(300, 200));
 		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
 		this->manager->registerEvent(example, gameOver);
+		this->manager->registerEvent(example, earthquake);
+		this->manager->registerEvent(example, playingMusic);
 
     }
 
     GameGUI gameGUI(800, 600);
-    
+
     void GameView::setStart()
     {
         gameGUI.draw(window);
     }
-    
+
     void GameView::setInstructionMessage()
     {
         sf::Texture texture;
@@ -46,12 +50,12 @@ namespace lava
         sprite.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
         window->draw(sprite);
     }
-    
+
     void GameView::setInstruction()
     {
         setInstructionMessage();
 	}
-    
+
     void GameView::setPauseMessage()
     {
         sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI.font, 30);
@@ -59,12 +63,12 @@ namespace lava
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
     }
-    
+
     void GameView::setPause()
     {
         setPauseMessage();
     }
-    
+
     void GameView::setGameoverMessage()
     {
         sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI.font, 30);
@@ -73,7 +77,7 @@ namespace lava
         gameoverMessage.setColor(sf::Color::Red);
         window->draw(gameoverMessage);
     }
-    
+
     void GameView::setGameover()
     {
         setGameoverMessage();
@@ -109,7 +113,11 @@ namespace lava
             {
 				window->setView(view);
                 setStart();
-                
+                if (musicPlaying == false)
+                {
+                    manager->queueEvent(&playingMusic);
+                }
+
                 if(isWait)
                 {
                     window->setView(view);
@@ -124,7 +132,7 @@ namespace lava
         }
         window->display();
 	}
-	
+
     void GameView::processInput(sf::Clock clock)
 	{
 		sf::Event Event;
@@ -143,7 +151,7 @@ namespace lava
                     gameGUI.MoveUp();
                 }
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Down))
             {
                 if(!isPlaying)
@@ -163,18 +171,18 @@ namespace lava
                             isGameover = false;
                             clock.restart();
                             break;
-                            
+
                         case 1:
                             isWait = true;
                             break;
-                            
+
                         case 2:
                             window->close();
                             break;
                     }
                 }
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
             {
                 if(!isPlaying)
@@ -185,12 +193,12 @@ namespace lava
                     clock.restart();
                 }
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
             {
                 isWait = !isWait;
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
             {
                 if(isPlaying)
@@ -198,7 +206,7 @@ namespace lava
                     isPlaying = false;
                 }
             }
-            
+
             if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
             {
                 if(!isGameover && isPlaying)
@@ -207,7 +215,7 @@ namespace lava
                     isPlaying = false;
                 }
             }
-			
+
 			// key press events
 			if(Event.type == sf::Event::KeyPressed)
 			{
@@ -217,7 +225,7 @@ namespace lava
 						player->charging = true;
 						break;
 					case sf::Keyboard::D:
-					
+
 						player->faceLeft = false;
 						player->moveLeft = true;
 						break;
@@ -227,7 +235,7 @@ namespace lava
 						break;
 				}
 			}
-			
+
 			// key release events
 			if(Event.type == sf::Event::KeyReleased)
 			{
@@ -241,20 +249,20 @@ namespace lava
 						player->moveLeft = false;
 						break;
 					case sf::Keyboard::A:
-						player->moveRight = false; 
+						player->moveRight = false;
 						break;
 				}
 			}
 		}
 	}
-	
+
 	void GameView::draw()
 	{
 		window->clear(sf::Color::Black);
 		sf::Vector2f position(0, 0);
 		position.y = player->getY() + 20 - (250);
 
-		//draw background 
+		//draw background
 		background.setPosition(sf::Vector2f(position.x, position.y));
 		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
 		window->draw(background);
@@ -283,7 +291,55 @@ namespace lava
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 
+        if (level->getLavaY() - player->getY() < 300)
+        {
+            shakeScreen();
+            manager->queueEvent(&earthquake);
+        }
+        else
+        {
+            stopSound();
+        }
+
         window->setView(view);
+    }
+
+    void GameView::playSound(const char* soundName)
+    {
+        buffer.loadFromFile(soundName);
+        sound.setBuffer(buffer);
+        sound.setLoop(true);
+        sound.setVolume(50);
+        sound.play();
+        soundPlaying = true;
+    }
+
+    void GameView::stopSound()
+    {
+        sound.stop();
+        soundPlaying = false;
+    }
+
+    void GameView::shakeScreen()
+    {
+        int seed;
+        seed = rand() % 100;
+        if (seed <= 49)
+        {
+            view.rotate(1);
+        }
+        else
+        {
+            view.rotate(-1);
+        }
+    }
+
+    void GameView::playMusic(const char* musicName)
+    {
+        music.openFromFile(musicName);
+        music.setLoop(true);
+        music.play();
+        musicPlaying = true;
     }
 
 	void GameView::respond(const EventInterface& events){
@@ -291,8 +347,21 @@ namespace lava
 			isGameover = true;
 			isPlaying = false;
 		}
-		else{
+		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true))
+        {
+            playSound("earthquake.wav");
+            soundPlaying = true;
+        }
+        else if ((events.getEventType() == PlayMusicEvent::eventId) && (musicPlaying != true))
+        {
+            playMusic("Game_Play_Music.ogg");
+            musicPlaying = true;
+        }
+        /*
+		else
+        {
 			std::cout << "UNKOWN EVENT \n";
 		}
+		*/
 	}
 }
