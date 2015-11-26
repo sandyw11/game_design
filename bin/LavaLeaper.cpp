@@ -9,6 +9,7 @@
 #include "GameOverEvent.hpp"
 #include "EventDelegate.hpp"
 #include "ScoreBoard.hpp"
+#include"JSON.h"
 #include "EarthquakeSoundEvent.hpp"
 #include "PlayMusicEvent.hpp"
 #include "JumpSoundEvent.hpp"
@@ -20,9 +21,17 @@
 int main(int argc, char** argv)
 {
 	// create main window
-	ScoreBoard scores;
-	char* message = "Hi there";
-	scores.sendInformation(message);
+	//ScoreBoard scores;
+	//JSONValue *jsonHighScores;
+	//char* message = "bob";
+	//char *score = "1000";
+	//std::wstring something = std::wstring(message, message + std::strlen(message));
+	//scores.sendInformation(message);
+	//scores.addEntry(something, score);
+	//scores.addEntry(something, "2222");
+	//jsonHighScores = scores.getEntry();
+
+
 	lava::eventManager eventManager;
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -80,43 +89,6 @@ int main(int argc, char** argv)
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 
-	/*
-	//Below is a Tutorial of The Event Manager System. Feel free to uncomment the section below and run the code and play around with it to get
-	//familiar with the system! This isn't 100% perfect, but hopefully it'll work. Let me know if any problems arise.
-	//Make sure to pass the Event Manager object through into your respective classes.
-	//When using an event make sure to include the EVENT HPP FILES and EVENTDELEGATE hpp files, probably pass in the Event Manager hpp files too
-
-	//Create the Events and push them to the map (DO THIS BEFORE THE GAME EVEN STARTS)
-	ActorDestroyedEvent events;
-	ActorDestroyedEvent events2;
-	GameOverEvent event3;
-
-	eventManager.enterMapValue(ActorDestroyedEvent::eventId, events);
-	eventManager.enterMapValue(GameOverEvent::eventId, event3);
-
-	//BINDING!!!
-	//The first arguement takes in address of the function, the second arguement is the object address, and finally the third will save the object's
-	//address for future comparisions. Comparisons are still iffy so I'd apperciate it you guys can test it out more.
-
-	EventDelegate example(std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1),(int) &gameLogic);
-	EventDelegate example2(std::bind(&lava::GameLogic::respond, &gameLogic, std::placeholders::_1), (int)&gameLogic);
-	EventDelegate example3(std::bind(&lava::GameView::respond, &gameView, std::placeholders::_1), (int)&gameView);
-
-	//REGISTER THE EVENT WITH EACH RESPECTIVE EVENT
-	//First argument is the event Delegate, the second parameter is the event  itself
-
-	eventManager.registerEvent(example, events);
-	eventManager.registerEvent(example, events2);
-	eventManager.registerEvent(example, event3);
-	eventManager.registerEvent(example, event3);
-	eventManager.registerEvent(example3, event3);
-
-	eventManager.removeDelegate(example3, event3);
-
-	//IF YOU WANT TO TRIGGER AN EVENT
-	//Make sure to queue the event.
-	eventManager.queueEvent(&event3);
-	*/
 
 	// start main loop
 	while(window.isOpen())

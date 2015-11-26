@@ -13,6 +13,8 @@
 #include "GameGUI.hpp"
 #include "EventManager.hpp"
 #include "PlayMusicEvent.hpp"
+#include "JSON.h"
+#include "ScoreBoard.hpp"
 #include "JumpSoundEvent.hpp"
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
@@ -45,6 +47,8 @@ namespace lava
 		GameOverEvent gameOver;
 		EarthquakeSoundEvent earthquake;
 		PlayMusicEvent playingMusic;
+		JSONValue *jsonHighScores;
+		ScoreBoard scores;
 		JumpSoundEvent jump;
 		GameOverSoundEvent loser;
 		StartSoundEvent startMusic;
@@ -64,9 +68,10 @@ namespace lava
 		sf::Text text;
 		sf::SoundBuffer buffer;
 		sf::Sound sound;
+		sf::Music music;
+		std::string highscorelist;
 		sf::SoundBuffer noLoopBuffer;
 		sf::Sound noLoopSound;
-		sf::Music music;
         bool isWait;
         bool isPlaying;
         bool isGameover;

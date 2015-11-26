@@ -101,7 +101,6 @@ namespace lava
 	
 	void Player::render(sf::RenderWindow* window)
 	{
-		//window->draw(rect);
 		window->draw(playerSprite);
 	}
 	
@@ -136,7 +135,9 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
-			score += 1;
+			if (score < 50000 - playerSprite.getPosition().y){
+				score = 50000 - playerSprite.getPosition().y;
+			}
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
 			landed = true;

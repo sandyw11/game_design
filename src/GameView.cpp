@@ -20,6 +20,7 @@ namespace lava
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
 		lavaSprite.setScale(1, 1.5f);
 
+
 		font.loadFromFile("pixel_font.ttf");
 		text.setFont(font);
 		text.setColor(sf::Color::White);
@@ -34,6 +35,7 @@ namespace lava
 		this->manager->registerEvent(example, loser);
 		this->manager->registerEvent(example, startMusic);
 		this->manager->registerEvent(example, pauseMusic);
+
     }
 
     GameGUI gameGUI(800, 600);
@@ -73,11 +75,44 @@ namespace lava
 
     void GameView::setGameoverMessage()
     {
-        sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI.font, 30);
+		sf::Text gameOverMessage(" ",font);
+		sf::Text title(" ", font);
+		title.setString("Current High Scores!\n");
+		title.setCharacterSize(100);
+		title.setPosition(140, 0);
+		title.setColor(sf::Color::Yellow);
+		//sf::Text gameOverMessage;
+		//text.setFont(font);
+		if (jsonHighScores == nullptr){
+			//char* message = "bob";
+			//std::wstring something = std::wstring(message, message + std::strlen(message));
+			//scores.addEntry(something, (float)player->score);
+			jsonHighScores = scores.getEntry();
+			JSONObject root = jsonHighScores->AsObject();
+			if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+			{
+				JSONArray scores = root[L"Scores"]->AsArray();
+				for (int i = 0; i < scores.size(); i++)
+				{
+					JSONObject curObj = scores[i]->AsObject();
+					std::string notSoWide;
+					std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
+					std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
+					notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
+					highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
+				}
+			}
+		}
+		gameOverMessage.setString(highscorelist);
+		gameOverMessage.setCharacterSize(50);
+        gameOverMessage.setPosition(200, 100);
+		sf::Text gameoverMessage("     GAME OVER\npress [Enter] to restart\n  press Esc to quit", font, 30);
+		gameoverMessage.setPosition(320, 450);
+		gameoverMessage.setColor(sf::Color::Red);
 
-        gameoverMessage.setPosition(300, 200);
-        gameoverMessage.setColor(sf::Color::Red);
-        window->draw(gameoverMessage);
+		window->draw(gameoverMessage);
+		window->draw(title);
+        window->draw(gameOverMessage);
     }
 
     void GameView::setGameover()
@@ -143,6 +178,10 @@ namespace lava
             {
 				window->setView(view);
                 setStart();
+                if (musicPlaying == false)
+                {
+                    manager->queueEvent(&playingMusic);
+                }
 
                 if(isWait)
                 {
@@ -395,6 +434,8 @@ namespace lava
 
     void GameView::playMusic(const char* musicName)
     {
+        music.openFromFile(musicName);
+        music.setLoop(true);
         music.stop();
         music.openFromFile(musicName);
         music.setLoop(true);
