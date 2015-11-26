@@ -8,6 +8,8 @@ namespace lava
 	rect(sf::Vector2f(WIDTH, HEIGHT))
 	{
 		rect.setPosition(sf::Vector2f(x, y));
+		
+		type = PowerupType(rand() % 2);
 	}
 
 	void Powerup::update(float delta)

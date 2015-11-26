@@ -41,6 +41,22 @@ namespace lava
 			}
 		}
 
+		// check for powerup collision
+		std::vector<Powerup*>::iterator it = level->getPowerups()->begin();
+		while (it != level->getPowerups()->end())
+		{
+			Powerup* powerup = *it;
+			if (powerup->getRect().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
+			{
+				// TODO: initiate powerup effect
+				std::cout << "got powerup " << powerup->getType() << "\n";
+				it = level->getPowerups()->erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+
 		// move player with platform
 		if (player->landed)
 		{

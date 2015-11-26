@@ -8,7 +8,6 @@ namespace lava
 	soundPlaying(false),
 	musicPlaying(false),
 	isGameover(false)
-	//lava(sf::Vector2f(2400, 2000))
 	{
 		this->window = window;
 		this->level = level;
@@ -227,7 +226,6 @@ namespace lava
 						player->charging = true;
 						break;
 					case sf::Keyboard::D:
-
 						player->faceLeft = false;
 						player->moveLeft = true;
 						break;
@@ -272,15 +270,21 @@ namespace lava
 
 		//std::cout << text.getCharacterSize() << "\n";
 		// draw platforms
-		for(int i=0; i < level->getPlatforms()->size(); i++)
+		for (int i=0; i < level->getPlatforms()->size(); i++)
 		{
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
 		}
+
+		// draw powerups
+		for (int i = 0; i < level->getPowerups()->size(); i++)
+		{
+			Powerup* powerup = level->getPowerups()->at(i);
+			powerup->render(window);
+		}
+
 		// draw player
-
 		player->render(window);
-
 
 		// draw lava
 		//std::cout << "Printing Lava\n";
