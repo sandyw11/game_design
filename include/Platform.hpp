@@ -18,6 +18,10 @@ namespace lava
 		float fallTime;
 		bool fallStarted;
 
+		static const int FALL_TIME = 3;
+		static const int MIN_VX = 100;
+		static const int MAX_VX = 150;
+
 	public:
 		Platform(int x, int y, int width, sf::Texture* platformTexture);
 

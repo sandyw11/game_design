@@ -1,5 +1,6 @@
 #include "Platform.hpp"
 #include "GameLogic.hpp"
+#include "Random.hpp"
 
 namespace lava
 {
@@ -19,14 +20,12 @@ namespace lava
 		int platformType = rand() % 10;
 		if (platformType == 0)
 		{
-			// TODO: not hardcoded
-			vx = rand() % 50 + 100;
+			vx = Equilikely(MIN_VX, MAX_VX);
 		}
 		else
 		{
 			fallingPlatform = true;
-			// TODO: not hardcoded
-			fallTime = 3;
+			fallTime = FALL_TIME;
 		}
 	}
 	

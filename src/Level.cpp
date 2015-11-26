@@ -1,13 +1,7 @@
 #include "Level.hpp"
+#include "Random.hpp"
 #include <cmath>
 #include <iostream>
-#include <cstdlib>
-
-// helper function for random variables
-long Equilikely(long a, long b)
-{
-	return (a + (long)((b - a + 1) * rand() / RAND_MAX));
-}
 
 namespace lava
 {
