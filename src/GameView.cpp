@@ -370,7 +370,6 @@ namespace lava
 		drawChargeBar();
 
 		// draw lava
-		//std::cout << "Printing Lava\n";
         lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
         window->draw(lavaSprite);
 

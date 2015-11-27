@@ -10,7 +10,7 @@ namespace lava
 		this->level = level;
 		this->player = player;
 		this->manager = manager;
-		EventDelegate example(std::bind(&lava::GameLogic::respond, this, std::placeholders::_1), (int)this);
+		EventDelegate example(std::bind(&GameLogic::respond, this, std::placeholders::_1), (int)this);
 		this->manager->registerEvent(example, gameOver);
 	}
 	
@@ -38,6 +38,7 @@ namespace lava
 			{
 				if (player->isFalling()) player->land(platform->getY());
 				landedPlatform = platform;
+				platform->startFall();
 			}
 		}
 
@@ -60,7 +61,7 @@ namespace lava
 		// move player with platform
 		if (player->landed)
 		{
-			player->stickToPlatform(delta, landedPlatform->getVelocityX());
+			player->stickToPlatform(delta, landedPlatform->getVelocityX(), landedPlatform->getVelocityY());
 		}
 
 		// check for death

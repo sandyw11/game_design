@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "GameLogic.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -69,7 +70,7 @@ namespace lava
 						playerSprite.setScale(1.5f, 1.5f);
 					}
 				}
-				vy += A * delta;
+				vy += GameLogic::A * delta;
 			}
 
 			// left and right movement, only move in air
@@ -153,9 +154,9 @@ namespace lava
 		}
 	}
 
-	void Player::stickToPlatform(float delta, float vx)
+	void Player::stickToPlatform(float delta, float vx, float vy)
 	{
-		playerSprite.move(delta * vx, 0);
+		playerSprite.move(delta * vx, delta * vy);
 	}
 
 	void Player::die()
