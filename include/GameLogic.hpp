@@ -9,6 +9,7 @@
 #include "EventManager.hpp"
 #include "GameOverEvent.hpp"
 #include "Platform.hpp"
+#include "FallingHazard.hpp"
 
 
 namespace lava

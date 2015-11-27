@@ -283,6 +283,13 @@ namespace lava
 			powerup->render(window);
 		}
 
+		// draw hazards
+		for (int i = 0; i < level->getFallingHazards()->size(); i++)
+		{
+			FallingHazard* hazard = level->getFallingHazards()->at(i);
+			hazard->render(window);
+		}
+
 		// draw player
 		player->render(window);
 

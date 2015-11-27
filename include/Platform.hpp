@@ -2,7 +2,6 @@
 #define PLATFORM_HPP
 
 #include "Actor.hpp"
-#include <cstdlib>
 
 namespace lava
 {

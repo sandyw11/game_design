@@ -16,24 +16,15 @@ namespace lava
 	
 	void GameLogic::update(float delta)
 	{
-		// update level
+		// update platforms
 		for(int i=0; i < level->getPlatforms()->size(); i++)
 		{
 			Platform* platform = level->getPlatforms()->at(i);
 			platform->update(delta);
-		}
-		level->update(player->getY(), delta);
 
-		// update player
-		player->update(delta);
-
-		// check for landings
-		for (int i = 0; i < level->getPlatforms()->size(); i++)
-		{
-			Platform* platform = level->getPlatforms()->at(i);
-
-			// if they intersect and the player is high enough
-			if (platform->getSprite().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) 
+			// check for landings
+			// landing = they intersect and the player is high enough
+			if (platform->getSprite().getGlobalBounds().intersects(player->getSprite().getGlobalBounds())
 				&& player->getY() + player->getSprite().getGlobalBounds().height < platform->getY() + platform->getSprite().getGlobalBounds().height)
 			{
 				if (player->isFalling()) player->land(platform->getY());
@@ -41,6 +32,10 @@ namespace lava
 				platform->startFall();
 			}
 		}
+		level->update(player->getY(), delta);
+
+		// update player
+		player->update(delta);
 
 		// check for powerup collision
 		std::vector<Powerup*>::iterator it = level->getPowerups()->begin();
@@ -58,13 +53,21 @@ namespace lava
 			}
 		}
 
+		// update falling hazards
+		for (int i = 0; i < level->getFallingHazards()->size(); i++)
+		{
+			FallingHazard* hazard = level->getFallingHazards()->at(i);
+			hazard->update(delta);
+			// TODO: check if intersection;
+		}
+
 		// move player with platform
 		if (player->landed)
 		{
 			player->stickToPlatform(delta, landedPlatform->getVelocityX(), landedPlatform->getVelocityY());
 		}
 
-		// check for death
+		// check for death by lava
 		if (player->getY() > level->getLavaY())
 		{
 			if (player->alive)
@@ -73,6 +76,8 @@ namespace lava
 				player->die();
 			}
 		}
+
+
 	}
 
 	void GameLogic::respond(const EventInterface& events){

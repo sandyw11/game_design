@@ -21,6 +21,9 @@ namespace lava
 		lastY = START_Y + 40;
 		platforms.push_back(new Platform(lastX, lastY, 200,this->texture));
 
+		// first hazard created
+		nextHazardTime = FIRST_HAZARD_TIME;
+
 		chunkNum = 0;
 		nextChunkY = START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
@@ -31,6 +34,7 @@ namespace lava
 		// remove all platforms and powerups
 		platforms.empty();
 		powerups.empty();
+		hazards.empty();
 	}
 
 	void Level::generateChunk(sf::Texture *platformTexture)
@@ -78,6 +82,7 @@ namespace lava
 
 	void Level::update(float playerY, float delta)
 	{
+		// check for new chunk
 		if (playerY < nextChunkY)
 		{
 			generateChunk(this->texture);
@@ -85,12 +90,28 @@ namespace lava
 			nextChunkY -= CHUNK_HEIGHT;
 		}
 
+		// check for new hazard
+		if (nextHazardTime < 0)
+		{
+			int radius = Equilikely(10, 15);
+			hazards.push_back(new FallingHazard(Equilikely(0, 800), 
+							  playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET), 
+							  radius));
+
+			// TODO: use Uniform()
+			nextHazardTime = Equilikely(2, 8);
+		}
+		nextHazardTime -= delta;
+
+		// accelerate and move lava
 		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + 1 * delta : MAX_LAVA_VY;
 		lavaY = lavaY - lavaVy * delta;
 	}
 
 	void Level::deleteChunks()
 	{
+		// TODO: more efficient deletion?
+
 		// delete unreachable chunks
 		std::vector<Platform*>::iterator platformIt = platforms.begin();
 		while (platformIt != platforms.end())
@@ -118,6 +139,21 @@ namespace lava
 			}
 			else {
 				++powerupIt;
+			}
+		}
+
+		// clean up unreachable hazards
+		std::vector<FallingHazard*>::iterator hazardIt = hazards.begin();
+		while (hazardIt != hazards.end())
+		{
+			FallingHazard* hazard = *hazardIt;
+			if (hazard->getY() > lavaY)
+			{
+				std::cout << "Deleting hazard\n";
+				hazardIt = hazards.erase(hazardIt);
+			}
+			else {
+				++hazardIt;
 			}
 		}
 	}

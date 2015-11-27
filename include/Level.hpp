@@ -4,6 +4,7 @@
 #include <vector>
 #include "Platform.hpp"
 #include "Powerup.hpp"
+#include "FallingHazard.hpp"
 #include "GameOverEvent.hpp"
 #include "EventManager.hpp"
 
@@ -26,15 +27,23 @@ namespace lava
 		static const int MIN_WIDTH = 75;
 		static const int MAX_WIDTH = 175;
 
+		static const int FIRST_HAZARD_TIME = 8;
+		static const int MIN_HAZARD_TIME = 1;
+		static const int MAX_HAZARD_TIME = 8;
+		static const int HAZARD_MIN_OFFSET = 350;
+		static const int HAZARD_MAX_OFFSET = 450;
+
 		int chunkNum;
 		sf::Texture *texture;
 
 		std::vector<Platform*> platforms;
 		std::vector<Powerup*> powerups;
+		std::vector<FallingHazard*> hazards;
 		lava::eventManager *manager;
 
 		float playerY;
 		float nextChunkY;
+		float nextHazardTime;
 		float lavaY;
 		float lavaVy;
 
@@ -51,6 +60,8 @@ namespace lava
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; }
 		std::vector<Powerup*>* getPowerups() { return &powerups; }
+		std::vector<FallingHazard*>* getFallingHazards() { return &hazards; }
+
 		int getLavaY() { return lavaY; }
 		void update(float playerY, float delta);
 	};
