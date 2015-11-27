@@ -29,8 +29,6 @@ namespace lava
 
         void setInstructionMessage();
         void setInstruction();
-        void playSound(const char* soundName);
-        void stopSound();
         void setPauseMessage();
         void setPause();
         void setStartMessage();
@@ -39,8 +37,7 @@ namespace lava
         void setGameover();
 		void respond(const EventInterface& events);
 		void shakeScreen();
-		void playMusic(const char* musicName);
-		void playNonLoopSound(const char* noLoopSoundName);
+		void playMusic(sf::Music);
 
 		GameOverEvent gameOver;
 		EarthquakeSoundEvent earthquake;
@@ -54,6 +51,7 @@ namespace lava
 		sf::RenderWindow* window;
         void processInput(sf::Clock clock);
 		void draw();
+		void drawChargeBar();
 
 	private:
 		Level* level;
@@ -61,16 +59,18 @@ namespace lava
 		eventManager *manager;
 		sf::Font font;
 		sf::Text text;
-		sf::SoundBuffer buffer;
-		sf::Sound sound;
-		sf::SoundBuffer noLoopBuffer;
-		sf::Sound noLoopSound;
-		sf::Music music;
+		sf::SoundBuffer earthquakeBuffer;
+		sf::Sound earthquakeSound;
+        sf::SoundBuffer jumpBuffer;
+		sf::Sound jumpSound;
+        sf::SoundBuffer gameOverBuffer;
+		sf::Sound gameOverSound;
+		sf::Music gamePlayMusic;
+		sf::Music startScreenMusic;
+		sf::Music pauseScreenMusic;
         bool isWait;
         bool isPlaying;
         bool isGameover;
-        bool soundPlaying;
-        bool musicPlaying;
 
         //sf::RectangleShape lava;
 		sf::Sprite background;
