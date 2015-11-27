@@ -5,8 +5,6 @@ namespace lava
 	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager) :
 	isWait(false),
 	isPlaying(false),
-	soundPlaying(false),
-	musicPlaying(false),
 	isGameover(false)
 	{
 		this->window = window;
@@ -28,6 +26,20 @@ namespace lava
 		text.setCharacterSize(50);
 		text.setPosition(sf::Vector2f(300, 200));
 		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
+        earthquakeBuffer.loadFromFile("earthquake.wav");
+        earthquakeSound.setBuffer(earthquakeBuffer);
+        earthquakeSound.setLoop(true);
+		earthquakeSound.setBuffer(earthquakeBuffer);
+        jumpBuffer.loadFromFile("jump.wav");
+		jumpSound.setBuffer(jumpBuffer);
+        gameOverBuffer.loadFromFile("Game_Over.ogg");
+		gameOverSound.setBuffer(gameOverBuffer);
+		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
+		gamePlayMusic.setLoop(true);
+		startScreenMusic.openFromFile("Start_Screen.ogg");
+		startScreenMusic.setLoop(true);
+		pauseScreenMusic.openFromFile("Pause_Screen.ogg");
+		pauseScreenMusic.setLoop(true);
 		this->manager->registerEvent(example, gameOver);
 		this->manager->registerEvent(example, earthquake);
 		this->manager->registerEvent(example, playingMusic);
@@ -119,11 +131,11 @@ namespace lava
     {
         setGameoverMessage();
     }
-    
+
     void GameView::drawChargeBar()
     {
 	float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
-        
+
         // draw chargebar frame
         sf::RectangleShape chargeBarFrame;
         chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
@@ -131,7 +143,7 @@ namespace lava
         chargeBarFrame.setFillColor(sf::Color::Black);
         chargeBarFrame.setOutlineColor(sf::Color::White);
         chargeBarFrame.setOutlineThickness(3);
-        
+
         // draw charged part
         sf::RectangleShape chargedBar;
         chargedBar.setPosition(650, player->getY() + 20 - (250) + 20);
@@ -143,7 +155,35 @@ namespace lava
         chargedBar.setFillColor(sf::Color::White);
         chargedBar.setOutlineColor(sf::Color::White);
         chargedBar.setOutlineThickness(0);
-        
+
+        window->draw(chargeBarFrame);
+        window->draw(chargedBar);
+    }
+
+    void GameView::drawChargeBar()
+    {
+	float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
+
+        // draw chargebar frame
+        sf::RectangleShape chargeBarFrame;
+        chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
+        chargeBarFrame.setSize(sf::Vector2f(100, 20));
+        chargeBarFrame.setFillColor(sf::Color::Black);
+        chargeBarFrame.setOutlineColor(sf::Color::White);
+        chargeBarFrame.setOutlineThickness(3);
+
+        // draw charged part
+        sf::RectangleShape chargedBar;
+        chargedBar.setPosition(650, player->getY() + 20 - (250) + 20);
+        if(chargenum > 100)
+        {
+            chargenum = 100;
+        }
+        chargedBar.setSize(sf::Vector2f(chargenum, 20));
+        chargedBar.setFillColor(sf::Color::White);
+        chargedBar.setOutlineColor(sf::Color::White);
+        chargedBar.setOutlineThickness(0);
+
         window->draw(chargeBarFrame);
         window->draw(chargedBar);
     }
@@ -157,9 +197,18 @@ namespace lava
         window->clear(sf::Color::Black);
         if(isPlaying)
         {
+            if (startScreenMusic.getStatus() != 0)
+            {
+                startScreenMusic.stop();
+            }
+            if (gameOverSound.getStatus() != 0)
+            {
+                gameOverSound.stop();
+            }
             if(isWait)
             {
 				window->setView(view);
+				earthquakeSound.stop();
                 setPause();
             }
             else
@@ -181,6 +230,10 @@ namespace lava
                 if (musicPlaying == false)
                 {
                     manager->queueEvent(&playingMusic);
+
+                if (startScreenMusic.getStatus() == 0)
+                {
+                    manager->queueEvent(&startMusic);
                 }
 
                 if(isWait)
@@ -192,10 +245,6 @@ namespace lava
                 {
                     window->setView(view);
                     setStart();
-                    if (musicPlaying == false)
-                    {
-                        manager->queueEvent(&startMusic);
-                    }
                 }
             }
         }
@@ -238,8 +287,6 @@ namespace lava
                         case 0:
                             isPlaying = true;
                             isGameover = false;
-                            musicPlaying = false;
-                            music.stop();
                             manager->queueEvent(&playingMusic);
                             clock.restart();
                             break;
@@ -271,11 +318,13 @@ namespace lava
                 isWait = !isWait;
                 if (isWait == true)
                 {
+                    gamePlayMusic.stop();
+                    jumpSound.stop();
                     manager->queueEvent(&pauseMusic);
                 }
                 else
                 {
-                    musicPlaying = false;
+                    pauseScreenMusic.stop();
                     manager->queueEvent(&playingMusic);
                 }
             }
@@ -365,7 +414,10 @@ namespace lava
 
 		// draw player
 		player->render(window);
-		
+
+		// draw charge bar
+		drawChargeBar();
+
 		// draw charge bar
 		drawChargeBar();
 
@@ -380,41 +432,20 @@ namespace lava
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 
-        if (level->getLavaY() - player->getY() < 300)
+        if ((level->getLavaY() - player->getY() < 300))
         {
             shakeScreen();
-            manager->queueEvent(&earthquake);
+            if (earthquakeSound.getStatus() == 0)
+            {
+                manager->queueEvent(&earthquake);
+            }
         }
-        else
+        else if (level->getLavaY() - player->getY() > 300)
         {
-            stopSound();
+            earthquakeSound.stop();
         }
 
         window->setView(view);
-    }
-
-    void GameView::playSound(const char* soundName)
-    {
-        buffer.loadFromFile(soundName);
-        sound.setBuffer(buffer);
-        sound.setLoop(true);
-        sound.setVolume(80);
-        sound.play();
-        soundPlaying = true;
-    }
-
-    void GameView::playNonLoopSound(const char* noLoopSoundName)
-    {
-        noLoopBuffer.loadFromFile(noLoopSoundName);
-        noLoopSound.setBuffer(noLoopBuffer);
-        noLoopSound.setVolume(90);
-        noLoopSound.play();
-    }
-
-    void GameView::stopSound()
-    {
-        sound.stop();
-        soundPlaying = false;
     }
 
     void GameView::shakeScreen()
@@ -431,54 +462,37 @@ namespace lava
         }
     }
 
-    void GameView::playMusic(const char* musicName)
-    {
-        music.openFromFile(musicName);
-        music.setLoop(true);
-        music.stop();
-        music.openFromFile(musicName);
-        music.setLoop(true);
-        music.setVolume(40);
-        music.play();
-        musicPlaying = true;
-    }
-
 	void GameView::respond(const EventInterface& events){
 		if (events.getEventType() == GameOverEvent::eventId){
 			isGameover = true;
 			isPlaying = false;
 			manager->queueEvent(&loser);
 		}
-		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (soundPlaying != true) && (isWait == false))
+		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (isWait == false))
         {
-            playSound("earthquake.wav");
-            soundPlaying = true;
+            earthquakeSound.play();
         }
-        else if ((events.getEventType() == PlayMusicEvent::eventId) && (musicPlaying != true))
+        else if (events.getEventType() == PlayMusicEvent::eventId)
         {
-            playMusic("Game_Play_Music.ogg");
-            musicPlaying = true;
+            gamePlayMusic.play();
         }
         else if (events.getEventType() == StartSoundEvent::eventId)
         {
-            playMusic("Start_Screen.ogg");
-            musicPlaying = true;
+            startScreenMusic.play();
         }
         else if ((events.getEventType() == JumpSoundEvent::eventId) && (isPlaying == true) && (isWait == false))
         {
-            playNonLoopSound("jump.wav");
+            jumpSound.play();
         }
-        else if ((events.getEventType() == PauseSoundEvent::eventId) && (isWait == true))
+        else if ((events.getEventType() == PauseSoundEvent::eventId) && (isWait == true) && (isGameover == false))
         {
-            playMusic("Pause_Screen.ogg");
+            pauseScreenMusic.play();
         }
         else if ((events.getEventType() == GameOverSoundEvent::eventId) && (isGameover == true))
         {
-            music.stop();
-            sound.stop();
-            soundPlaying = false;
-            playNonLoopSound("Game_Over.ogg");
-            musicPlaying = false;
+            earthquakeSound.stop();
+            gamePlayMusic.stop();
+            gameOverSound.play();
         }
         /*
 		else
