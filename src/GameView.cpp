@@ -227,10 +227,6 @@ namespace lava
             {
 				window->setView(view);
                 setStart();
-                if (musicPlaying == false)
-                {
-                    manager->queueEvent(&playingMusic);
-
                 if (startScreenMusic.getStatus() == 0)
                 {
                     manager->queueEvent(&startMusic);
