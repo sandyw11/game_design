@@ -160,34 +160,6 @@ namespace lava
         window->draw(chargedBar);
     }
 
-    void GameView::drawChargeBar()
-    {
-	float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
-
-        // draw chargebar frame
-        sf::RectangleShape chargeBarFrame;
-        chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
-        chargeBarFrame.setSize(sf::Vector2f(100, 20));
-        chargeBarFrame.setFillColor(sf::Color::Black);
-        chargeBarFrame.setOutlineColor(sf::Color::White);
-        chargeBarFrame.setOutlineThickness(3);
-
-        // draw charged part
-        sf::RectangleShape chargedBar;
-        chargedBar.setPosition(650, player->getY() + 20 - (250) + 20);
-        if(chargenum > 100)
-        {
-            chargenum = 100;
-        }
-        chargedBar.setSize(sf::Vector2f(chargenum, 20));
-        chargedBar.setFillColor(sf::Color::White);
-        chargedBar.setOutlineColor(sf::Color::White);
-        chargedBar.setOutlineThickness(0);
-
-        window->draw(chargeBarFrame);
-        window->draw(chargedBar);
-    }
-
     void GameView::update(sf::Clock clock)
 	{
         processInput(clock);
@@ -410,9 +382,6 @@ namespace lava
 
 		// draw player
 		player->render(window);
-
-		// draw charge bar
-		drawChargeBar();
 
 		// draw charge bar
 		drawChargeBar();
