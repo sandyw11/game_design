@@ -68,7 +68,6 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			// TODO: stick to platforms that move
 			if (Equilikely(0, 20) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;

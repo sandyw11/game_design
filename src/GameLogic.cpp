@@ -17,9 +17,8 @@ namespace lava
 	void GameLogic::update(float delta)
 	{
 		// update platforms
-		for(int i=0; i < level->getPlatforms()->size(); i++)
+		for (auto &platform : *level->getPlatforms())
 		{
-			Platform* platform = level->getPlatforms()->at(i);
 			platform->update(delta);
 
 			// check for landings
@@ -32,6 +31,8 @@ namespace lava
 				platform->startFall();
 			}
 		}
+
+		// update level
 		level->update(player->getY(), delta);
 
 		// update player
@@ -54,11 +55,9 @@ namespace lava
 		}
 
 		// update falling hazards
-		for (int i = 0; i < level->getFallingHazards()->size(); i++)
+		for (auto &hazard : *level->getFallingHazards())
 		{
-			FallingHazard* hazard = level->getFallingHazards()->at(i);
 			hazard->update(delta);
-			// TODO: check if intersection;
 		}
 
 		// move player with platform
@@ -76,8 +75,6 @@ namespace lava
 				player->die();
 			}
 		}
-
-
 	}
 
 	void GameLogic::respond(const EventInterface& events){
