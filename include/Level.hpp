@@ -18,6 +18,8 @@ namespace lava
 		static const int START_X = 300;
 		static const int START_LAVA_VY = 60;
 		static const int MAX_LAVA_VY = 150;
+		static const int LAVA_CATCHUP_VY = 180;
+		static const int LAVA_CATCHUP_DISTANCE = 1200;
 
 		static const int MIN_THETA = 20;
 		static const int MAX_THETA = 160;

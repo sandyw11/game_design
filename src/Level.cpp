@@ -104,8 +104,16 @@ namespace lava
 		nextHazardTime -= delta;
 
 		// accelerate and move lava
-		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY;
-		lavaY = lavaY - lavaVy * delta;
+		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY; // lava velocity increases 1/second
+		if (lavaY - playerY > LAVA_CATCHUP_DISTANCE)  // if player is too far from lava, catch up
+		{
+			lavaY = lavaY - LAVA_CATCHUP_VY * delta;
+			std::cout << "Catching up\n";
+		}
+		else {
+			lavaY = lavaY - lavaVy * delta;
+		}
+		
 	}
 
 	void Level::deleteChunks()
