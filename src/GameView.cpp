@@ -268,25 +268,21 @@ namespace lava
 		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
 		window->draw(background);
 
-		//std::cout << text.getCharacterSize() << "\n";
 		// draw platforms
-		for (int i=0; i < level->getPlatforms()->size(); i++)
+		for (auto &platform : *level->getPlatforms())
 		{
-			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
 		}
 
 		// draw powerups
-		for (int i = 0; i < level->getPowerups()->size(); i++)
+		for (auto *powerup : *level->getPowerups())
 		{
-			Powerup* powerup = level->getPowerups()->at(i);
 			powerup->render(window);
 		}
 
 		// draw hazards
-		for (int i = 0; i < level->getFallingHazards()->size(); i++)
+		for (auto *hazard : *level->getFallingHazards())
 		{
-			FallingHazard* hazard = level->getFallingHazards()->at(i);
 			hazard->render(window);
 		}
 

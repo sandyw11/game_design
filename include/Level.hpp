@@ -16,7 +16,6 @@ namespace lava
 		static const int WIDTH = 800;
 		static const int CHUNK_HEIGHT = 1200;
 		static const int START_X = 300;
-		static const int START_Y = 50000;
 		static const int START_LAVA_VY = 60;
 		static const int MAX_LAVA_VY = 150;
 

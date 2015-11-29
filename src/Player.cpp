@@ -16,13 +16,11 @@ namespace lava
 	landed(true),
 	alive(true)
 	{
-		// test start position
-		//rect.setPosition(400, 50000);
 		score = 0;
 		playerSprite.setTexture(*playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
 		playerSprite.setScale(1.5f,1.5f);
-		playerSprite.setPosition(400, 49995);
+		playerSprite.setPosition(400, GameLogic::START_Y - 5);
 	}
 	
 	void Player::update(float delta)

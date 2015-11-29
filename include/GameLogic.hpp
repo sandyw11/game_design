@@ -30,6 +30,7 @@ namespace lava
 		GameOverEvent gameOver;
 
 		static const int A = 1100;
+		static const int START_Y = 100000;
 		
 	private:
 		GameState gameState;

@@ -1,5 +1,6 @@
 #include "Level.hpp"
 #include "Random.hpp"
+#include "GameLogic.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -7,7 +8,7 @@ namespace lava
 {
 	Level::Level(int seed, sf::Texture *platformTexture, lava::eventManager *manager) :
 	chunkNum(0),
-	lavaY(START_Y+400),
+	lavaY(GameLogic::START_Y + 400),
 	lavaVy(START_LAVA_VY)
 	{
 		this->texture = platformTexture;
@@ -18,14 +19,14 @@ namespace lava
 
 		// starting platform
 		lastX = START_X;
-		lastY = START_Y + 40;
-		platforms.push_back(new Platform(lastX, lastY, 200,this->texture));
+		lastY = GameLogic::START_Y + 40;
+		platforms.push_back(new Platform(lastX, lastY, 200, this->texture));
 
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
 
 		chunkNum = 0;
-		nextChunkY = START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
+		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
 	}
 
@@ -44,7 +45,7 @@ namespace lava
 		chunkNum++;
 
 		// generate up to chunk height
-		while(lastY > START_Y - chunkNum * CHUNK_HEIGHT)
+		while(lastY > GameLogic::START_Y - chunkNum * CHUNK_HEIGHT)
 		{
 			// random angle between 20 and 160
 			theta = (float) Equilikely(MIN_THETA, MAX_THETA)/180 * 3.14159;
@@ -103,7 +104,7 @@ namespace lava
 		nextHazardTime -= delta;
 
 		// accelerate and move lava
-		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + 1 * delta : MAX_LAVA_VY;
+		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY;
 		lavaY = lavaY - lavaVy * delta;
 	}
 
