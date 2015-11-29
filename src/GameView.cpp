@@ -7,7 +7,8 @@ namespace lava
 	isPlaying(false),
 	soundPlaying(false),
 	musicPlaying(false),
-	isGameover(false)
+	isGameover(false),
+	gameGUI(new GameGUI(800, 600))
 	{
 		this->window = window;
 		this->level = level;
@@ -32,14 +33,16 @@ namespace lava
 		this->manager->registerEvent(example, playingMusic);
 		this->manager->registerEvent(example, jump);
 		this->manager->registerEvent(example, loser);
-
     }
 
-    GameGUI gameGUI(800, 600);
+	GameView::~GameView()
+	{
+		delete gameGUI;
+	}
 
     void GameView::setStart()
     {
-        gameGUI.draw(window);
+        gameGUI->draw(window);
     }
 
     void GameView::setInstructionMessage()
@@ -59,7 +62,7 @@ namespace lava
 
     void GameView::setPauseMessage()
     {
-        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI.font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI->font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -72,7 +75,7 @@ namespace lava
 
     void GameView::setGameoverMessage()
     {
-        sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI.font, 30);
+        sf::Text gameoverMessage("      GAME OVER\n\npress [Enter] to restart\n    press Esc to quit", gameGUI->font, 30);
 
         gameoverMessage.setPosition(300, 200);
         gameoverMessage.setColor(sf::Color::Red);
@@ -149,7 +152,7 @@ namespace lava
             {
                 if(!isPlaying)
                 {
-                    gameGUI.MoveUp();
+                    gameGUI->MoveUp();
                 }
             }
 
@@ -157,7 +160,7 @@ namespace lava
             {
                 if(!isPlaying)
                 {
-                    gameGUI.MoveDown();
+                    gameGUI->MoveDown();
                 }
             }
 
@@ -165,7 +168,7 @@ namespace lava
             {
                 if(!isPlaying)
                 {
-                    switch(gameGUI.GetPressedItem())
+                    switch(gameGUI->GetPressedItem())
                     {
                         case 0:
                             isPlaying = true;

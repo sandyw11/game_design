@@ -108,7 +108,6 @@ namespace lava
 		if (lavaY - playerY > LAVA_CATCHUP_DISTANCE)  // if player is too far from lava, catch up
 		{
 			lavaY = lavaY - LAVA_CATCHUP_VY * delta;
-			std::cout << "Catching up\n";
 		}
 		else {
 			lavaY = lavaY - lavaVy * delta;
