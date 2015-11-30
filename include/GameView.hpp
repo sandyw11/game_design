@@ -31,25 +31,29 @@ namespace lava
 	{
 	public:
 		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager);
-        void update(sf::Clock clock, bool &isPause);
+		~GameView();
 
-        void setInstructionMessage();
-        void setInstruction();
-        void setPauseMessage();
-        void setPause();
-        void setStartMessage();
-        void setStart();
-        void setGameoverMessage();
-        void setGameover();
+
+		void update(sf::Clock clock, bool &isPause);
+
+
+		void setInstructionMessage();
+		void setInstruction();
+		void setPauseMessage();
+		void setPause();
+		void setStartMessage();
+		void setStart();
+		void setGameoverMessage();
+		void setGameover();
 		void respond(const EventInterface& events);
 		void shakeScreen();
 		void playMusic(sf::Music);
 
-        GameOverEvent gameOver;
-        GameStartEvent gameStart;
-        GamePlayEvent gamePlay;
-        GamePauseEvent gamePause;
-        GameRestartEvent gameRestart;
+		GameOverEvent gameOver;
+		GameStartEvent gameStart;
+		GamePlayEvent gamePlay;
+		GamePauseEvent gamePause;
+		GameRestartEvent gameRestart;
 		EarthquakeSoundEvent earthquake;
 		PlayMusicEvent playingMusic;
 		JSONValue *jsonHighScores;
@@ -61,7 +65,7 @@ namespace lava
 
 	protected:
 		sf::RenderWindow* window;
-        void processInput(sf::Clock clock);
+        	void processInput(sf::Clock clock);
 		void draw();
 		void drawChargeBar();
 
@@ -80,20 +84,21 @@ namespace lava
 		sf::Sound noLoopSound;
 		sf::SoundBuffer earthquakeBuffer;
 		sf::Sound earthquakeSound;
-        sf::SoundBuffer jumpBuffer;
+		sf::SoundBuffer jumpBuffer;
 		sf::Sound jumpSound;
-        sf::SoundBuffer gameOverBuffer;
+		sf::SoundBuffer gameOverBuffer;
 		sf::Sound gameOverSound;
 		sf::Music gamePlayMusic;
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
 
-        bool isWait;
-        bool isPlaying;
-        bool isGameover;
-        bool isInstruct;
+		bool isWait;
+		bool isPlaying;
+		bool isGameover;
+		bool isInstruct;
 
-        //sf::RectangleShape lava;
+		GameGUI* gameGUI;
+
 		sf::Sprite background;
 		sf::Sprite lavaSprite;
 		sf::View view;

@@ -9,6 +9,7 @@
 #include "EventManager.hpp"
 #include "GameOverEvent.hpp"
 #include "Platform.hpp"
+#include "FallingHazard.hpp"
 
 
 namespace lava
@@ -29,6 +30,7 @@ namespace lava
 		GameOverEvent gameOver;
 
 		static const int A = 1100;
+		static const int START_Y = 100000;
 		
 	private:
 		GameState gameState;

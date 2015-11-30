@@ -6,12 +6,13 @@ namespace lava
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
+	gameGUI(new GameGUI(800, 600)),
 	isInstruct(false)
 	{
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        this->view = view;
+        	this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
 
@@ -19,47 +20,57 @@ namespace lava
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
 		lavaSprite.setScale(1, 1.5f);
 
-
 		font.loadFromFile("pixel_font.ttf");
 		text.setFont(font);
 		text.setColor(sf::Color::White);
 		text.setString("0");
 		text.setCharacterSize(50);
 		text.setPosition(sf::Vector2f(300, 200));
+
 		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
-        earthquakeBuffer.loadFromFile("earthquake.wav");
-        earthquakeSound.setBuffer(earthquakeBuffer);
-        earthquakeSound.setLoop(true);
+
+		earthquakeBuffer.loadFromFile("earthquake.wav");
 		earthquakeSound.setBuffer(earthquakeBuffer);
-        jumpBuffer.loadFromFile("jump.wav");
+		earthquakeSound.setLoop(true);
+		earthquakeSound.setBuffer(earthquakeBuffer);
+
+        	jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
-        gameOverBuffer.loadFromFile("Game_Over.ogg");
+
+        	gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
+
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
 		gamePlayMusic.setLoop(true);
+
 		startScreenMusic.openFromFile("Start_Screen.ogg");
 		startScreenMusic.setLoop(true);
+
 		pauseScreenMusic.openFromFile("Pause_Screen.ogg");
 		pauseScreenMusic.setLoop(true);
-        this->manager->registerEvent(example, gameOver);
-        this->manager->registerEvent(example, gameStart);
-        this->manager->registerEvent(example, gamePlay);
-        this->manager->registerEvent(example, gamePause);
-        this->manager->registerEvent(example, gameRestart);
+
+		this->manager->registerEvent(example, gameOver);
+		this->manager->registerEvent(example, gameStart);
+		this->manager->registerEvent(example, gamePlay);
+		this->manager->registerEvent(example, gamePause);
+		this->manager->registerEvent(example, gameRestart);
+
 		this->manager->registerEvent(example, earthquake);
 		this->manager->registerEvent(example, playingMusic);
 		this->manager->registerEvent(example, jump);
 		this->manager->registerEvent(example, loser);
 		this->manager->registerEvent(example, startMusic);
 		this->manager->registerEvent(example, pauseMusic);
-
     }
 
-    GameGUI gameGUI(800, 600);
+	GameView::~GameView()
+	{
+		delete gameGUI;
+	}
 
     void GameView::setStart()
     {
-        gameGUI.draw(window);
+        gameGUI->draw(window);
     }
 
     void GameView::setInstructionMessage()
@@ -79,7 +90,7 @@ namespace lava
 
     void GameView::setPauseMessage()
     {
-        sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI.font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI->font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -92,43 +103,43 @@ namespace lava
 
     void GameView::setGameoverMessage()
     {
-		sf::Text gameOverMessage(" ",font);
-		sf::Text title(" ", font);
-		title.setString("Current High Scores!\n");
-		title.setCharacterSize(100);
-		title.setPosition(140, 0);
-		title.setColor(sf::Color::Yellow);
-		//sf::Text gameOverMessage;
-		//text.setFont(font);
-		if (jsonHighScores == nullptr){
-			//char* message = "bob";
-			//std::wstring something = std::wstring(message, message + std::strlen(message));
-			//scores.addEntry(something, (float)player->score);
-			jsonHighScores = scores.getEntry();
-			JSONObject root = jsonHighScores->AsObject();
-			if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+	sf::Text gameOverMessage(" ",font);
+	sf::Text title(" ", font);
+	title.setString("Current High Scores!\n");
+	title.setCharacterSize(100);
+	title.setPosition(140, 0);
+	title.setColor(sf::Color::Yellow);
+	//sf::Text gameOverMessage;
+	//text.setFont(font);
+	if (jsonHighScores == nullptr){
+		//char* message = "bob";
+		//std::wstring something = std::wstring(message, message + std::strlen(message));
+		//scores.addEntry(something, (float)player->score);
+		jsonHighScores = scores.getEntry();
+		JSONObject root = jsonHighScores->AsObject();
+		if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+		{
+			JSONArray scores = root[L"Scores"]->AsArray();
+			for (int i = 0; i < scores.size(); i++)
 			{
-				JSONArray scores = root[L"Scores"]->AsArray();
-				for (int i = 0; i < scores.size(); i++)
-				{
-					JSONObject curObj = scores[i]->AsObject();
-					std::string notSoWide;
-					std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
-					std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
-					notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
-					highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
-				}
+				JSONObject curObj = scores[i]->AsObject();
+				std::string notSoWide;
+				std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
+				std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
+				notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
+				highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
 			}
 		}
-		gameOverMessage.setString(highscorelist);
-		gameOverMessage.setCharacterSize(50);
-        gameOverMessage.setPosition(200, 100);
-		sf::Text gameoverMessage("     GAME OVER\npress [R] to restart\n  press Esc to quit", font, 30);
-		gameoverMessage.setPosition(320, 450);
-		gameoverMessage.setColor(sf::Color::Red);
+	}
+	gameOverMessage.setString(highscorelist);
+	gameOverMessage.setCharacterSize(50);
+	gameOverMessage.setPosition(200, 100);
+	sf::Text gameoverMessage("     GAME OVER\npress [R] to restart\n  press Esc to quit", font, 30);
+	gameoverMessage.setPosition(320, 450);
+	gameoverMessage.setColor(sf::Color::Red);
 
-		window->draw(title);
-        window->draw(gameOverMessage);
+	window->draw(title);
+	window->draw(gameOverMessage);
     }
 
     void GameView::setGameover()
@@ -184,8 +195,8 @@ namespace lava
             }
             if(isWait)
             {
-				window->setView(view);
-				earthquakeSound.stop();
+		window->setView(view);
+		earthquakeSound.stop();
                 setPause();
             }
             else
@@ -197,7 +208,7 @@ namespace lava
         {
             if(isGameover)
             {
-				window->setView(view);
+		window->setView(view);
                 setGameover();
             }
             else
@@ -240,7 +251,7 @@ namespace lava
             		{
                			 if(!isPlaying)
                 		 {
-                    			gameGUI.MoveUp();
+                    			gameGUI->MoveUp();
                 		 }
             		}
 
@@ -248,54 +259,46 @@ namespace lava
             		{
                 		 if(!isPlaying)
                 		 {
-                    			gameGUI.MoveDown();
+                    			gameGUI->MoveDown();
                 		 }
             		}
-			
+
                     if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
             		{
                			 if(!isPlaying)
                 		 {
-                             isInstruct = false;
+                             		isInstruct = false;
                			 }
             		}
 
             		if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
             		{
-               			 if(!isPlaying)
-               			 {
-                                switch(gameGUI.GetPressedItem())
-                    			{
-                       		 		case 0:
-                                        isPlaying = true;
-                                        isGameover = false;
-                                        isWait = false;
-                                        startScreenMusic.stop();
-                                        manager->queueEvent(&playingMusic);
-                                        //manager->queueEvent(&gameStart);
-                                        clock.restart();
-                                        for (int i=0; i < level->getPlatforms()->size(); i++)
-                                        {
-                                            Platform* platform = level->getPlatforms()->at(i);
-                                        }
-                                        for (int i = 0; i < level->getPowerups()->size(); i++)
-                                        {
-                                            Powerup* powerup = level->getPowerups()->at(i);
-                                        }
-                                        player->alive = true;
-                                        player->resetPosition();
-                                        level->resetLava();
-                                        lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
-                                        player->score = 0;
-                                        break;
-                                    case 1:
-                                        isInstruct = true;
-                                        break;
-                                    case 2:
-                                        window->close();
-                                        break;
-                    			}
-                         }
+               			if(!isPlaying)
+               			{
+		                        switch(gameGUI->GetPressedItem())
+		    			{
+	       		 		case 0:
+				                isPlaying = true;
+				                isGameover = false;
+				                isWait = false;
+				                startScreenMusic.stop();
+				                manager->queueEvent(&playingMusic);
+				                //manager->queueEvent(&gameStart);
+				                clock.restart();
+				                player->alive = true;
+				                player->resetPosition();
+				                level->resetLava();
+				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
+				                player->score = 0;
+				                break;
+				        case 1:
+				                isInstruct = true;
+				                break;
+				        case 2:
+				                window->close();
+				                break;
+		    			}
+                        	}
             		}
 
 			if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
@@ -335,14 +338,14 @@ namespace lava
             {
                 if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
                 {
-                		if(isPlaying)
-                		{
-                            isGameover = true;
-                            isPlaying = false;
-                            gamePlayMusic.stop();
-                            manager->queueEvent(&loser);
-                            //manager->queueEvent(&gameOver);
-                		}
+			if(isPlaying)
+			{
+				isGameover = true;
+				isPlaying = false;
+				gamePlayMusic.stop();
+				manager->queueEvent(&loser);
+				//manager->queueEvent(&gameOver);
+			}
                 }
 
                 // key press events
@@ -383,7 +386,7 @@ namespace lava
                     }
                 }
             }
-		}
+	}
 	}
 
 	void GameView::draw()
@@ -397,19 +400,22 @@ namespace lava
 		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
 		window->draw(background);
 
-		//std::cout << text.getCharacterSize() << "\n";
 		// draw platforms
-		for (int i=0; i < level->getPlatforms()->size(); i++)
+		for (auto &platform : *level->getPlatforms())
 		{
-			Platform* platform = level->getPlatforms()->at(i);
 			platform->render(window);
 		}
 
 		// draw powerups
-		for (int i = 0; i < level->getPowerups()->size(); i++)
+		for (auto *powerup : *level->getPowerups())
 		{
-			Powerup* powerup = level->getPowerups()->at(i);
 			powerup->render(window);
+		}
+
+		// draw hazards
+		for (auto *hazard : *level->getFallingHazards())
+		{
+			hazard->render(window);
 		}
 
 		// draw player
