@@ -52,6 +52,7 @@ namespace lava
 		std::vector<Platform*>* getPlatforms() { return &platforms; }
 		std::vector<Powerup*>* getPowerups() { return &powerups; }
 		int getLavaY() { return lavaY; }
+		void resetLava();
 		void update(float playerY, float delta);
 	};
 }
