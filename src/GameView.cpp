@@ -86,7 +86,7 @@ namespace lava
     void GameView::setInstruction()
     {
         setInstructionMessage();
-	}
+    }
 
     void GameView::setPauseMessage()
     {
@@ -176,7 +176,7 @@ namespace lava
     }
 
     void GameView::update(sf::Clock clock, bool &isPause)
-	{
+    {
         isWait = isPause;
         processInput(clock);
 		sf::View view;
@@ -234,7 +234,7 @@ namespace lava
         }
         window->display();
         isPause = isWait;
-	}
+    }
 
     void GameView::processInput(sf::Clock clock)
 	{
@@ -263,7 +263,7 @@ namespace lava
                 		 }
             		}
 
-                    if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
+                        if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
             		{
                			 if(!isPlaying)
                 		 {
@@ -281,9 +281,10 @@ namespace lava
 				                isPlaying = true;
 				                isGameover = false;
 				                isWait = false;
+
 				                startScreenMusic.stop();
 				                manager->queueEvent(&playingMusic);
-				                //manager->queueEvent(&gameStart);
+
 				                clock.restart();
 				                player->alive = true;
 				                player->resetPosition();
@@ -301,92 +302,92 @@ namespace lava
                         	}
             		}
 
-			if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
-           	 	{
-                    if(isGameover)
-                    {
-                        isPlaying = false;
-                        isGameover = false;
-                        isWait = true;
-                        gameOverSound.stop();
-                        manager->queueEvent(&startMusic);
-                        //manager->queueEvent(&gameRestart);
+		    if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
+           	    {
+                    	if(isGameover)
+                    	{
+                        	isPlaying = false;
+                        	isGameover = false;
+                        	isWait = true;
+                        	gameOverSound.stop();
+                        	manager->queueEvent(&startMusic);
+                        	//manager->queueEvent(&gameRestart);
+                    	}
                     }
-                }
 
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
-            {
-                if(isPlaying)
-                {
-                    isWait = !isWait;
-                    if (isWait == true)
-                    {
-                        gamePlayMusic.stop();
-                        jumpSound.stop();
-                        manager->queueEvent(&pauseMusic);
-                        //manager->queueEvent(&gamePause);
-                    }
-                    else
-                    {
-                        pauseScreenMusic.stop();
-                        manager->queueEvent(&playingMusic);
-                    }
-                }
-            }
+		    if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
+		    {
+		        if(isPlaying)
+		        {
+		            isWait = !isWait;
+		            if (isWait == true)
+		            {
+		                gamePlayMusic.stop();
+		                jumpSound.stop();
+		                manager->queueEvent(&pauseMusic);
+		                //manager->queueEvent(&gamePause);
+		            }
+		            else
+		            {
+		                pauseScreenMusic.stop();
+		                manager->queueEvent(&playingMusic);
+		            }
+		        }
+		    }
 
-            if(!isWait)
-            {
-                if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
-                {
-			if(isPlaying)
-			{
-				isGameover = true;
-				isPlaying = false;
-				gamePlayMusic.stop();
-				manager->queueEvent(&loser);
-				//manager->queueEvent(&gameOver);
-			}
-                }
+		    if(!isWait)
+		    {
+		        if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
+		        {
+				if(isPlaying)
+				{
+					isGameover = true;
+					isPlaying = false;
+					gamePlayMusic.stop();
+					manager->queueEvent(&loser);
+					//manager->queueEvent(&gameOver);
+				}
+		        }
 
-                // key press events
-                if(Event.type == sf::Event::KeyPressed)
-                {
-                    switch(Event.key.code)
-                    {
-                        case sf::Keyboard::Space:
-                            player->charging = true;
-                            break;
-                        case sf::Keyboard::D:
-                            player->faceLeft = false;
-                            player->moveLeft = true;
-                            break;
-                        case sf::Keyboard::A:
-                            player->moveRight = true;
-                            player->faceLeft = true;
-                            break;
-                    }
-                }
+		        // key press events
+		        if(Event.type == sf::Event::KeyPressed)
+		        {
+		            switch(Event.key.code)
+		            {
+		                case sf::Keyboard::Space:
+		                    player->charging = true;
+		                    break;
+		                case sf::Keyboard::D:
+		                    player->faceLeft = false;
+		                    player->moveLeft = true;
+		                    break;
+		                case sf::Keyboard::A:
+		                    player->moveRight = true;
+		                    player->faceLeft = true;
+		                    break;
+		            }
+		        }
 
-                // key release events
-                if(Event.type == sf::Event::KeyReleased)
-                {
-                    switch(Event.key.code)
-                    {
-                        case sf::Keyboard::Space:
-                            player->charging = false;
-                            player->jump();
-                            manager->queueEvent(&jump);
-                            break;
-                        case sf::Keyboard::D:
-                            player->moveLeft = false;
-                            break;
-                        case sf::Keyboard::A:
-                            player->moveRight = false;
-                            break;
-                    }
-                }
-            }
-	}
+		        // key release events
+		        if(Event.type == sf::Event::KeyReleased)
+		        {
+		            switch(Event.key.code)
+		            {
+		                case sf::Keyboard::Space:
+		                    player->charging = false;
+		                    player->jump();
+		                    manager->queueEvent(&jump);
+		                    break;
+		                case sf::Keyboard::D:
+		                    player->moveLeft = false;
+		                    break;
+		                case sf::Keyboard::A:
+		                    player->moveRight = false;
+		                    break;
+		            }
+		        }
+		    }
+		}
 	}
 
 	void GameView::draw()
@@ -425,8 +426,8 @@ namespace lava
 		drawChargeBar();
 
 		// draw lava
-        lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
-        window->draw(lavaSprite);
+		lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
+		window->draw(lavaSprite);
 
 		// draw score
 		text.setPosition(sf::Vector2f(position.x + 20, position.y - 10));
@@ -436,20 +437,20 @@ namespace lava
 
 		view.reset(sf::FloatRect(position.x, position.y, 800, 600));
 
-        if ((level->getLavaY() - player->getY() < 300))
-        {
-            shakeScreen();
-            if (earthquakeSound.getStatus() == 0)
-            {
-                manager->queueEvent(&earthquake);
-            }
-        }
-        else if (level->getLavaY() - player->getY() > 300)
-        {
-            earthquakeSound.stop();
-        }
+		if ((level->getLavaY() - player->getY() < 300))
+		{
+		    shakeScreen();
+		    if (earthquakeSound.getStatus() == 0)
+		    {
+			manager->queueEvent(&earthquake);
+		    }
+		}
+		else if (level->getLavaY() - player->getY() > 300)
+		{
+		    earthquakeSound.stop();
+		}
 
-        window->setView(view);
+		window->setView(view);
     }
 
     void GameView::shakeScreen()
@@ -466,13 +467,14 @@ namespace lava
         }
     }
 
-	void GameView::respond(const EventInterface& events){
-		if (events.getEventType() == GameOverEvent::eventId){
-			isGameover = true;
-			isPlaying = false;
-            gamePlayMusic.stop();
-			manager->queueEvent(&loser);
-		}
+     void GameView::respond(const EventInterface& events)
+     {
+	if (events.getEventType() == GameOverEvent::eventId){
+		isGameover = true;
+		isPlaying = false;
+                gamePlayMusic.stop();
+		manager->queueEvent(&loser);
+	}
         else if (events.getEventType() == GameStartEvent::eventId){
             isPlaying = false;
             isGameover = false;
@@ -500,7 +502,7 @@ namespace lava
             gameOverSound.stop();
             manager->queueEvent(&startMusic);
         }
-		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (isWait == false))
+	else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (isWait == false))
         {
             earthquakeSound.play();
         }
@@ -532,5 +534,5 @@ namespace lava
 			std::cout << "UNKOWN EVENT \n";
 		}
 		*/
-	}
+     }
 }

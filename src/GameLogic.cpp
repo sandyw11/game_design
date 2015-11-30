@@ -58,6 +58,13 @@ namespace lava
 		for (auto &hazard : *level->getFallingHazards())
 		{
 			hazard->update(delta);
+
+			// check collision
+			if (hazard->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
+			{
+				manager->queueEvent(&gameOver);
+				player->die();
+			}
 		}
 
 		// move player with platform
