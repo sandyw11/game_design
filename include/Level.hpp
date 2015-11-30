@@ -64,6 +64,7 @@ namespace lava
 		std::vector<FallingHazard*>* getFallingHazards() { return &hazards; }
 
 		int getLavaY() { return lavaY; }
+		void resetLava();
 		void update(float playerY, float delta);
 	};
 }

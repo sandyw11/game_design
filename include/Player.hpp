@@ -44,6 +44,7 @@ namespace lava
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }
 		sf::Sprite getSprite() { return playerSprite; }
+		void resetPosition();
 	};
 }
 

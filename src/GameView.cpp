@@ -6,12 +6,13 @@ namespace lava
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
-	gameGUI(new GameGUI(800, 600))
+	gameGUI(new GameGUI(800, 600)),
+	isInstruct(false)
 	{
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        this->view = view;
+        	this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
 
@@ -28,15 +29,15 @@ namespace lava
 
 		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
 
-        earthquakeBuffer.loadFromFile("earthquake.wav");
-        earthquakeSound.setBuffer(earthquakeBuffer);
-        earthquakeSound.setLoop(true);
+		earthquakeBuffer.loadFromFile("earthquake.wav");
+		earthquakeSound.setBuffer(earthquakeBuffer);
+		earthquakeSound.setLoop(true);
 		earthquakeSound.setBuffer(earthquakeBuffer);
 
-        jumpBuffer.loadFromFile("jump.wav");
+        	jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-        gameOverBuffer.loadFromFile("Game_Over.ogg");
+        	gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
@@ -49,6 +50,11 @@ namespace lava
 		pauseScreenMusic.setLoop(true);
 
 		this->manager->registerEvent(example, gameOver);
+		this->manager->registerEvent(example, gameStart);
+		this->manager->registerEvent(example, gamePlay);
+		this->manager->registerEvent(example, gamePause);
+		this->manager->registerEvent(example, gameRestart);
+
 		this->manager->registerEvent(example, earthquake);
 		this->manager->registerEvent(example, playingMusic);
 		this->manager->registerEvent(example, jump);
@@ -84,7 +90,7 @@ namespace lava
 
     void GameView::setPauseMessage()
     {
-        sf::Text pauseMessage("          PAUSE\n\n\npress P to continue", gameGUI->font, 30);
+        sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI->font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
@@ -97,44 +103,43 @@ namespace lava
 
     void GameView::setGameoverMessage()
     {
-		sf::Text gameOverMessage(" ",font);
-		sf::Text title(" ", font);
-		title.setString("Current High Scores!\n");
-		title.setCharacterSize(100);
-		title.setPosition(140, 0);
-		title.setColor(sf::Color::Yellow);
-		//sf::Text gameOverMessage;
-		//text.setFont(font);
-		if (jsonHighScores == nullptr){
-			//char* message = "bob";
-			//std::wstring something = std::wstring(message, message + std::strlen(message));
-			//scores.addEntry(something, (float)player->score);
-			jsonHighScores = scores.getEntry();
-			JSONObject root = jsonHighScores->AsObject();
-			if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+	sf::Text gameOverMessage(" ",font);
+	sf::Text title(" ", font);
+	title.setString("Current High Scores!\n");
+	title.setCharacterSize(100);
+	title.setPosition(140, 0);
+	title.setColor(sf::Color::Yellow);
+	//sf::Text gameOverMessage;
+	//text.setFont(font);
+	if (jsonHighScores == nullptr){
+		//char* message = "bob";
+		//std::wstring something = std::wstring(message, message + std::strlen(message));
+		//scores.addEntry(something, (float)player->score);
+		jsonHighScores = scores.getEntry();
+		JSONObject root = jsonHighScores->AsObject();
+		if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+		{
+			JSONArray scores = root[L"Scores"]->AsArray();
+			for (int i = 0; i < scores.size(); i++)
 			{
-				JSONArray scores = root[L"Scores"]->AsArray();
-				for (int i = 0; i < scores.size(); i++)
-				{
-					JSONObject curObj = scores[i]->AsObject();
-					std::string notSoWide;
-					std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
-					std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
-					notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
-					highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
-				}
+				JSONObject curObj = scores[i]->AsObject();
+				std::string notSoWide;
+				std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
+				std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
+				notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
+				highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
 			}
 		}
-		gameOverMessage.setString(highscorelist);
-		gameOverMessage.setCharacterSize(50);
-        gameOverMessage.setPosition(200, 100);
-		sf::Text gameoverMessage("     GAME OVER\npress [Enter] to restart\n  press Esc to quit", font, 30);
-		gameoverMessage.setPosition(320, 450);
-		gameoverMessage.setColor(sf::Color::Red);
+	}
+	gameOverMessage.setString(highscorelist);
+	gameOverMessage.setCharacterSize(50);
+	gameOverMessage.setPosition(200, 100);
+	sf::Text gameoverMessage("     GAME OVER\npress [R] to restart\n  press Esc to quit", font, 30);
+	gameoverMessage.setPosition(320, 450);
+	gameoverMessage.setColor(sf::Color::Red);
 
-		window->draw(gameoverMessage);
-		window->draw(title);
-        window->draw(gameOverMessage);
+	window->draw(title);
+	window->draw(gameOverMessage);
     }
 
     void GameView::setGameover()
@@ -144,7 +149,7 @@ namespace lava
 
     void GameView::drawChargeBar()
     {
-	float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
+        float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
 
         // draw chargebar frame
         sf::RectangleShape chargeBarFrame;
@@ -170,8 +175,9 @@ namespace lava
         window->draw(chargedBar);
     }
 
-    void GameView::update(sf::Clock clock)
+    void GameView::update(sf::Clock clock, bool &isPause)
 	{
+        isWait = isPause;
         processInput(clock);
 		sf::View view;
 		view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -189,8 +195,8 @@ namespace lava
             }
             if(isWait)
             {
-				window->setView(view);
-				earthquakeSound.stop();
+		window->setView(view);
+		earthquakeSound.stop();
                 setPause();
             }
             else
@@ -202,19 +208,19 @@ namespace lava
         {
             if(isGameover)
             {
-				window->setView(view);
+		window->setView(view);
                 setGameover();
             }
             else
             {
-				window->setView(view);
-                setStart();
+                //window->setView(view);
+                //setStart();
                 if (startScreenMusic.getStatus() == 0)
                 {
                     manager->queueEvent(&startMusic);
                 }
 
-                if(isWait)
+                if(isInstruct)
                 {
                     window->setView(view);
                     setInstruction();
@@ -227,6 +233,7 @@ namespace lava
             }
         }
         window->display();
+        isPause = isWait;
 	}
 
     void GameView::processInput(sf::Clock clock)
@@ -235,133 +242,151 @@ namespace lava
 		while(window->pollEvent(Event))
 		{
 			// exit
-            if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
-            {
-				window->close();
-            }
+            		if((Event.type == sf::Event::Closed) || ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape)))
+            		{
+                        window->close();
+            		}
 
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Up))
-            {
-                if(!isPlaying)
-                {
-                    gameGUI->MoveUp();
-                }
-            }
+            		if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Up))
+            		{
+               			 if(!isPlaying)
+                		 {
+                    			gameGUI->MoveUp();
+                		 }
+            		}
 
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Down))
-            {
-                if(!isPlaying)
-                {
-                    gameGUI->MoveDown();
-                }
-            }
+            		if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Down))
+            		{
+                		 if(!isPlaying)
+                		 {
+                    			gameGUI->MoveDown();
+                		 }
+            		}
 
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
-            {
-                if(!isPlaying)
-                {
-                    switch(gameGUI->GetPressedItem())
+                    if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
+            		{
+               			 if(!isPlaying)
+                		 {
+                             		isInstruct = false;
+               			 }
+            		}
+
+            		if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Return))
+            		{
+               			if(!isPlaying)
+               			{
+		                        switch(gameGUI->GetPressedItem())
+		    			{
+	       		 		case 0:
+				                isPlaying = true;
+				                isGameover = false;
+				                isWait = false;
+				                startScreenMusic.stop();
+				                manager->queueEvent(&playingMusic);
+				                //manager->queueEvent(&gameStart);
+				                clock.restart();
+				                player->alive = true;
+				                player->resetPosition();
+				                level->resetLava();
+				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
+				                player->score = 0;
+				                break;
+				        case 1:
+				                isInstruct = true;
+				                break;
+				        case 2:
+				                window->close();
+				                break;
+		    			}
+                        	}
+            		}
+
+			if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
+           	 	{
+                    if(isGameover)
                     {
-                        case 0:
-                            isPlaying = true;
-                            isGameover = false;
-                            manager->queueEvent(&playingMusic);
-                            clock.restart();
-                            break;
+                        isPlaying = false;
+                        isGameover = false;
+                        isWait = true;
+                        gameOverSound.stop();
+                        manager->queueEvent(&startMusic);
+                        //manager->queueEvent(&gameRestart);
+                    }
+                }
 
-                        case 1:
-                            isWait = true;
-                            break;
-
-                        case 2:
-                            window->close();
-                            break;
+            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
+            {
+                if(isPlaying)
+                {
+                    isWait = !isWait;
+                    if (isWait == true)
+                    {
+                        gamePlayMusic.stop();
+                        jumpSound.stop();
+                        manager->queueEvent(&pauseMusic);
+                        //manager->queueEvent(&gamePause);
+                    }
+                    else
+                    {
+                        pauseScreenMusic.stop();
+                        manager->queueEvent(&playingMusic);
                     }
                 }
             }
 
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::M))
+            if(!isWait)
             {
-                if(!isPlaying)
+                if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
                 {
-                    isWait = false;
-                    isPlaying = true;
-                    isGameover = false;
-                    clock.restart();
-                }
-            }
-
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::P))
-            {
-                isWait = !isWait;
-                if (isWait == true)
-                {
-                    gamePlayMusic.stop();
-                    jumpSound.stop();
-                    manager->queueEvent(&pauseMusic);
-                }
-                else
-                {
-                    pauseScreenMusic.stop();
-                    manager->queueEvent(&playingMusic);
-                }
-            }
-
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::R))
-            {
-                if(isPlaying)
-                {
-                    isPlaying = false;
-                }
-            }
-
-            if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
-            {
-                if(!isGameover && isPlaying)
-                {
-                    isGameover = true;
-                    isPlaying = false;
-                }
-            }
-
-			// key press events
-			if(Event.type == sf::Event::KeyPressed)
+			if(isPlaying)
 			{
-				switch(Event.key.code)
-				{
-					case sf::Keyboard::Space:
-						player->charging = true;
-						break;
-					case sf::Keyboard::D:
-						player->faceLeft = false;
-						player->moveLeft = true;
-						break;
-					case sf::Keyboard::A:
-						player->moveRight = true;
-						player->faceLeft = true;
-						break;
-				}
+				isGameover = true;
+				isPlaying = false;
+				gamePlayMusic.stop();
+				manager->queueEvent(&loser);
+				//manager->queueEvent(&gameOver);
 			}
+                }
 
-			// key release events
-			if(Event.type == sf::Event::KeyReleased)
-			{
-				switch(Event.key.code)
-				{
-					case sf::Keyboard::Space:
-						player->charging = false;
-						player->jump();
-						manager->queueEvent(&jump);
-						break;
-					case sf::Keyboard::D:
-						player->moveLeft = false;
-						break;
-					case sf::Keyboard::A:
-						player->moveRight = false;
-						break;
-				}
-			}
-		}
+                // key press events
+                if(Event.type == sf::Event::KeyPressed)
+                {
+                    switch(Event.key.code)
+                    {
+                        case sf::Keyboard::Space:
+                            player->charging = true;
+                            break;
+                        case sf::Keyboard::D:
+                            player->faceLeft = false;
+                            player->moveLeft = true;
+                            break;
+                        case sf::Keyboard::A:
+                            player->moveRight = true;
+                            player->faceLeft = true;
+                            break;
+                    }
+                }
+
+                // key release events
+                if(Event.type == sf::Event::KeyReleased)
+                {
+                    switch(Event.key.code)
+                    {
+                        case sf::Keyboard::Space:
+                            player->charging = false;
+                            player->jump();
+                            manager->queueEvent(&jump);
+                            break;
+                        case sf::Keyboard::D:
+                            player->moveLeft = false;
+                            break;
+                        case sf::Keyboard::A:
+                            player->moveRight = false;
+                            break;
+                    }
+                }
+            }
+	}
 	}
 
 	void GameView::draw()
@@ -403,6 +428,7 @@ namespace lava
         lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
         window->draw(lavaSprite);
 
+		// draw score
 		text.setPosition(sf::Vector2f(position.x + 20, position.y - 10));
 		std::string scores = static_cast<std::ostringstream*>(&(std::ostringstream() << player->score))->str();
 		text.setString(scores);
@@ -444,8 +470,36 @@ namespace lava
 		if (events.getEventType() == GameOverEvent::eventId){
 			isGameover = true;
 			isPlaying = false;
+            gamePlayMusic.stop();
 			manager->queueEvent(&loser);
 		}
+        else if (events.getEventType() == GameStartEvent::eventId){
+            isPlaying = false;
+            isGameover = false;
+            isWait = true;
+            gameOverSound.stop();
+            manager->queueEvent(&startMusic);
+        }
+        else if (events.getEventType() == GamePlayEvent::eventId){
+            isPlaying = true;
+            isWait = false;
+            gameOverSound.stop();
+            startScreenMusic.stop();
+            manager->queueEvent(&playingMusic);
+        }
+        else if (events.getEventType() == GamePauseEvent::eventId){
+            isWait = true;
+            gamePlayMusic.stop();
+            jumpSound.stop();
+            manager->queueEvent(&pauseMusic);
+        }
+        else if (events.getEventType() == GameRestartEvent::eventId){
+            isPlaying = false;
+            isGameover = false;
+            isWait = true;
+            gameOverSound.stop();
+            manager->queueEvent(&startMusic);
+        }
 		else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (isWait == false))
         {
             earthquakeSound.play();
