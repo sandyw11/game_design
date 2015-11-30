@@ -134,7 +134,6 @@ namespace lava
     void GameView::setGameover()
     {
         setGameoverMessage();
-        isWait = true;
     }
 
     void GameView::drawChargeBar()

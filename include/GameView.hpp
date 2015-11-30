@@ -88,10 +88,10 @@ namespace lava
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
 
-	bool isWait;
+        bool isWait;
         bool isPlaying;
         bool isGameover;
-	bool isInstruct;
+        bool isInstruct;
 
         //sf::RectangleShape lava;
 		sf::Sprite background;
