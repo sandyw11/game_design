@@ -121,4 +121,10 @@ namespace lava
 			}
 		}
 	}
+	
+	void Level::resetLava()
+	{
+		lavaY = START_Y+400;
+		lavaVy = START_LAVA_VY;
+	}
 }
