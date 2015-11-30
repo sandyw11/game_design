@@ -134,8 +134,8 @@ namespace lava
 		if (vy > 0)
 		{
 			vy = 0;
-			if (score < 50000 - playerSprite.getPosition().y){
-				score = 50000 - playerSprite.getPosition().y;
+			if (score < GameLogic::START_Y - playerSprite.getPosition().y){
+				score = GameLogic::START_Y - playerSprite.getPosition().y;
 			}
 			//playerSprite.setPosition(this->getX(), y - this->getSprite().getSize().y);
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
