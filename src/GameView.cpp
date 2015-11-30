@@ -179,8 +179,8 @@ namespace lava
     {
         isWait = isPause;
         processInput(clock);
-		sf::View view;
-		view.reset(sf::FloatRect(0, 0, 800, 600));
+	sf::View view;
+	view.reset(sf::FloatRect(0, 0, 800, 600));
 
         window->clear(sf::Color::Black);
         if(isPlaying)
@@ -529,10 +529,10 @@ namespace lava
             gameOverSound.play();
         }
         /*
-		else
+	else
         {
-			std::cout << "UNKOWN EVENT \n";
-		}
-		*/
+		std::cout << "UNKOWN EVENT \n";
+	}
+	*/
      }
 }

@@ -30,9 +30,11 @@ namespace lava
 
 		static const int FIRST_HAZARD_TIME = 8;
 		static const int MIN_HAZARD_TIME = 1;
-		static const int MAX_HAZARD_TIME = 8;
-		static const int HAZARD_MIN_OFFSET = 350;
-		static const int HAZARD_MAX_OFFSET = 450;
+		static const int MAX_HAZARD_TIME = 3;
+		static const int HAZARD_MIN_OFFSET = 325;
+		static const int HAZARD_MAX_OFFSET = 400;
+		static const int HAZARD_MIN_RADIUS = 13;
+		static const int HAZARD_MAX_RADIUS = 15;
 
 		int chunkNum;
 		sf::Texture *texture;

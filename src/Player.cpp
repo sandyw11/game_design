@@ -5,8 +5,7 @@
 
 namespace lava
 {
-	Player::Player(sf::Texture* playerTexture, lava::eventManager * manager) :
-	//rect(sf::Vector2f(20, 40)),
+	Player::Player(sf::Texture* playerTexture, lava::eventManager * manager):
 	vx(0),
 	vy(0),
 	charge(false),
@@ -45,7 +44,7 @@ namespace lava
 					playerSprite.setScale(1.5f, 1.5f);
 				}
 			}
-			else{
+			else {
 				if (!faceLeft){
 					playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
 					playerSprite.setScale(1.5f, 1.5f);
@@ -113,7 +112,7 @@ namespace lava
 				playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
 				playerSprite.setScale(1.5f, 1.5f);
 			}
-			else{
+			else {
 				playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
 				playerSprite.setScale(1.5f, 1.5f);
 			}
@@ -155,6 +154,13 @@ namespace lava
 	void Player::stickToPlatform(float delta, float vx, float vy)
 	{
 		playerSprite.move(delta * vx, delta * vy);
+	}
+
+	void Player::hitByRock(float rockVy)
+	{
+		// push player down
+		vy += rockVy / 2;
+		landed = false;
 	}
 
 	void Player::die()

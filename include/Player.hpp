@@ -30,6 +30,7 @@ namespace lava
 		void jump();
 		void die();
 		void land(float y);
+		void hitByRock(float rockVy);
 		float getCharge();
 		bool charging;
 		bool moveLeft;
