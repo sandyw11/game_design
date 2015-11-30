@@ -168,4 +168,11 @@ namespace lava
 	{
 	    return charge;
 	}
+
+	void Player::resetPosition()
+	{
+		vx = 0;
+		vy = 0;
+		playerSprite.setPosition(400, GameLogic::START_Y - 5);
+	}
 }
