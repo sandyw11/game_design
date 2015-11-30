@@ -7,6 +7,10 @@
 #include "EventManager.hpp"
 #include "ActorDestroyedEvent.hpp"
 #include "GameOverEvent.hpp"
+#include "GameStartEvent.hpp"
+#include "GamePlayEvent.hpp"
+#include "GamePauseEvent.hpp"
+#include "GameRestartEvent.hpp"
 #include "EventDelegate.hpp"
 #include "ScoreBoard.hpp"
 #include"JSON.h"
@@ -70,14 +74,22 @@ int main(int argc, char** argv)
 	lava::Player player(&playerTexture, &eventManager);
 	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
 
-	GameOverEvent event;
+    GameOverEvent event;
+    GameStartEvent gameStart;
+    GamePlayEvent gamePlay;
+    GamePauseEvent gamePause;
+    GameRestartEvent gameRestart;
 	EarthquakeSoundEvent earthquake;
 	PlayMusicEvent playingMusic;
 	JumpSoundEvent jump;
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
 	PauseSoundEvent pauseMusic;
-	eventManager.enterMapValue(GameOverEvent::eventId, event);
+    eventManager.enterMapValue(GameOverEvent::eventId, event);
+    eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
+    eventManager.enterMapValue(GamePlayEvent::eventId, gamePlay);
+    eventManager.enterMapValue(GamePauseEvent::eventId, gamePause);
+    eventManager.enterMapValue(GameRestartEvent::eventId, gameRestart);
 	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
 	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
 	eventManager.enterMapValue(JumpSoundEvent::eventId, jump);
@@ -88,14 +100,18 @@ int main(int argc, char** argv)
 	// init game view and logic
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
+	bool isPause = true;
 
 
 	// start main loop
 	while(window.isOpen())
 	{
 		float delta = clock.restart().asSeconds();
-		gameLogic.update(delta);
-		gameView.update(clock);
+		gameView.update(clock, isPause);
+		if(!isPause)
+		{
+			gameLogic.update(delta);			
+		}
 		eventManager.processEvents();
 	}
 
