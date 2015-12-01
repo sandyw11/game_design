@@ -5,6 +5,7 @@
 #include "GameOverEvent.hpp"
 #include "EventManager.hpp"
 #include "Platform.hpp"
+#include <ctime>
 
 namespace lava
 {
@@ -15,6 +16,7 @@ namespace lava
 		float vy;
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite; 
+		sf::Clock clock;
 		float charge;
 
 		static const int MINJUMP = 200;
@@ -30,6 +32,8 @@ namespace lava
 		void jump();
 		void die();
 		void land(float y);
+		void hitByRock(float rockVy);
+		void applyPowerup(int type);
 		float getCharge();
 		bool charging;
 		bool moveLeft;
@@ -40,10 +44,14 @@ namespace lava
 		int score; 
 		bool alive;
 		bool landed;
+		const char* powerup;
+		float powerupTime;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }
+		const char* getPowerup() { return powerup; }
 		sf::Sprite getSprite() { return playerSprite; }
+		void resetPosition();
 	};
 }
 

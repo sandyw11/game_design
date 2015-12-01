@@ -4,7 +4,7 @@
 
 namespace lava
 {
-	Platform::Platform(int x, int y, int width, sf::Texture* platformTexture) :
+	Platform::Platform(int x, int y, int width, sf::Texture* platformTexture):
 	vx(0),
 	vy(0),
 	fallingPlatform(false),

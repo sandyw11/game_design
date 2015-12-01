@@ -8,7 +8,9 @@
 #include "ActorDestroyedEvent.hpp"
 #include "EventManager.hpp"
 #include "GameOverEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 #include "Platform.hpp"
+#include "FallingHazard.hpp"
 
 
 namespace lava
@@ -16,25 +18,20 @@ namespace lava
 	class GameLogic
 	{
 	public:
-		enum GameState
-		{
-            START,
-			PLAY,
-			PAUSE,
-			GAME_OVER
-		};
 		void update(float delta);
-		GameLogic(Level* level, Player* player,lava::eventManager *manager);
+		GameLogic(Level* level, Player* player, eventManager *manager);
 		void respond(const EventInterface& events);
+
 		GameOverEvent gameOver;
+		HitByFallingHazardEvent hazardEvent;
 
 		static const int A = 1100;
+		static const int START_Y = 100000;
 		
 	private:
-		GameState gameState;
 		Level* level;
 		Player* player;
-		lava::eventManager *manager;
+		eventManager *manager;
 		Platform* landedPlatform;
 	};
 }

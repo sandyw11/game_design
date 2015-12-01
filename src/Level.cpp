@@ -1,5 +1,6 @@
 #include "Level.hpp"
 #include "Random.hpp"
+#include "GameLogic.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -7,7 +8,7 @@ namespace lava
 {
 	Level::Level(int seed, sf::Texture *platformTexture, lava::eventManager *manager) :
 	chunkNum(0),
-	lavaY(START_Y+400),
+	lavaY(GameLogic::START_Y + 400),
 	lavaVy(START_LAVA_VY)
 	{
 		this->texture = platformTexture;
@@ -18,19 +19,22 @@ namespace lava
 
 		// starting platform
 		lastX = START_X;
-		lastY = START_Y + 40;
-		platforms.push_back(new Platform(lastX, lastY, 200,this->texture));
+		lastY = GameLogic::START_Y + 40;
+		platforms.push_back(new Platform(lastX, lastY, 200, this->texture));
 
-		chunkNum = 0;
-		nextChunkY = START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
+		// first hazard created
+		nextHazardTime = FIRST_HAZARD_TIME;
+
+		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
 	}
 
 	Level::~Level()
 	{
 		// remove all platforms and powerups
-		platforms.empty();
-		powerups.empty();
+		platforms.clear();
+		powerups.clear();
+		hazards.clear();
 	}
 
 	void Level::generateChunk(sf::Texture *platformTexture)
@@ -40,7 +44,7 @@ namespace lava
 		chunkNum++;
 
 		// generate up to chunk height
-		while(lastY > START_Y - chunkNum * CHUNK_HEIGHT)
+		while(lastY > GameLogic::START_Y - chunkNum * CHUNK_HEIGHT)
 		{
 			// random angle between 20 and 160
 			theta = (float) Equilikely(MIN_THETA, MAX_THETA)/180 * 3.14159;
@@ -64,7 +68,6 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			// TODO: stick to platforms that move
 			if (Equilikely(0, 20) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
@@ -78,6 +81,7 @@ namespace lava
 
 	void Level::update(float playerY, float delta)
 	{
+		// check for new chunk
 		if (playerY < nextChunkY)
 		{
 			generateChunk(this->texture);
@@ -85,12 +89,35 @@ namespace lava
 			nextChunkY -= CHUNK_HEIGHT;
 		}
 
-		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + 1 * delta : MAX_LAVA_VY;
-		lavaY = lavaY - lavaVy * delta;
+		// check for new hazard
+		if (nextHazardTime < 0)
+		{
+			int radius = Equilikely(13, 15);
+			int x = Equilikely(0, 800);
+			int y = playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET);
+			hazards.push_back(new FallingHazard(x, y, radius));
+
+			// TODO: use Uniform()?
+			nextHazardTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
+		}
+		nextHazardTime -= delta;
+
+		// accelerate and move lava
+		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY; // lava velocity increases 1/second
+		if (lavaY - playerY > LAVA_CATCHUP_DISTANCE)  // if player is too far from lava, catch up
+		{
+			lavaY = lavaY - LAVA_CATCHUP_VY * delta;
+		}
+		else {
+			lavaY = lavaY - lavaVy * delta;
+		}
+		
 	}
 
 	void Level::deleteChunks()
 	{
+		// TODO: more efficient deletion?
+
 		// delete unreachable chunks
 		std::vector<Platform*>::iterator platformIt = platforms.begin();
 		while (platformIt != platforms.end())
@@ -120,5 +147,43 @@ namespace lava
 				++powerupIt;
 			}
 		}
+
+		// clean up unreachable hazards
+		std::vector<FallingHazard*>::iterator hazardIt = hazards.begin();
+		while (hazardIt != hazards.end())
+		{
+			FallingHazard* hazard = *hazardIt;
+			if (hazard->getY() > lavaY)
+			{
+				std::cout << "Deleting hazard\n";
+				hazardIt = hazards.erase(hazardIt);
+			}
+			else {
+				++hazardIt;
+			}
+		}
+	}
+
+	void Level::reset()
+	{
+		// get rid of old level
+		platforms.clear();
+		powerups.clear();
+		hazards.clear();
+
+		// starting platform
+		lastX = START_X;
+		lastY = GameLogic::START_Y + 40;
+		platforms.push_back(new Platform(lastX, lastY, 200, this->texture));
+
+		// first hazard created
+		nextHazardTime = FIRST_HAZARD_TIME;
+
+		chunkNum = 0;
+		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
+		generateChunk(this->texture);
+
+		lavaY = GameLogic::START_Y + 400;
+		lavaVy = START_LAVA_VY;
 	}
 }

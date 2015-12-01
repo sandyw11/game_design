@@ -8,6 +8,10 @@
 #include "Player.hpp"
 #include "GameLogic.hpp"
 #include "GameOverEvent.hpp"
+#include "GameStartEvent.hpp"
+#include "GamePlayEvent.hpp"
+#include "GamePauseEvent.hpp"
+#include "GameRestartEvent.hpp"
 #include "EarthquakeSoundEvent.hpp"
 #include "Platform.hpp"
 #include "GameGUI.hpp"
@@ -19,6 +23,7 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 #include <SFML/Audio.hpp>
 
 namespace lava
@@ -27,21 +32,29 @@ namespace lava
 	{
 	public:
 		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager);
-        void update(sf::Clock clock);
+		~GameView();
 
-        void setInstructionMessage();
-        void setInstruction();
-        void setPauseMessage();
-        void setPause();
-        void setStartMessage();
-        void setStart();
-        void setGameoverMessage();
-        void setGameover();
+
+		void update(sf::Clock clock, bool &isPause);
+
+
+		void setInstructionMessage();
+		void setInstruction();
+		void setPauseMessage();
+		void setPause();
+		void setStartMessage();
+		void setStart();
+		void setGameoverMessage();
+		void setGameover();
 		void respond(const EventInterface& events);
 		void shakeScreen();
 		void playMusic(sf::Music);
 
 		GameOverEvent gameOver;
+		GameStartEvent gameStart;
+		GamePlayEvent gamePlay;
+		GamePauseEvent gamePause;
+		GameRestartEvent gameRestart;
 		EarthquakeSoundEvent earthquake;
 		PlayMusicEvent playingMusic;
 		JSONValue *jsonHighScores;
@@ -50,10 +63,11 @@ namespace lava
 		GameOverSoundEvent loser;
 		StartSoundEvent startMusic;
 		PauseSoundEvent pauseMusic;
+		HitByFallingHazardEvent hazardEvent;
 
 	protected:
 		sf::RenderWindow* window;
-        void processInput(sf::Clock clock);
+        	void processInput(sf::Clock clock);
 		void draw();
 		void drawChargeBar();
 
@@ -68,24 +82,34 @@ namespace lava
 		sf::Sound sound;
 		sf::Music music;
 		std::string highscorelist;
+
+		sf::SoundBuffer hazardBuffer;
+		sf::Sound hazardSound;
+
 		sf::SoundBuffer noLoopBuffer;
 		sf::Sound noLoopSound;
 
 		sf::SoundBuffer earthquakeBuffer;
 		sf::Sound earthquakeSound;
-        sf::SoundBuffer jumpBuffer;
+
+		sf::SoundBuffer jumpBuffer;
 		sf::Sound jumpSound;
-        sf::SoundBuffer gameOverBuffer;
+
+		sf::SoundBuffer gameOverBuffer;
 		sf::Sound gameOverSound;
+
 		sf::Music gamePlayMusic;
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
 
-        bool isWait;
-        bool isPlaying;
-        bool isGameover;
 
-        //sf::RectangleShape lava;
+		bool isWait;
+		bool isPlaying;
+		bool isGameover;
+		bool isInstruct;
+
+		GameGUI* gameGUI;
+
 		sf::Sprite background;
 		sf::Sprite lavaSprite;
 		sf::View view;
