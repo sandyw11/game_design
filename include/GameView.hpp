@@ -6,7 +6,7 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
-#include "GameLogic.hpp"
+#include "Level.hpp"
 #include "GameOverEvent.hpp"
 #include "GameStartEvent.hpp"
 #include "GamePlayEvent.hpp"
@@ -34,9 +34,7 @@ namespace lava
 		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager);
 		~GameView();
 
-
-		void update(sf::Clock clock, bool &isPause);
-
+		void update(sf::Clock clock);
 
 		void setInstructionMessage();
 		void setInstruction();

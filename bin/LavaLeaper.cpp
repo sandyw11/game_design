@@ -36,7 +36,6 @@ int main(int argc, char** argv)
 	//scores.addEntry(something, "2222");
 	//jsonHighScores = scores.getEntry();
 
-
 	lava::eventManager eventManager;
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -105,17 +104,13 @@ int main(int argc, char** argv)
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,
 				&backgroundTexture, &eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
-	bool isPause = true;
 
 	// start main loop
 	while(window.isOpen())
 	{
 		float delta = clock.restart().asSeconds();
-		gameView.update(clock, isPause);
-		if(!isPause)
-		{
-			gameLogic.update(delta);			
-		}
+		gameView.update(clock);
+		gameLogic.update(delta);
 		eventManager.processEvents();
 	}
 
