@@ -87,22 +87,12 @@ namespace lava
         window->draw(sprite);
     }
 
-    void GameView::setInstruction()
-    {
-        setInstructionMessage();
-    }
-
     void GameView::setPauseMessage()
     {
         sf::Text pauseMessage("          PAUSE\n\n\npress [P] to continue", gameGUI->font, 30);
         pauseMessage.setPosition(300, 200);
         pauseMessage.setColor(sf::Color::Red);
         window->draw(pauseMessage);
-    }
-
-    void GameView::setPause()
-    {
-        setPauseMessage();
     }
 
     void GameView::setGameoverMessage()
@@ -144,11 +134,6 @@ namespace lava
 
 	window->draw(title);
 	window->draw(gameOverMessage);
-    }
-
-    void GameView::setGameover()
-    {
-        setGameoverMessage();
     }
 
     void GameView::drawChargeBar()
@@ -200,7 +185,7 @@ namespace lava
             {
 		window->setView(view);
 		earthquakeSound.stop();
-                setPause();
+                setPauseMessage();
             }
             else
             {
@@ -209,10 +194,11 @@ namespace lava
         }
         else
         {
+            window->setView(view);
             if(isGameover)
             {
-		window->setView(view);
-                setGameover();
+
+                setGameoverMessage();
             }
             else
             {
@@ -225,12 +211,10 @@ namespace lava
 
                 if(isInstruct)
                 {
-                    window->setView(view);
-                    setInstruction();
+                    setInstructionMessage();
                 }
                 else
                 {
-                    window->setView(view);
                     setStart();
                 }
             }

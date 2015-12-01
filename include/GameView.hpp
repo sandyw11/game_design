@@ -37,13 +37,10 @@ namespace lava
 		void update(sf::Clock clock);
 
 		void setInstructionMessage();
-		void setInstruction();
 		void setPauseMessage();
-		void setPause();
-		void setStartMessage();
-		void setStart();
 		void setGameoverMessage();
-		void setGameover();
+		void setStart();
+
 		void respond(const EventInterface& events);
 		void shakeScreen();
 		void playMusic(sf::Music);
