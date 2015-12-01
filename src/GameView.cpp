@@ -292,7 +292,7 @@ namespace lava
 				                clock.restart();
 				                player->alive = true;
 				                player->resetPosition();
-				                level->resetLava();
+				                level->reset();
 				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
 				                player->score = 0;
 				                break;
