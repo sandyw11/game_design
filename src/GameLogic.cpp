@@ -51,7 +51,8 @@ namespace lava
 				powerupIt = level->getPowerups()->erase(powerupIt);
 				player->applyPowerup(powerup->getType());
 			}
-			else {
+			else 
+			{
 				++powerupIt;
 			}
 		}
