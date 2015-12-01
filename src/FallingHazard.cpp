@@ -4,18 +4,16 @@
 namespace lava
 {
 	FallingHazard::FallingHazard(int x, int y, int radius, sf::Texture *boulderTexture):
-	//circ(sf::CircleShape(radius)),
 	vx(0),
 	vy(0)
 	{
 		hazardSprite.setTexture(*boulderTexture);
 		hazardSprite.setPosition(x, y);
 		hazardSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+
 		float sizex = 1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - 1.0)));
-		std::cout << sizex<<std::endl;
+
 		hazardSprite.setScale(sizex, sizex);
-		// TODO: plz sprite or better graphics
-		//circ.setFillColor(sf::Color::White);
 	}
 
 	void FallingHazard::update(float delta)

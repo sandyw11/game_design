@@ -263,6 +263,10 @@ namespace lava
 		// push player down
 		vy += rockVy / 2;
 		landed = false;
+
+		// lose powerup when hit
+ 		powerup = "NONE";
+		powerupDelta = 0;
 	}
 
 	void Player::applyPowerup(int type)
@@ -277,6 +281,7 @@ namespace lava
 			powerup = "SHIELD";
 			powerupDelta = 0;
 		}
+		charging = false;
 	}
 
 	void Player::die()

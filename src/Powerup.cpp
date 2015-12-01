@@ -2,16 +2,18 @@
 
 namespace lava
 {
-	Powerup::Powerup(int x, int y):
+	Powerup::Powerup(int x, int y, sf::Texture *powerupTexture):
 	time(START_TIME),
-	active(false),
-	rect(sf::Vector2f(WIDTH, HEIGHT))
+	active(false)
 	{
-		rect.setPosition(sf::Vector2f(x, y));
-		
+		// TODO: different sprite for different powerups
+		powerupSprite.setTexture(*powerupTexture);
+		powerupSprite.setPosition(x, y);
+		powerupSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+
 		// type = PowerupType(rand() % 2);
 		// for video: always pick up jetpack
-		type = 0;
+		type = PowerupType::JETPACK;
 	}
 
 	void Powerup::update(float delta)
@@ -25,6 +27,6 @@ namespace lava
 
 	void Powerup::render(sf::RenderWindow* window)
 	{
-		window->draw(rect);
+		window->draw(powerupSprite);
 	}
 }

@@ -69,11 +69,11 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			if (Equilikely(0, 20) == 1)
+			if (Equilikely(0, 30) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
 				int powerupY = lastY - Powerup::HEIGHT;
-				powerups.push_back(new Powerup(powerupX, powerupY));
+				powerups.push_back(new Powerup(powerupX, powerupY, this->hazardTexture));
 			}
 		}
 

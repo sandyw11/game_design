@@ -54,7 +54,7 @@ namespace lava
 			{
 				Powerup* powerup = *powerupIt;
 
-				if (powerup->getRect().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
+				if (powerup->getSprite().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
 					std::cout << "got powerup " << powerup->getType() << "\n";
 					player->applyPowerup(powerup->getType());

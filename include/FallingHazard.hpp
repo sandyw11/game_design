@@ -15,7 +15,7 @@ namespace lava
 		float vy;
 
 	public:
-		FallingHazard(int x, int y, int radius,sf::Texture *boulderTexture);
+		FallingHazard(int x, int y, int radius, sf::Texture *boulderTexture);
 
 		void update(float delta);
 		void render(sf::RenderWindow* window);
