@@ -10,6 +10,7 @@ namespace lava
 		this->level = level;
 		this->player = player;
 		this->manager = manager;
+
 		EventDelegate example(std::bind(&GameLogic::respond, this, std::placeholders::_1), (int)this);
 		this->manager->registerEvent(example, gameOver);
 	}
@@ -39,25 +40,37 @@ namespace lava
 		player->update(delta);
 
 		// check for powerup collision
-		std::vector<Powerup*>::iterator it = level->getPowerups()->begin();
-		while (it != level->getPowerups()->end())
+		std::vector<Powerup*>::iterator powerupIt = level->getPowerups()->begin();
+		while (powerupIt != level->getPowerups()->end())
 		{
-			Powerup* powerup = *it;
+			Powerup* powerup = *powerupIt;
 			if (powerup->getRect().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 			{
 				// TODO: initiate powerup effect
 				std::cout << "got powerup " << powerup->getType() << "\n";
-				it = level->getPowerups()->erase(it);
+				powerupIt = level->getPowerups()->erase(powerupIt);
 			}
 			else {
-				++it;
+				++powerupIt;
 			}
 		}
 
 		// update falling hazards
-		for (auto &hazard : *level->getFallingHazards())
+		std::vector<FallingHazard*>::iterator hazardIt = level->getFallingHazards()->begin();
+		while (hazardIt != level->getFallingHazards()->end())
 		{
+			FallingHazard* hazard = *hazardIt;
 			hazard->update(delta);
+
+			// check collision
+			if (hazard->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
+			{
+				player->hitByRock(hazard->getVy());
+				hazardIt = level->getFallingHazards()->erase(hazardIt);
+				manager->queueEvent(&hazardEvent);
+			} else {
+				++hazardIt;
+			}
 		}
 
 		// move player with platform
@@ -78,11 +91,6 @@ namespace lava
 	}
 
 	void GameLogic::respond(const EventInterface& events){
-		if (events.getEventType() == ActorDestroyedEvent::eventId){
-			std::cout << "HELLO WORLD\n";
-		}
-		else{
-			std::cout << "GAME OVER \n";
-		}
+
 	}
 }

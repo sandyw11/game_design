@@ -20,6 +20,7 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
@@ -74,34 +75,37 @@ int main(int argc, char** argv)
 	lava::Player player(&playerTexture, &eventManager);
 	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
 
-    GameOverEvent event;
-    GameStartEvent gameStart;
-    GamePlayEvent gamePlay;
-    GamePauseEvent gamePause;
-    GameRestartEvent gameRestart;
+	GameOverEvent event;
+	GameStartEvent gameStart;
+	GamePlayEvent gamePlay;
+	GamePauseEvent gamePause;
+	GameRestartEvent gameRestart;
 	EarthquakeSoundEvent earthquake;
 	PlayMusicEvent playingMusic;
 	JumpSoundEvent jump;
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
 	PauseSoundEvent pauseMusic;
-    eventManager.enterMapValue(GameOverEvent::eventId, event);
-    eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
-    eventManager.enterMapValue(GamePlayEvent::eventId, gamePlay);
-    eventManager.enterMapValue(GamePauseEvent::eventId, gamePause);
-    eventManager.enterMapValue(GameRestartEvent::eventId, gameRestart);
+	HitByFallingHazardEvent hazardHit;
+
+	eventManager.enterMapValue(GameOverEvent::eventId, event);
+	eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
+	eventManager.enterMapValue(GamePlayEvent::eventId, gamePlay);
+	eventManager.enterMapValue(GamePauseEvent::eventId, gamePause);
+	eventManager.enterMapValue(GameRestartEvent::eventId, gameRestart);
 	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
 	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
 	eventManager.enterMapValue(JumpSoundEvent::eventId, jump);
 	eventManager.enterMapValue(GameOverSoundEvent::eventId, loser);
 	eventManager.enterMapValue(StartSoundEvent::eventId, startMusic);
 	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
+	eventManager.enterMapValue(HitByFallingHazardEvent::eventId, hazardHit);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,
+				&backgroundTexture, &eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 	bool isPause = true;
-
 
 	// start main loop
 	while(window.isOpen())

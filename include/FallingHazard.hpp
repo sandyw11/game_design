@@ -21,7 +21,8 @@ namespace lava
 
 		float getX() { return circ.getPosition().x; }
 		float getY() { return circ.getPosition().y; }
-
+		float getVy() { return vy; }
+		sf::CircleShape getCircle() { return circ; }
 	};
 }
 

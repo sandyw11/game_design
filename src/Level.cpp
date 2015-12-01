@@ -93,13 +93,13 @@ namespace lava
 		// check for new hazard
 		if (nextHazardTime < 0)
 		{
-			int radius = Equilikely(10, 15);
-			hazards.push_back(new FallingHazard(Equilikely(0, 800), 
-							  playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET), 
-							  radius));
+			int radius = Equilikely(13, 15);
+			int x = Equilikely(0, 800);
+			int y = playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET);
+			hazards.push_back(new FallingHazard(x, y, radius));
 
-			// TODO: use Uniform()
-			nextHazardTime = Equilikely(2, 8);
+			// TODO: use Uniform()?
+			nextHazardTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
 		}
 		nextHazardTime -= delta;
 
