@@ -21,6 +21,8 @@ namespace lava
 
 		static const int MINJUMP = 200;
 		static const int MAXJUMP = 1000;
+		static const int JETPACK_JUMP = 560;
+		static const int POWERUP_TIME = 8;
 		static const int VX = 200;
 		
 	public:
@@ -30,10 +32,9 @@ namespace lava
 		void stickToPlatform(float delta, float vx, float vy);
 		void render(sf::RenderWindow* window);
 		void jump();
-		void jetpackJump(float delta);
+		void jetpackJump();
 		void die();
 		void land(float y);
-		void resetPowerup();
 		void hitByRock(float rockVy);
 		void applyPowerup(int type);
 		float getCharge();
@@ -47,8 +48,7 @@ namespace lava
 		bool alive;
 		bool landed;
 		const char* powerup;
-		float powerupTime;
-		float delta;
+		float powerupDelta;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }

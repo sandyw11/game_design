@@ -353,13 +353,7 @@ namespace lava
 						manager->queueEvent(&loser);
 					}
 				}
-		        
 
-		        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) && (strcmp(player->powerup,"JETPACK") == 0))
-		        {
-		        	float delta = 20;
-		        	player->jetpackJump(delta);
-		        }
 
 		        // key press events
 		        if(Event.type == sf::Event::KeyPressed)
@@ -371,18 +365,20 @@ namespace lava
 		                		if (strcmp(player->powerup,"JETPACK") != 0)
 		                		{
 		        		        	player->charging = true;
-		                    		break;
+		                		} else {
+		                			player->jetpackJump();
 		                		}
+		                		break;
 		                	case sf::Keyboard::D:
-		                    	player->faceLeft = false;
-		                    	player->moveLeft = true;
-		                    	break;
+				            	player->faceLeft = false;
+				            	player->moveLeft = true;
+		                    		break;
 		                	case sf::Keyboard::A:
-		                    	player->moveRight = true;
-		                    	player->faceLeft = true;
-		                    	break;
+				            	player->moveRight = true;
+				            	player->faceLeft = true;
+		                    		break;
 		            	}
-		            
+
 		        }
 
 		        // key release events
@@ -391,17 +387,13 @@ namespace lava
 		            switch(Event.key.code)
 		            {
 		                case sf::Keyboard::Space:
-		                if (strcmp(player->powerup,"JETPACK") != 0)
-		                {
-		                    player->charging = false;
-		                    player->jump();
-		                    manager->queueEvent(&jump);
+		                    if (strcmp(player->powerup,"JETPACK") != 0)
+		                    {
+		                        player->charging = false;
+		                        player->jump();
+		                        manager->queueEvent(&jump);
+		                    }
 		                    break;
-		                }
-		                else
-		                {
-		                	player->jetpackJump(20);
-		                }
 		                case sf::Keyboard::D:
 		                    player->moveLeft = false;
 		                    break;
@@ -497,7 +489,7 @@ namespace lava
 	{
 		isGameover = true;
 		isPlaying = false;
-        gamePlayMusic.stop();
+        	gamePlayMusic.stop();
 		manager->queueEvent(&loser);
 	}
         else if (events.getEventType() == GameStartEvent::eventId)
