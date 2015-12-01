@@ -9,7 +9,9 @@ namespace lava
 	{
 		rect.setPosition(sf::Vector2f(x, y));
 		
-		type = PowerupType(rand() % 2);
+		// type = PowerupType(rand() % 2);
+		// for video: always pick up jetpack
+		type = 0;
 	}
 
 	void Powerup::update(float delta)

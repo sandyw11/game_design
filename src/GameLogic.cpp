@@ -53,10 +53,11 @@ namespace lava
 			while (powerupIt != level->getPowerups()->end())
 			{
 				Powerup* powerup = *powerupIt;
+
 				if (powerup->getRect().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
-					// TODO: initiate powerup effect
 					std::cout << "got powerup " << powerup->getType() << "\n";
+					player->applyPowerup(powerup->getType());
 					powerupIt = level->getPowerups()->erase(powerupIt);
 				}
 				else {
@@ -98,7 +99,6 @@ namespace lava
 				}
 			}
 		}
-
 	}
 
 	void GameLogic::respond(const EventInterface& events){

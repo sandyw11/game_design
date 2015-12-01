@@ -24,6 +24,7 @@
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
 #include "HitByFallingHazardEvent.hpp"
+#include <ctime>
 #include <SFML/Audio.hpp>
 
 namespace lava
@@ -96,6 +97,7 @@ namespace lava
 		sf::Music gamePlayMusic;
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
+
 
 		bool isWait;
 		bool isPlaying;

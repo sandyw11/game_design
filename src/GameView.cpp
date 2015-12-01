@@ -37,10 +37,10 @@ namespace lava
 		hazardBuffer.loadFromFile("hazard.flac");
 		hazardSound.setBuffer(hazardBuffer);
 
-        	jumpBuffer.loadFromFile("jump.wav");
+       		jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-        	gameOverBuffer.loadFromFile("Game_Over.ogg");
+      		gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
@@ -168,8 +168,8 @@ namespace lava
     void GameView::update(sf::Clock clock)
     {
         processInput(clock);
-	sf::View view;
-	view.reset(sf::FloatRect(0, 0, 800, 600));
+		sf::View view;
+		view.reset(sf::FloatRect(0, 0, 800, 600));
 
         window->clear(sf::Color::Black);
         if(isPlaying)
@@ -327,25 +327,33 @@ namespace lava
 					manager->queueEvent(&loser);
 					manager->queueEvent(&gameOver);
 				}
-		        }
+			}
+
 
 		        // key press events
 		        if(Event.type == sf::Event::KeyPressed)
 		        {
-		            switch(Event.key.code)
-		            {
-		                case sf::Keyboard::Space:
-		                    player->charging = true;
-		                    break;
-		                case sf::Keyboard::D:
-		                    player->faceLeft = false;
-		                    player->moveLeft = true;
-		                    break;
-		                case sf::Keyboard::A:
-		                    player->moveRight = true;
-		                    player->faceLeft = true;
-		                    break;
-		            }
+
+		            	switch(Event.key.code)
+		            	{
+		                	case sf::Keyboard::Space:
+		                		if (strcmp(player->powerup,"JETPACK") != 0)
+		                		{
+		        		        	player->charging = true;
+		                		} else {
+		                			player->jetpackJump();
+		                		}
+		                		break;
+		                	case sf::Keyboard::D:
+				            	player->faceLeft = false;
+				            	player->moveLeft = true;
+		                    		break;
+		                	case sf::Keyboard::A:
+				            	player->moveRight = true;
+				            	player->faceLeft = true;
+		                    		break;
+		            	}
+
 		        }
 
 		        // key release events
@@ -355,9 +363,12 @@ namespace lava
 		            switch(Event.key.code)
 		            {
 		                case sf::Keyboard::Space:
-		                    player->charging = false;
-		                    player->jump();
-		                    manager->queueEvent(&jump);
+		                    if (strcmp(player->powerup,"JETPACK") != 0)
+		                    {
+		                        player->charging = false;
+		                        player->jump();
+		                        manager->queueEvent(&jump);
+		                    }
 		                    break;
 		                case sf::Keyboard::D:
 		                    player->moveLeft = false;
@@ -454,7 +465,7 @@ namespace lava
 	{
 		isGameover = true;
 		isPlaying = false;
-                gamePlayMusic.stop();
+        	gamePlayMusic.stop();
 		manager->queueEvent(&loser);
 	}
         else if (events.getEventType() == GameStartEvent::eventId)
