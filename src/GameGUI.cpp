@@ -1,4 +1,5 @@
 #include "GameGUI.hpp"
+#include <iostream>
 
 namespace lava
 {
@@ -21,6 +22,7 @@ namespace lava
         menu[2].setColor(sf::Color::White);
         menu[2].setString("Exit");
         menu[2].setPosition(sf::Vector2f(width / 2 - 50, height / 2 + 50 * 3));
+        selectedItemIndex = 0;
     }
     
     GameGUI::~GameGUI()
