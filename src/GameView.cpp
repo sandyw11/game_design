@@ -12,7 +12,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        this->view = view;
+        	this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
 
@@ -37,10 +37,10 @@ namespace lava
 		hazardBuffer.loadFromFile("hazard.flac");
 		hazardSound.setBuffer(hazardBuffer);
 
-        jumpBuffer.loadFromFile("jump.wav");
+        	jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-        gameOverBuffer.loadFromFile("Game_Over.ogg");
+        	gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
@@ -65,8 +65,7 @@ namespace lava
 		this->manager->registerEvent(example, startMusic);
 		this->manager->registerEvent(example, pauseMusic);
 		this->manager->registerEvent(example, hazardEvent);
-    }
-	GameGUI gameGUI(800, 600);
+    	}
 
 	GameView::~GameView()
 	{
@@ -169,8 +168,8 @@ namespace lava
     void GameView::update(sf::Clock clock)
     {
         processInput(clock);
-		sf::View view;
-		view.reset(sf::FloatRect(0, 0, 800, 600));
+	sf::View view;
+	view.reset(sf::FloatRect(0, 0, 800, 600));
 
         window->clear(sf::Color::Black);
         if(isPlaying)
@@ -185,8 +184,8 @@ namespace lava
             }
             if(isWait)
             {
-				window->setView(view);
-				earthquakeSound.stop();
+		window->setView(view);
+		earthquakeSound.stop();
                 setPauseMessage();
             }
             else
@@ -263,7 +262,7 @@ namespace lava
             		{
                			if(!isPlaying)
                			{
-							switch(gameGUI->GetPressedItem())
+					switch(gameGUI->GetPressedItem())
 		    			{
 	       		 		case 0:
 				                startScreenMusic.stop();
@@ -377,8 +376,8 @@ namespace lava
 		window->clear(sf::Color::Black);
 		sf::Vector2f position(0, 0);
 		position.y = player->getY() + 20 - (250);
-		//std::cout << position.y << std::endl; 
-		//draw background 
+		//std::cout << position.y << std::endl;
+		//draw background
 		background.setPosition(sf::Vector2f(position.x, position.y));
 		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
 		window->draw(background);

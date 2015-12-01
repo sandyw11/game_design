@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 		}
 	}
 	std::cout << highscorelist << std::endl;*/
-	
+
 	lava::eventManager eventManager;
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -128,22 +128,23 @@ int main(int argc, char** argv)
 	lava::Player player(&playerTexture, &eventManager);
 	lava::Level level(std::time(NULL),&platformTexture, &hazardTextures, &eventManager);
 
-    GameOverEvent event;
-    GameStartEvent gameStart;
-    GamePlayEvent gamePlay;
-    GamePauseEvent gamePause;
-    GameRestartEvent gameRestart;
+	GameOverEvent event;
+	GameStartEvent gameStart;
+	GamePlayEvent gamePlay;
+	GamePauseEvent gamePause;
+	GameRestartEvent gameRestart;
 	EarthquakeSoundEvent earthquake;
 	PlayMusicEvent playingMusic;
 	JumpSoundEvent jump;
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
 	PauseSoundEvent pauseMusic;
-    eventManager.enterMapValue(GameOverEvent::eventId, event);
-    eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
-    eventManager.enterMapValue(GamePlayEvent::eventId, gamePlay);
-    eventManager.enterMapValue(GamePauseEvent::eventId, gamePause);
-    eventManager.enterMapValue(GameRestartEvent::eventId, gameRestart);
+
+	eventManager.enterMapValue(GameOverEvent::eventId, event);
+	eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
+	eventManager.enterMapValue(GamePlayEvent::eventId, gamePlay);
+	eventManager.enterMapValue(GamePauseEvent::eventId, gamePause);
+	eventManager.enterMapValue(GameRestartEvent::eventId, gameRestart);
 	eventManager.enterMapValue(EarthquakeSoundEvent::eventId, earthquake);
 	eventManager.enterMapValue(PlayMusicEvent::eventId, playingMusic);
 	eventManager.enterMapValue(JumpSoundEvent::eventId, jump);
@@ -155,13 +156,12 @@ int main(int argc, char** argv)
 	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 
-
 	// start main loop
 	while(window.isOpen())
 	{
 		float delta = clock.restart().asSeconds();
 		gameView.update(clock);
-		gameLogic.update(delta);			
+		gameLogic.update(delta);
 		eventManager.processEvents();
 	}
 
