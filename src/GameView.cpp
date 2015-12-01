@@ -27,12 +27,15 @@ namespace lava
 		text.setCharacterSize(50);
 		text.setPosition(sf::Vector2f(300, 200));
 
-		EventDelegate example(std::bind(&lava::GameView::respond, this, std::placeholders::_1), (int)this);
+		EventDelegate example(std::bind(&respond, this, std::placeholders::_1), (int)this);
 
 		earthquakeBuffer.loadFromFile("earthquake.wav");
 		earthquakeSound.setBuffer(earthquakeBuffer);
 		earthquakeSound.setLoop(true);
 		earthquakeSound.setBuffer(earthquakeBuffer);
+
+		hazardBuffer.loadFromFile("hazard.flac");
+		hazardSound.setBuffer(hazardBuffer);
 
         	jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
@@ -61,6 +64,7 @@ namespace lava
 		this->manager->registerEvent(example, loser);
 		this->manager->registerEvent(example, startMusic);
 		this->manager->registerEvent(example, pauseMusic);
+		this->manager->registerEvent(example, hazardEvent);
     }
 
 	GameView::~GameView()
@@ -345,7 +349,6 @@ namespace lava
 					isPlaying = false;
 					gamePlayMusic.stop();
 					manager->queueEvent(&loser);
-					//manager->queueEvent(&gameOver);
 				}
 		        }
 
@@ -469,33 +472,38 @@ namespace lava
 
      void GameView::respond(const EventInterface& events)
      {
-	if (events.getEventType() == GameOverEvent::eventId){
+	if (events.getEventType() == GameOverEvent::eventId)
+	{
 		isGameover = true;
 		isPlaying = false;
                 gamePlayMusic.stop();
 		manager->queueEvent(&loser);
 	}
-        else if (events.getEventType() == GameStartEvent::eventId){
+        else if (events.getEventType() == GameStartEvent::eventId)
+        {
             isPlaying = false;
             isGameover = false;
             isWait = true;
             gameOverSound.stop();
             manager->queueEvent(&startMusic);
         }
-        else if (events.getEventType() == GamePlayEvent::eventId){
+        else if (events.getEventType() == GamePlayEvent::eventId)
+        {
             isPlaying = true;
             isWait = false;
             gameOverSound.stop();
             startScreenMusic.stop();
             manager->queueEvent(&playingMusic);
         }
-        else if (events.getEventType() == GamePauseEvent::eventId){
+        else if (events.getEventType() == GamePauseEvent::eventId)
+        {
             isWait = true;
             gamePlayMusic.stop();
             jumpSound.stop();
             manager->queueEvent(&pauseMusic);
         }
-        else if (events.getEventType() == GameRestartEvent::eventId){
+        else if (events.getEventType() == GameRestartEvent::eventId)
+        {
             isPlaying = false;
             isGameover = false;
             isWait = true;
@@ -505,6 +513,10 @@ namespace lava
 	else if ((events.getEventType() == EarthquakeSoundEvent::eventId) && (isWait == false))
         {
             earthquakeSound.play();
+        }
+        else if ((events.getEventType() == HitByFallingHazardEvent::eventId))
+        {
+            hazardSound.play();
         }
         else if (events.getEventType() == PlayMusicEvent::eventId)
         {

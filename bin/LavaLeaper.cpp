@@ -20,6 +20,7 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
@@ -85,6 +86,7 @@ int main(int argc, char** argv)
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
 	PauseSoundEvent pauseMusic;
+	HitByFallingHazardEvent hazardHit;
 
 	eventManager.enterMapValue(GameOverEvent::eventId, event);
 	eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
@@ -97,9 +99,11 @@ int main(int argc, char** argv)
 	eventManager.enterMapValue(GameOverSoundEvent::eventId, loser);
 	eventManager.enterMapValue(StartSoundEvent::eventId, startMusic);
 	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
+	eventManager.enterMapValue(HitByFallingHazardEvent::eventId, hazardHit);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,
+				&backgroundTexture, &eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 	bool isPause = true;
 

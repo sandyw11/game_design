@@ -5,7 +5,7 @@
 
 namespace lava
 {
-	Player::Player(sf::Texture* playerTexture, lava::eventManager * manager):
+	Player::Player(sf::Texture* playerTexture, lava::eventManager* manager):
 	vx(0),
 	vy(0),
 	charge(false),

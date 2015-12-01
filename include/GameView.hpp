@@ -23,6 +23,7 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 #include <SFML/Audio.hpp>
 
 namespace lava
@@ -62,6 +63,7 @@ namespace lava
 		GameOverSoundEvent loser;
 		StartSoundEvent startMusic;
 		PauseSoundEvent pauseMusic;
+		HitByFallingHazardEvent hazardEvent;
 
 	protected:
 		sf::RenderWindow* window;
@@ -80,14 +82,22 @@ namespace lava
 		sf::Sound sound;
 		sf::Music music;
 		std::string highscorelist;
+
+		sf::SoundBuffer hazardBuffer;
+		sf::Sound hazardSound;
+
 		sf::SoundBuffer noLoopBuffer;
 		sf::Sound noLoopSound;
+
 		sf::SoundBuffer earthquakeBuffer;
 		sf::Sound earthquakeSound;
+
 		sf::SoundBuffer jumpBuffer;
 		sf::Sound jumpSound;
+
 		sf::SoundBuffer gameOverBuffer;
 		sf::Sound gameOverSound;
+
 		sf::Music gamePlayMusic;
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;

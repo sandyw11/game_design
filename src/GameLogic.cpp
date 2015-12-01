@@ -10,6 +10,7 @@ namespace lava
 		this->level = level;
 		this->player = player;
 		this->manager = manager;
+
 		EventDelegate example(std::bind(&GameLogic::respond, this, std::placeholders::_1), (int)this);
 		this->manager->registerEvent(example, gameOver);
 	}
@@ -66,6 +67,7 @@ namespace lava
 			{
 				player->hitByRock(hazard->getVy());
 				hazardIt = level->getFallingHazards()->erase(hazardIt);
+				manager->queueEvent(&hazardEvent);
 			} else {
 				++hazardIt;
 			}
