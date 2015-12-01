@@ -12,7 +12,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        	this->view = view;
+        this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
 
@@ -37,10 +37,10 @@ namespace lava
 		hazardBuffer.loadFromFile("hazard.flac");
 		hazardSound.setBuffer(hazardBuffer);
 
-        	jumpBuffer.loadFromFile("jump.wav");
+        jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-        	gameOverBuffer.loadFromFile("Game_Over.ogg");
+        gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
@@ -167,8 +167,8 @@ namespace lava
     void GameView::update(sf::Clock clock)
     {
         processInput(clock);
-	sf::View view;
-	view.reset(sf::FloatRect(0, 0, 800, 600));
+		sf::View view;
+		view.reset(sf::FloatRect(0, 0, 800, 600));
 
         window->clear(sf::Color::Black);
         if(isPlaying)
@@ -183,8 +183,8 @@ namespace lava
             }
             if(isWait)
             {
-		window->setView(view);
-		earthquakeSound.stop();
+				window->setView(view);
+				earthquakeSound.stop();
                 setPauseMessage();
             }
             else
@@ -253,7 +253,7 @@ namespace lava
             		{
                			 if(!isPlaying)
                 		 {
-                             		isInstruct = false;
+                             isInstruct = false;
                			 }
             		}
 

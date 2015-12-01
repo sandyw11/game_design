@@ -62,7 +62,7 @@ namespace lava
 
 	protected:
 		sf::RenderWindow* window;
-        	void processInput(sf::Clock clock);
+        void processInput(sf::Clock clock);
 		void draw();
 		void drawChargeBar();
 
