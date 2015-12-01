@@ -29,8 +29,8 @@ namespace lava
 		static const int MAX_WIDTH = 175;
 
 		static const int FIRST_HAZARD_TIME = 8;
-		static const int MIN_HAZARD_TIME = 1;
-		static const int MAX_HAZARD_TIME = 3;
+		static const int MIN_HAZARD_TIME = 2;
+		static const int MAX_HAZARD_TIME = 5;
 		static const int HAZARD_MIN_OFFSET = 325;
 		static const int HAZARD_MAX_OFFSET = 400;
 		static const int HAZARD_MIN_RADIUS = 13;
@@ -38,6 +38,7 @@ namespace lava
 
 		int chunkNum;
 		sf::Texture *texture;
+		sf::Texture *hazardTexture;
 
 		std::vector<Platform*> platforms;
 		std::vector<Powerup*> powerups;
@@ -58,7 +59,7 @@ namespace lava
 		void generateChunk(sf::Texture *platformTexture);
 
 	public:
-		Level(int seed, sf::Texture* platformTexture,lava::eventManager *manager);
+		Level(int seed, sf::Texture* platformTexture, sf::Texture *hazardTexture, lava::eventManager *manager);
 		~Level();
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; }

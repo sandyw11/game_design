@@ -7,6 +7,7 @@
 #include "Platform.hpp"
 #include <ctime>
 
+
 namespace lava
 {
 	class Player : public Actor
@@ -41,6 +42,7 @@ namespace lava
 		bool charging;
 		bool moveLeft;
 		bool moveRight;
+		bool isHit;
 		bool isFalling() { return vy > 0; }
 		bool faceLeft;
 		

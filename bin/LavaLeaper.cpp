@@ -20,22 +20,69 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
-#include "HitByFallingHazardEvent.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
 {
 	// create main window
-	//ScoreBoard scores;
+	ScoreBoard scores;
 	//JSONValue *jsonHighScores;
-	//char* message = "bob";
+	//char* message = " Hello bob";
 	//char *score = "1000";
+	//sf::IpAddress ip("127.0.0.1");
+	//sf::UdpSocket socket;
+	//sf::Packet packet;
+
+	//packet.append(message, std::strlen(message));
+	//socket.send(packet, ip, 9000);
 	//std::wstring something = std::wstring(message, message + std::strlen(message));
 	//scores.sendInformation(message);
 	//scores.addEntry(something, score);
 	//scores.addEntry(something, "2222");
 	//jsonHighScores = scores.getEntry();
+	/*sf::UdpSocket socket;
+	sf::Packet packet;
+	unsigned short port = 5400;
+	unsigned short respPort = 5401;
+	//No arguments means program should retrieve scores and print them
+	scores.makePacket(L"GetScores", L"", 0.0f, packet);
+	socket.bind(socket.getLocalPort());
+	socket.send(packet,sf::IpAddress("127.0.0.1"), port);
+	//std::cout << sf::IpAddress::getLocalAddress() << std::endl;
+	char buffer[512];      // The buffer to store raw response data in
+	sf::IpAddress respIP;  // The ip address where the response came from
+	size_t respSize;     // The amount of data actually written to buffer
+	unsigned short yport;
+	// Now receive a response.  This is a blocking call, meaning your program
+	// will hang until a response is received.
+	//socket.setBlocking(false);
+	socket.receive(buffer, 512, respSize, respIP, port);
 
+	std::string respString(buffer, respSize);
+
+	JSONValue * jsonHighScores = JSON::Parse(respString.c_str());
+	if (!jsonHighScores->IsObject())
+	{
+		std::cout << "Something went wrong, not good.";
+	}
+	std::cout << "Received " << respSize << " bytes from " << respIP << " on port " << port << std::endl;
+	std::string highscorelist;
+	//jsonHighScores = scores.getEntry();
+	JSONObject root = jsonHighScores->AsObject();
+	if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+	{
+		JSONArray scores = root[L"Scores"]->AsArray();
+		for (int i = 0; i < scores.size(); i++)
+		{
+			JSONObject curObj = scores[i]->AsObject();
+			std::string notSoWide;
+			std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
+			std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i + 1))->str();
+			notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
+			highscorelist += "Rank " + rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
+		}
+	}
+	std::cout << highscorelist << std::endl;*/
 
 	lava::eventManager eventManager;
 	sf::View view;
@@ -50,6 +97,8 @@ int main(int argc, char** argv)
 	sf::Texture platformTexture;
 	sf::Texture lavaTexture;
 	sf::Texture backgroundTexture;
+	sf::Texture hazardTextures;
+
 	if (!playerTexture.loadFromFile("graph/Guy.png"))
 	{
 		std::cout << "Cannot load Player image" << std::endl;
@@ -66,14 +115,18 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Cannot load Background image" << std::endl;
 	}
-
+	if (!hazardTextures.loadFromFile("graph/P&H.png"))
+	{
+		std::cout << "Cannot load Hazard and Power up images" << std::endl;
+	}
+	srand(time(NULL));
 	platformTexture.setRepeated(true);
 	lavaTexture.setRepeated(true);
 	backgroundTexture.setRepeated(true);
 
 	// create player and level
 	lava::Player player(&playerTexture, &eventManager);
-	lava::Level level(std::time(NULL),&platformTexture, &eventManager);
+	lava::Level level(std::time(NULL),&platformTexture, &hazardTextures, &eventManager);
 
 	GameOverEvent event;
 	GameStartEvent gameStart;
@@ -86,7 +139,6 @@ int main(int argc, char** argv)
 	GameOverSoundEvent loser;
 	StartSoundEvent startMusic;
 	PauseSoundEvent pauseMusic;
-	HitByFallingHazardEvent hazardHit;
 
 	eventManager.enterMapValue(GameOverEvent::eventId, event);
 	eventManager.enterMapValue(GameStartEvent::eventId, gameStart);
@@ -99,26 +151,20 @@ int main(int argc, char** argv)
 	eventManager.enterMapValue(GameOverSoundEvent::eventId, loser);
 	eventManager.enterMapValue(StartSoundEvent::eventId, startMusic);
 	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
-	eventManager.enterMapValue(HitByFallingHazardEvent::eventId, hazardHit);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,
-				&backgroundTexture, &eventManager);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
-	bool isPause = true;
 
 	// start main loop
 	while(window.isOpen())
 	{
 		float delta = clock.restart().asSeconds();
-		gameView.update(clock, isPause);
-		if(!isPause)
-		{
-			gameLogic.update(delta);			
-		}
+		gameView.update(clock);
+		gameLogic.update(delta);
 		eventManager.processEvents();
 	}
 
-	// Done.
+	// Done.*/
 	return 0;
 }

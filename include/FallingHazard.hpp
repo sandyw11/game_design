@@ -9,20 +9,22 @@ namespace lava
 	class FallingHazard : public Actor
 	{
 	private:
-		sf::CircleShape circ;
+		//sf::CircleShape circ;
+		sf::Sprite hazardSprite;
 		float vx;
 		float vy;
 
 	public:
-		FallingHazard(int x, int y, int radius);
+		FallingHazard(int x, int y, int radius,sf::Texture *boulderTexture);
 
 		void update(float delta);
 		void render(sf::RenderWindow* window);
 
-		float getX() { return circ.getPosition().x; }
-		float getY() { return circ.getPosition().y; }
+		float getX() { return hazardSprite.getPosition().x; }
+		float getY() { return hazardSprite.getPosition().y; }
 		float getVy() { return vy; }
-		sf::CircleShape getCircle() { return circ; }
+		//sf::CircleShape getCircle() { return circ; }
+		sf::Sprite getCircle(){ return hazardSprite; }
 	};
 }
 

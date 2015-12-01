@@ -6,7 +6,7 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
-#include "GameLogic.hpp"
+#include "Level.hpp"
 #include "GameOverEvent.hpp"
 #include "GameStartEvent.hpp"
 #include "GamePlayEvent.hpp"
@@ -35,18 +35,13 @@ namespace lava
 		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager);
 		~GameView();
 
-
-		void update(sf::Clock clock, bool &isPause);
-
+		void update(sf::Clock clock);
 
 		void setInstructionMessage();
-		void setInstruction();
 		void setPauseMessage();
-		void setPause();
-		void setStartMessage();
-		void setStart();
 		void setGameoverMessage();
-		void setGameover();
+		void setStart();
+
 		void respond(const EventInterface& events);
 		void shakeScreen();
 		void playMusic(sf::Music);
@@ -68,7 +63,7 @@ namespace lava
 
 	protected:
 		sf::RenderWindow* window;
-        	void processInput(sf::Clock clock);
+        void processInput(sf::Clock clock);
 		void draw();
 		void drawChargeBar();
 
@@ -109,7 +104,7 @@ namespace lava
 		bool isGameover;
 		bool isInstruct;
 
-		GameGUI* gameGUI;
+		GameGUI *gameGUI;
 
 		sf::Sprite background;
 		sf::Sprite lavaSprite;

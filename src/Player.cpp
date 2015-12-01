@@ -14,7 +14,8 @@ namespace lava
 	moveRight(false),
 	landed(true),
 	alive(true),
-	powerupDelta(0)
+	powerupDelta(0),
+	isHit(false)
 	{
 		score = 0;
 		playerSprite.setTexture(*playerTexture);
@@ -28,122 +29,141 @@ namespace lava
 	{
 		if (alive)
 		{
-			if (playerSprite.getPosition().x > 800)
-			{
-				playerSprite.setPosition(0, playerSprite.getPosition().y);
-			}
-			else if (playerSprite.getPosition().x < 0)
-			{
-				playerSprite.setPosition(800, playerSprite.getPosition().y);
-			}
+			if (!isHit){
+				if (playerSprite.getPosition().x > 800){
+					playerSprite.setPosition(0, playerSprite.getPosition().y);
+				}
+				else if (playerSprite.getPosition().x < 0){
+					playerSprite.setPosition(800, playerSprite.getPosition().y);
+				}
 
-			// update charge
-			if (charging)
-			{
-				charge += delta;
-				if (!faceLeft)
-				{
-					playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
-					playerSprite.setScale(1.5f, 1.5f);
-				}
-				else
-				{
-					playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
-					playerSprite.setScale(1.5f, 1.5f);
-				}
-			}
-			else
-			{
-				if (!faceLeft)
-				{
-					playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
-					playerSprite.setScale(1.5f, 1.5f);
-				}
-				else
-				{
-					playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					playerSprite.setScale(1.5f, 1.5f);
-				}
-			}
-
-			// if not landed, fall
-			if (!landed)
-			{
-				if (!charging)
-				{
-					if (!faceLeft)
-					{
-						if (powerup == "JETPACK")
-						{
-							playerSprite.setTextureRect(sf::IntRect(64, 32, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
-						else
-						{
-							playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
+				// update charge
+				if (charging) {
+					charge += delta;
+					if (!faceLeft){
+						playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
 					}
-					else
-					{
-						if (powerup == "JETPACK")
-						{
-							playerSprite.setTextureRect(sf::IntRect(96, 32, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
-						else
-						{
-							playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
-
+					else{
+						playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
 					}
 				}
-				vy += GameLogic::A * delta;
-			}
-
-			// left and right movement, only move in air
-			vx = 0;
-			if (vy != 0)
-			{
-				if (moveLeft && moveRight) vx = 0;
-				else if (moveLeft)
-				{
-					vx = VX;
-					if (!charging)
-					{
-						if (powerup == "JETPACK")
-						{
-							playerSprite.setTextureRect(sf::IntRect(32, 32, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
-						else
-						{
-							playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
-						}
+				else {
+					if (!faceLeft){
+						playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+					else{
+						playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
 					}
 				}
-				else if (moveRight)
-				{
-					vx = -VX;
-					if (!charging)
-					{
-						if (powerup == "JETPACK")
-						{
-							playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
+
+				// if not landed, fall
+				if (!landed) {
+					if (!charging){
+						charge = 0;
+						if (!faceLeft){
+							if (powerup == "JETPACK")
+							{
+								playerSprite.setTextureRect(sf::IntRect(64, 32, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+							else
+							{
+								playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
 						}
-						else
-						{
-							playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
-							playerSprite.setScale(1.5f, 1.5f);
+						else{
+							if (powerup == "JETPACK")
+							{
+								playerSprite.setTextureRect(sf::IntRect(96, 32, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+							else
+							{
+								playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
 						}
 					}
+					vy += GameLogic::A * delta;
 				}
-				else vx = 0;
-			}
 
+				// left and right movement, only move in air
+				vx = 0;
+				if (vy != 0)
+				{
+					if (moveLeft && moveRight) vx = 0;
+					else if (moveLeft){
+						vx = VX;
+						if (!charging){
+							if (powerup == "JETPACK")
+							{
+								playerSprite.setTextureRect(sf::IntRect(32, 32, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+							else
+							{
+								playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+						}
+					}
+					else if (moveRight){
+						vx = -VX;
+						if (!charging){
+							if (powerup == "JETPACK")
+							{
+								playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+							else
+							{
+								playerSprite.setTextureRect(sf::IntRect(64, 0, 32, 32));
+								playerSprite.setScale(1.5f, 1.5f);
+							}
+						}
+					}
+					else vx = 0;
+				}
+			}
+			else {
+				if (!landed) {
+						charge = 0;
+						if (!faceLeft){
+							playerSprite.setTextureRect(sf::IntRect(0, 96, 32, 32));
+							playerSprite.setScale(1.5f, 1.5f);
+						}
+						else{
+							playerSprite.setTextureRect(sf::IntRect(32, 96, 32, 32));
+							playerSprite.setScale(1.5f, 1.5f);
+						}
+					vy += GameLogic::A * delta;
+				}
+
+				// left and right movement, only move in air
+				vx = 0;
+				if (vy != 0)
+				{
+					if (moveLeft && moveRight) vx = 0;
+					else if (moveLeft){
+						vx = VX;
+							playerSprite.setTextureRect(sf::IntRect(0, 96, 32, 32));
+							playerSprite.setScale(1.5f, 1.5f);
+
+					}
+					else if (moveRight){
+						vx = -VX;
+							playerSprite.setTextureRect(sf::IntRect(32, 96, 32, 32));
+							playerSprite.setScale(1.5f, 1.5f);
+
+					}
+					else vx = 0;
+				}
+			}
 			// move player
 			playerSprite.move(delta * vx, delta * vy);
 
@@ -213,6 +233,7 @@ namespace lava
 	{
 		if (vy > 0)
 		{
+			isHit = false;
 			vy = 0;
 			if (score < GameLogic::START_Y - playerSprite.getPosition().y){
 				score = GameLogic::START_Y - playerSprite.getPosition().y;

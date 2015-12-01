@@ -5,12 +5,16 @@
 #include <iostream>
 #include "Level.hpp"
 #include "Player.hpp"
-#include "ActorDestroyedEvent.hpp"
-#include "EventManager.hpp"
-#include "GameOverEvent.hpp"
-#include "HitByFallingHazardEvent.hpp"
 #include "Platform.hpp"
 #include "FallingHazard.hpp"
+
+#include "EventManager.hpp"
+#include "GameOverEvent.hpp"
+#include "GameStartEvent.hpp"
+#include "GamePlayEvent.hpp"
+#include "GamePauseEvent.hpp"
+#include "GameRestartEvent.hpp"
+#include "HitByFallingHazardEvent.hpp"
 
 
 namespace lava
@@ -23,6 +27,10 @@ namespace lava
 		void respond(const EventInterface& events);
 
 		GameOverEvent gameOver;
+		GameStartEvent gameStart;
+		GamePlayEvent gamePlay;
+		GamePauseEvent gamePause;
+		GameRestartEvent gameRestart;
 		HitByFallingHazardEvent hazardEvent;
 
 		static const int A = 1100;
@@ -33,6 +41,8 @@ namespace lava
 		Player* player;
 		eventManager *manager;
 		Platform* landedPlatform;
+
+		bool running;
 	};
 }
 
