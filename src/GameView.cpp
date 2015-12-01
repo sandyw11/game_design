@@ -179,9 +179,8 @@ namespace lava
         window->draw(chargedBar);
     }
 
-    void GameView::update(sf::Clock clock, bool &isPause)
+    void GameView::update(sf::Clock clock)
     {
-        isWait = isPause;
         processInput(clock);
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -237,7 +236,6 @@ namespace lava
             }
         }
         window->display();
-        isPause = isWait;
     }
 
     void GameView::processInput(sf::Clock clock)
@@ -282,11 +280,8 @@ namespace lava
 		                        switch(gameGUI->GetPressedItem())
 		    			{
 	       		 		case 0:
-				                isPlaying = true;
-				                isGameover = false;
-				                isWait = false;
-
 				                startScreenMusic.stop();
+				                manager->queueEvent(&gamePlay);
 				                manager->queueEvent(&playingMusic);
 
 				                clock.restart();
@@ -310,12 +305,9 @@ namespace lava
            	    {
                     	if(isGameover)
                     	{
-                        	isPlaying = false;
-                        	isGameover = false;
-                        	isWait = true;
                         	gameOverSound.stop();
                         	manager->queueEvent(&startMusic);
-                        	//manager->queueEvent(&gameRestart);
+                        	manager->queueEvent(&gameRestart);
                     	}
                     }
 
@@ -329,12 +321,13 @@ namespace lava
 		                gamePlayMusic.stop();
 		                jumpSound.stop();
 		                manager->queueEvent(&pauseMusic);
-		                //manager->queueEvent(&gamePause);
+		                manager->queueEvent(&gamePause);
 		            }
 		            else
 		            {
 		                pauseScreenMusic.stop();
 		                manager->queueEvent(&playingMusic);
+		                manager->queueEvent(&gamePlay);
 		            }
 		        }
 		    }
@@ -345,10 +338,9 @@ namespace lava
 		        {
 				if(isPlaying)
 				{
-					isGameover = true;
-					isPlaying = false;
 					gamePlayMusic.stop();
 					manager->queueEvent(&loser);
+					manager->queueEvent(&gameOver);
 				}
 		        }
 
@@ -490,6 +482,7 @@ namespace lava
         else if (events.getEventType() == GamePlayEvent::eventId)
         {
             isPlaying = true;
+            isGameover = false;
             isWait = false;
             gameOverSound.stop();
             startScreenMusic.stop();
