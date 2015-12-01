@@ -38,6 +38,7 @@ namespace lava
 
 		int chunkNum;
 		sf::Texture *texture;
+		sf::Texture *hazardTexture;
 
 		std::vector<Platform*> platforms;
 		std::vector<Powerup*> powerups;
@@ -58,7 +59,7 @@ namespace lava
 		void generateChunk(sf::Texture *platformTexture);
 
 	public:
-		Level(int seed, sf::Texture* platformTexture,lava::eventManager *manager);
+		Level(int seed, sf::Texture* platformTexture, sf::Texture *hazardTexture, lava::eventManager *manager);
 		~Level();
 
 		std::vector<Platform*>* getPlatforms() { return &platforms; }

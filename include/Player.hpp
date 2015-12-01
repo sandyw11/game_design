@@ -6,6 +6,7 @@
 #include "EventManager.hpp"
 #include "Platform.hpp"
 
+
 namespace lava
 {
 	class Player : public Actor
@@ -35,6 +36,7 @@ namespace lava
 		bool charging;
 		bool moveLeft;
 		bool moveRight;
+		bool isHit;
 		bool isFalling() { return vy > 0; }
 		bool faceLeft;
 		

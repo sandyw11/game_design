@@ -6,12 +6,13 @@
 
 namespace lava
 {
-	Level::Level(int seed, sf::Texture *platformTexture, lava::eventManager *manager) :
+	Level::Level(int seed, sf::Texture *platformTexture, sf::Texture *hazardTexture, lava::eventManager *manager) :
 	chunkNum(0),
 	lavaY(GameLogic::START_Y + 400),
 	lavaVy(START_LAVA_VY)
 	{
 		this->texture = platformTexture;
+		this->hazardTexture = hazardTexture;
 		this->manager = manager;
 
 		// seed random number generator
@@ -95,7 +96,7 @@ namespace lava
 			int radius = Equilikely(13, 15);
 			int x = Equilikely(0, 800);
 			int y = playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET);
-			hazards.push_back(new FallingHazard(x, y, radius));
+			hazards.push_back(new FallingHazard(x, y, radius, this->hazardTexture));
 
 			// TODO: use Uniform()?
 			nextHazardTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);

@@ -102,7 +102,7 @@ namespace lava
 		bool isGameover;
 		bool isInstruct;
 
-		GameGUI* gameGUI;
+		GameGUI *gameGUI;
 
 		sf::Sprite background;
 		sf::Sprite lavaSprite;
