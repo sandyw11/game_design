@@ -25,7 +25,6 @@ namespace lava
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
 
-		chunkNum = 0;
 		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
 	}
@@ -33,9 +32,9 @@ namespace lava
 	Level::~Level()
 	{
 		// remove all platforms and powerups
-		platforms.empty();
-		powerups.empty();
-		hazards.empty();
+		platforms.clear();
+		powerups.clear();
+		hazards.clear();
 	}
 
 	void Level::generateChunk(sf::Texture *platformTexture)
@@ -165,8 +164,25 @@ namespace lava
 		}
 	}
 
-	void Level::resetLava()
+	void Level::reset()
 	{
+		// get rid of old level
+		platforms.clear();
+		powerups.clear();
+		hazards.clear();
+
+		// starting platform
+		lastX = START_X;
+		lastY = GameLogic::START_Y + 40;
+		platforms.push_back(new Platform(lastX, lastY, 200, this->texture));
+
+		// first hazard created
+		nextHazardTime = FIRST_HAZARD_TIME;
+
+		chunkNum = 0;
+		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
+		generateChunk(this->texture);
+
 		lavaY = GameLogic::START_Y + 400;
 		lavaVy = START_LAVA_VY;
 	}
