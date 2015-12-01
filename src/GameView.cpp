@@ -37,10 +37,10 @@ namespace lava
 		hazardBuffer.loadFromFile("hazard.flac");
 		hazardSound.setBuffer(hazardBuffer);
 
-        	jumpBuffer.loadFromFile("jump.wav");
+       	jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-        	gameOverBuffer.loadFromFile("Game_Over.ogg");
+      	gameOverBuffer.loadFromFile("Game_Over.ogg");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");

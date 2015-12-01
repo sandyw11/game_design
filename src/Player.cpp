@@ -8,6 +8,7 @@ namespace lava
 	Player::Player(sf::Texture* playerTexture, lava::eventManager* manager):
 	vx(0),
 	vy(0),
+	powerupTime(0),
 	charge(false),
 	charging(false),
 	moveLeft(false),
@@ -26,6 +27,46 @@ namespace lava
 	{
 		if (alive)
 		{
+			if (powerup == "JETPACK")
+			{
+				std::cout << "here" << std::endl;
+				delta = clock.restart().asSeconds();
+				if (playerSprite.getPosition().x > 800)
+				{
+					playerSprite.setPosition(0, playerSprite.getPosition().y);
+				}
+				else if (playerSprite.getPosition().x < 0)
+				{
+					playerSprite.setPosition(800, playerSprite.getPosition().y);
+				}
+				if (charging) 
+				{
+					charge += delta;
+					if (!faceLeft)
+					{
+						playerSprite.setTextureRect(sf::IntRect(32, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+					else
+					{
+						playerSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
+				else 
+				{
+					if (!faceLeft)
+					{
+						playerSprite.setTextureRect(sf::IntRect(64, 64, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+					else
+					{
+						playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+						playerSprite.setScale(1.5f, 1.5f);
+					}
+				}
+			}
 			if (playerSprite.getPosition().x > 800){
 				playerSprite.setPosition(0, playerSprite.getPosition().y);
 			}
@@ -161,6 +202,18 @@ namespace lava
 		// push player down
 		vy += rockVy / 2;
 		landed = false;
+	}
+
+	void Player::applyPowerup(int type)
+	{
+		if (type == 0)
+		{
+			powerup = "JETPACK";
+		}
+		else
+		{
+			powerup = "SHIELD";
+		}
 	}
 
 	void Player::die()

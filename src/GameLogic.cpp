@@ -49,6 +49,7 @@ namespace lava
 				// TODO: initiate powerup effect
 				std::cout << "got powerup " << powerup->getType() << "\n";
 				powerupIt = level->getPowerups()->erase(powerupIt);
+				player->applyPowerup(powerup->getType());
 			}
 			else {
 				++powerupIt;

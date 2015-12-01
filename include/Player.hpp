@@ -31,6 +31,7 @@ namespace lava
 		void die();
 		void land(float y);
 		void hitByRock(float rockVy);
+		void applyPowerup(int type);
 		float getCharge();
 		bool charging;
 		bool moveLeft;
@@ -41,9 +42,12 @@ namespace lava
 		int score; 
 		bool alive;
 		bool landed;
+		char powerup;
+		float powerupTime;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }
+		char getPowerup() { return powerup; }
 		sf::Sprite getSprite() { return playerSprite; }
 		void resetPosition();
 	};
