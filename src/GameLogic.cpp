@@ -37,6 +37,7 @@ namespace lava
 		level->update(player->getY(), delta);
 
 		// update player
+		player->resetPowerup();
 		player->update(delta);
 
 		// check for powerup collision

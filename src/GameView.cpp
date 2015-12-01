@@ -357,10 +357,18 @@ namespace lava
 		        // key press events
 		        if(Event.type == sf::Event::KeyPressed)
 		        {
+
 		            switch(Event.key.code)
 		            {
 		                case sf::Keyboard::Space:
-		                    player->charging = true;
+		                	if (player->getPowerup() == "JETPACK")
+		        			{
+		        				manager->queueEvent(&jump);
+		        			}
+		        			else
+		        			{
+		        				player->charging = true;
+		        			}
 		                    break;
 		                case sf::Keyboard::D:
 		                    player->faceLeft = false;
@@ -478,7 +486,7 @@ namespace lava
 	{
 		isGameover = true;
 		isPlaying = false;
-                gamePlayMusic.stop();
+        gamePlayMusic.stop();
 		manager->queueEvent(&loser);
 	}
         else if (events.getEventType() == GameStartEvent::eventId)

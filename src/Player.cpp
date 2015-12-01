@@ -8,7 +8,7 @@ namespace lava
 	Player::Player(sf::Texture* playerTexture, lava::eventManager* manager):
 	vx(0),
 	vy(0),
-	powerupTime(0),
+	powerupTime(5),
 	charge(false),
 	charging(false),
 	moveLeft(false),
@@ -111,7 +111,7 @@ namespace lava
 					{
 						if (powerup == "JETPACK")
 						{
-							playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
+							playerSprite.setTextureRect(sf::IntRect(32, 32, 32, 32));
 							playerSprite.setScale(1.5f, 1.5f);
 						}
 						else
@@ -128,7 +128,9 @@ namespace lava
 					{
 						if (powerup == "JETPACK")
 						{
-							playerSprite.setTextureRect(sf::IntRect(32, 32, 32, 32));
+
+
+							playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
 							playerSprite.setScale(1.5f, 1.5f);
 						}
 						else
@@ -217,10 +219,12 @@ namespace lava
 		if (type == 0)
 		{
 			powerup = "JETPACK";
+			delta = clock.restart().asSeconds();
 		}
 		else
 		{
 			powerup = "SHIELD";
+			delta = clock.restart().asSeconds();
 		}
 	}
 
@@ -229,6 +233,15 @@ namespace lava
 		vy = 0;
 		vy = 0;
 		alive = false;
+	}
+
+	void Player::resetPowerup()
+	{
+		if (delta >= powerupTime)
+		{
+			powerup = "NONE";
+			delta = 0;
+		}
 	}
 	
 	float Player::getCharge()

@@ -32,6 +32,7 @@ namespace lava
 		void jump();
 		void die();
 		void land(float y);
+		void resetPowerup();
 		void hitByRock(float rockVy);
 		void applyPowerup(int type);
 		float getCharge();
@@ -46,6 +47,7 @@ namespace lava
 		bool landed;
 		const char* powerup;
 		float powerupTime;
+		float delta;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }
