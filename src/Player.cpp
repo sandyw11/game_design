@@ -21,6 +21,7 @@ namespace lava
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
 		playerSprite.setScale(1.5f,1.5f);
 		playerSprite.setPosition(400, GameLogic::START_Y - 5);
+		powerup = "JETPACK";
 	}
 	
 	void Player::update(float delta)
@@ -128,8 +129,6 @@ namespace lava
 					{
 						if (powerup == "JETPACK")
 						{
-
-
 							playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
 							playerSprite.setScale(1.5f, 1.5f);
 						}
@@ -179,6 +178,31 @@ namespace lava
 		}
 	}
 
+
+	void Player::jetpackJump(float delta)
+	{
+		if (faceLeft)
+		{
+			playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
+			playerSprite.setScale(1.5f, 1.5f);
+			playerSprite.move(-2, -5);
+			vy = -2;
+		}
+		else
+		{
+			playerSprite.setTextureRect(sf::IntRect(64, 32, 32, 32));
+			playerSprite.setScale(1.5f, 1.5f);
+			playerSprite.move(2, -5);
+			vy = 2;
+		}
+
+		charge = 0;
+		landed = false;
+
+
+	}
+
+
 	void Player::land(float y)
 	{
 		if (vy > 0)
@@ -219,12 +243,12 @@ namespace lava
 		if (type == 0)
 		{
 			powerup = "JETPACK";
-			delta = clock.restart().asSeconds();
+			//delta = clock.restart().asSeconds();
 		}
 		else
 		{
 			powerup = "SHIELD";
-			delta = clock.restart().asSeconds();
+			//delta = clock.restart().asSeconds();
 		}
 	}
 
@@ -235,14 +259,14 @@ namespace lava
 		alive = false;
 	}
 
-	void Player::resetPowerup()
-	{
-		if (delta >= powerupTime)
-		{
-			powerup = "NONE";
-			delta = 0;
-		}
-	}
+	// void Player::resetPowerup()
+	// {
+	// 	if (delta >= powerupTime)
+	// 	{
+	// 		powerup = "NONE";
+	// 		delta = 0;
+	// 	}
+	// }
 	
 	float Player::getCharge()
 	{

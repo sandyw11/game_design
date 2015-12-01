@@ -30,6 +30,7 @@ namespace lava
 		void stickToPlatform(float delta, float vx, float vy);
 		void render(sf::RenderWindow* window);
 		void jump();
+		void jetpackJump(float delta);
 		void die();
 		void land(float y);
 		void resetPowerup();

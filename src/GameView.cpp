@@ -12,7 +12,7 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        	this->view = view;
+        this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
 
@@ -345,40 +345,44 @@ namespace lava
 		    {
 		        if((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Q))
 		        {
-				if(isPlaying)
-				{
-					isGameover = true;
-					isPlaying = false;
-					gamePlayMusic.stop();
-					manager->queueEvent(&loser);
+					if(isPlaying)
+					{
+						isGameover = true;
+						isPlaying = false;
+						gamePlayMusic.stop();
+						manager->queueEvent(&loser);
+					}
 				}
+		        
+
+		        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) && (strcmp(player->powerup,"JETPACK") == 0))
+		        {
+		        	float delta = 20;
+		        	player->jetpackJump(delta);
 		        }
 
 		        // key press events
 		        if(Event.type == sf::Event::KeyPressed)
 		        {
 
-		            switch(Event.key.code)
-		            {
-		                case sf::Keyboard::Space:
-		                	if (player->getPowerup() == "JETPACK")
-		        			{
-		        				manager->queueEvent(&jump);
-		        			}
-		        			else
-		        			{
-		        				player->charging = true;
-		        			}
-		                    break;
-		                case sf::Keyboard::D:
-		                    player->faceLeft = false;
-		                    player->moveLeft = true;
-		                    break;
-		                case sf::Keyboard::A:
-		                    player->moveRight = true;
-		                    player->faceLeft = true;
-		                    break;
-		            }
+		            	switch(Event.key.code)
+		            	{
+		                	case sf::Keyboard::Space:
+		                		if (strcmp(player->powerup,"JETPACK") != 0)
+		                		{
+		        		        	player->charging = true;
+		                    		break;
+		                		}
+		                	case sf::Keyboard::D:
+		                    	player->faceLeft = false;
+		                    	player->moveLeft = true;
+		                    	break;
+		                	case sf::Keyboard::A:
+		                    	player->moveRight = true;
+		                    	player->faceLeft = true;
+		                    	break;
+		            	}
+		            
 		        }
 
 		        // key release events
@@ -387,10 +391,17 @@ namespace lava
 		            switch(Event.key.code)
 		            {
 		                case sf::Keyboard::Space:
+		                if (strcmp(player->powerup,"JETPACK") != 0)
+		                {
 		                    player->charging = false;
 		                    player->jump();
 		                    manager->queueEvent(&jump);
 		                    break;
+		                }
+		                else
+		                {
+		                	player->jetpackJump(20);
+		                }
 		                case sf::Keyboard::D:
 		                    player->moveLeft = false;
 		                    break;

@@ -24,6 +24,7 @@
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
 #include "HitByFallingHazardEvent.hpp"
+#include <ctime>
 #include <SFML/Audio.hpp>
 
 namespace lava
