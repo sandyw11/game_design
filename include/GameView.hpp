@@ -63,14 +63,14 @@ namespace lava
 		eventManager *manager;
 		sf::Font font;
 		sf::Text text;
-<<<<<<< HEAD
+
 		sf::SoundBuffer buffer;
 		sf::Sound sound;
 		sf::Music music;
 		std::string highscorelist;
 		sf::SoundBuffer noLoopBuffer;
 		sf::Sound noLoopSound;
-=======
+
 		sf::SoundBuffer earthquakeBuffer;
 		sf::Sound earthquakeSound;
         sf::SoundBuffer jumpBuffer;
@@ -80,7 +80,7 @@ namespace lava
 		sf::Music gamePlayMusic;
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
->>>>>>> sound-testing
+
         bool isWait;
         bool isPlaying;
         bool isGameover;
