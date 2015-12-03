@@ -16,6 +16,7 @@
 #include "GamePauseEvent.hpp"
 #include "GameRestartEvent.hpp"
 #include "HitByFallingHazardEvent.hpp"
+#include <SFML/Audio.hpp>
 
 
 namespace lava
@@ -42,6 +43,8 @@ namespace lava
 		Player* player;
 		eventManager *manager;
 		Platform* landedPlatform;
+		sf::SoundBuffer buffer;
+		sf::Sound barrier;
 
 		bool running;
 	};
