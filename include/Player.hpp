@@ -25,6 +25,7 @@ namespace lava
 		static const int JETPACK_JUMP = 560;
 		static const int POWERUP_TIME = 8;
 		static const int VX = 200;
+		lava::eventManager *manager;
 		
 	public:
 		Player(sf::Texture *playerTexture, lava::eventManager *manager);
@@ -45,12 +46,14 @@ namespace lava
 		bool isHit;
 		bool isFalling() { return vy > 0; }
 		bool faceLeft;
+		void hitByFire();
 		
 		int score; 
 		bool alive;
 		bool landed;
 		const char* powerup;
 		float powerupDelta;
+		int life = 1;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }

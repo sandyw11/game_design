@@ -22,6 +22,8 @@ namespace lava
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
 		playerSprite.setScale(1.5f,1.5f);
 		playerSprite.setPosition(400, GameLogic::START_Y - 5);
+
+		
 		powerup = "NONE";
 	}
 	
@@ -269,6 +271,13 @@ namespace lava
 		powerupDelta = 0;
 	}
 
+	void Player::hitByFire(){
+		landed = false;
+		powerup = "NONE";
+		powerupDelta = 0;
+		life -= 1;
+	}
+
 	void Player::applyPowerup(int type)
 	{
 		if (type == 0)
@@ -289,6 +298,7 @@ namespace lava
 		vy = 0;
 		vy = 0;
 		alive = false;
+		life = 1;
 	}
 	
 	float Player::getCharge()

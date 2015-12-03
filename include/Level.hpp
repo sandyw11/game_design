@@ -7,6 +7,7 @@
 #include "FallingHazard.hpp"
 #include "GameOverEvent.hpp"
 #include "EventManager.hpp"
+#include "Fireball.hpp"
 
 namespace lava
 {
@@ -29,12 +30,14 @@ namespace lava
 		static const int MAX_WIDTH = 175;
 
 		static const int FIRST_HAZARD_TIME = 8;
-		static const int MIN_HAZARD_TIME = 2;
-		static const int MAX_HAZARD_TIME = 5;
+		static const int MIN_HAZARD_TIME = 3;
+		static const int MAX_HAZARD_TIME = 3;
 		static const int HAZARD_MIN_OFFSET = 325;
 		static const int HAZARD_MAX_OFFSET = 400;
 		static const int HAZARD_MIN_RADIUS = 13;
 		static const int HAZARD_MAX_RADIUS = 15;
+
+
 
 		int chunkNum;
 		sf::Texture *texture;
@@ -43,11 +46,13 @@ namespace lava
 		std::vector<Platform*> platforms;
 		std::vector<Powerup*> powerups;
 		std::vector<FallingHazard*> hazards;
+		std::vector<Fireball*> fireballs;
 		lava::eventManager *manager;
 
 		float playerY;
 		float nextChunkY;
 		float nextHazardTime;
+		float nextFireballTime;
 		float lavaY;
 		float lavaVy;
 
@@ -65,6 +70,7 @@ namespace lava
 		std::vector<Platform*>* getPlatforms() { return &platforms; }
 		std::vector<Powerup*>* getPowerups() { return &powerups; }
 		std::vector<FallingHazard*>* getFallingHazards() { return &hazards; }
+		std::vector<Fireball*>* getFireballs() { return &fireballs; }
 
 		int getLavaY() { return lavaY; }
 		void reset();

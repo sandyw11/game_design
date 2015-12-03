@@ -20,7 +20,7 @@ namespace lava
 	{
 		// acceleration from gravity
 		vy += GameLogic::A * delta;
-		hazardSprite.move(vx*delta, vy * delta);
+  		hazardSprite.move(vx*delta, vy * delta);
 	}
 
 	void FallingHazard::render(sf::RenderWindow* window)

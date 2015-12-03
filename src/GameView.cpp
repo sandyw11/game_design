@@ -2,7 +2,7 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager) :
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager) :
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
@@ -15,6 +15,9 @@ namespace lava
         	this->view = view;
 		this->manager = manager;
 		background.setTexture(*backgroundTexture);
+
+		lifeSprite.setTexture(*life);
+
 
 		lavaSprite.setTexture(*lavaTexture);
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
@@ -139,13 +142,14 @@ namespace lava
 
     void GameView::drawChargeBar()
     {
-	float chargedvy = std::sqrt(player->getCharge()) * 720;
-	if(chargedvy > 1000)
-	{
-		chargedvy = 1000;
-	}
-	float chargenum = chargedvy / 1000 * 100;
-	
+		float chargedvy = std::sqrt(player->getCharge()) * 720;
+		if (chargedvy > 1000)
+		{
+			chargedvy = 1000;
+		}
+		float chargenum = chargedvy / 1000 * 100;
+
+
         // draw chargebar frame
         sf::RectangleShape chargeBarFrame;
         chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
@@ -189,8 +193,8 @@ namespace lava
             }
             if(isWait)
             {
-		window->setView(view);
-		earthquakeSound.stop();
+				window->setView(view);
+				earthquakeSound.stop();
                 setPauseMessage();
             }
             else
@@ -280,6 +284,7 @@ namespace lava
 				                level->reset();
 				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
 				                player->score = 0;
+								player->life = 1;
 				                break;
 				        case 1:
 				                isInstruct = true;
@@ -395,8 +400,13 @@ namespace lava
 		//std::cout << position.y << std::endl;
 		//draw background
 		background.setPosition(sf::Vector2f(position.x, position.y));
-		background.setTextureRect(sf::IntRect(0, 0, window->getSize().x, window->getSize().y));
+		background.setTextureRect(sf::IntRect(0, position.y, window->getSize().x, window->getSize().y));
 		window->draw(background);
+
+		lifeSprite.setPosition(650, player->getY() + 20 - (250) + 20 + 20);
+		lifeSprite.setTextureRect(sf::IntRect(0, 0, 16 * (player->life + 1), 16));
+		lifeSprite.setScale(2.0f, 2.0f);
+		window->draw(lifeSprite);
 
 		// draw platforms
 		for (auto &platform : *level->getPlatforms())
@@ -414,6 +424,11 @@ namespace lava
 		for (auto *hazard : *level->getFallingHazards())
 		{
 			hazard->render(window);
+		}
+
+		for (auto *fireball : *level->getFireballs())
+		{
+			fireball->render(window);
 		}
 
 		// draw player
@@ -466,13 +481,13 @@ namespace lava
 
      void GameView::respond(const EventInterface& events)
      {
-	if (events.getEventType() == GameOverEvent::eventId)
-	{
-		isGameover = true;
-		isPlaying = false;
-        	gamePlayMusic.stop();
-		manager->queueEvent(&loser);
-	}
+		if (events.getEventType() == GameOverEvent::eventId)
+		{
+			isGameover = true;
+			isPlaying = false;
+			gamePlayMusic.stop();
+			manager->queueEvent(&loser);
+		}
         else if (events.getEventType() == GameStartEvent::eventId)
         {
             isPlaying = false;

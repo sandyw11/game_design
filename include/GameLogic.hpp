@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Platform.hpp"
 #include "FallingHazard.hpp"
+#include "Fireball.hpp"
 
 #include "EventManager.hpp"
 #include "GameOverEvent.hpp"

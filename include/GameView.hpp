@@ -32,7 +32,7 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view,sf::Texture *lavaTexture, sf::Texture *backgroundTexture, lava::eventManager *manager);
+		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager);
 		~GameView();
 
 		void update(sf::Clock clock);
@@ -108,6 +108,7 @@ namespace lava
 
 		sf::Sprite background;
 		sf::Sprite lavaSprite;
+		sf::Sprite lifeSprite;
 		sf::View view;
 	};
 }

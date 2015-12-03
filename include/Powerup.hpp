@@ -18,7 +18,7 @@ namespace lava
 
 		void update(float delta);
 		void render(sf::RenderWindow* window);
-		enum PowerupType { JETPACK, HIGHJUMP };
+		enum PowerupType { JETPACK, LIFEGAIN ,HIGHJUMP,BARRIER };
 
 		float getTime() { return time; }
 		float getX() { return powerupSprite.getPosition().x; }

@@ -98,6 +98,7 @@ int main(int argc, char** argv)
 	sf::Texture lavaTexture;
 	sf::Texture backgroundTexture;
 	sf::Texture hazardTextures;
+	sf::Texture lifeTexture;
 
 	if (!playerTexture.loadFromFile("graph/Guy.png"))
 	{
@@ -111,7 +112,7 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Cannot load Lava image" << std::endl;
 	}
-	if (!backgroundTexture.loadFromFile("graph/volcanic_underground_background.png"))
+	if (!backgroundTexture.loadFromFile("graph/background.png"))
 	{
 		std::cout << "Cannot load Background image" << std::endl;
 	}
@@ -119,11 +120,15 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Cannot load Hazard and Power up images" << std::endl;
 	}
+	if (!lifeTexture.loadFromFile("graph/Life.png"))
+	{
+		std::cout << "Cannot load Life images" << std::endl;
+	}
 	srand(time(NULL));
 	platformTexture.setRepeated(true);
 	lavaTexture.setRepeated(true);
 	backgroundTexture.setRepeated(true);
-
+	lifeTexture.setRepeated(true);
 	// create player and level
 	lava::Player player(&playerTexture, &eventManager);
 	lava::Level level(std::time(NULL),&platformTexture, &hazardTextures, &eventManager);
@@ -153,7 +158,7 @@ int main(int argc, char** argv)
 	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&eventManager);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&lifeTexture,&eventManager);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 
 	// start main loop

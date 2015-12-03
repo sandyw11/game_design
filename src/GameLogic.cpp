@@ -83,6 +83,30 @@ namespace lava
 				}
 			}
 
+			std::vector<Fireball*>::iterator fireballIt = level->getFireballs()->begin();
+			while (fireballIt != level->getFireballs()->end())
+			{
+				Fireball* fireball= *fireballIt;
+				fireball->update(delta);
+
+				// check collision
+				if (fireball->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
+				{
+  					if (player->life != 0){
+						player->hitByFire();
+						fireballIt = level->getFireballs()->erase(fireballIt);
+						manager->queueEvent(&hazardEvent);
+					}
+					else{
+						player->die();
+						manager->queueEvent(&gameOver);
+					}
+				}
+				else {
+					++fireballIt;
+				}
+			}
+
 			// move player with platform
 			if (player->landed)
 			{

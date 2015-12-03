@@ -8,8 +8,9 @@ namespace lava
 	{
 		// TODO: different sprite for different powerups
 		powerupSprite.setTexture(*powerupTexture);
-		powerupSprite.setPosition(x, y);
+		powerupSprite.setPosition(x, y -20);
 		powerupSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+		powerupSprite.setScale(2.0f, 2.0f);
 
 		// type = PowerupType(rand() % 2);
 		// for video: always pick up jetpack

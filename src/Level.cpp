@@ -25,6 +25,7 @@ namespace lava
 
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
+		nextFireballTime = FIRST_HAZARD_TIME;
 
 		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
@@ -69,7 +70,7 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			if (Equilikely(0, 30) == 1)
+			if (Equilikely(0, 35) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
 				int powerupY = lastY - Powerup::HEIGHT;
@@ -101,7 +102,22 @@ namespace lava
 			// TODO: use Uniform()?
 			nextHazardTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
 		}
+		if (nextFireballTime < 0){
+			int degrees = Equilikely(20, 80);
+			float theta2 = (float)degrees / 180 * 3.14159;
+			int side = Equilikely(0, 1);
+			if (side == 0){
+				theta2 = theta2 *-1;
+				degrees = degrees * -1;
+			}
+			int y = playerY;
+			fireballs.push_back(new Fireball(theta2, degrees, y, this->hazardTexture));
+
+			// TODO: use Uniform()?
+			nextFireballTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
+		}
 		nextHazardTime -= delta;
+		nextFireballTime -= delta*1.5;
 
 		// accelerate and move lava
 		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY; // lava velocity increases 1/second
@@ -156,11 +172,28 @@ namespace lava
 			FallingHazard* hazard = *hazardIt;
 			if (hazard->getY() > lavaY)
 			{
-				std::cout << "Deleting hazard\n";
 				hazardIt = hazards.erase(hazardIt);
 			}
 			else {
 				++hazardIt;
+			}
+		}
+
+		//clean up unreachable fireballs
+		std::vector<Fireball*>::iterator fireballIt = fireballs.begin();
+		while (fireballIt != fireballs.end())
+		{
+			Fireball* fire = *fireballIt;
+			if (fire->getY() < playerY - 200){
+				std::cout << "Special: " << fire->getY()<< std::endl;
+			}
+			if (fire->getY() > lavaY)
+			{
+				std::cout << "Deleting fireball\n";
+				fireballIt = fireballs.erase(fireballIt);
+			}
+			else {
+				++fireballIt;
 			}
 		}
 	}
@@ -171,6 +204,7 @@ namespace lava
 		platforms.clear();
 		powerups.clear();
 		hazards.clear();
+		fireballs.clear();
 
 		// starting platform
 		lastX = START_X;
@@ -179,6 +213,7 @@ namespace lava
 
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
+		nextFireballTime = FIRST_HAZARD_TIME;
 
 		chunkNum = 0;
 		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
