@@ -139,8 +139,13 @@ namespace lava
 
     void GameView::drawChargeBar()
     {
-        float chargenum = player->getCharge() / 1000.0 * 1200.0 * 100.0;
-
+	float chargedvy = std::sqrt(player->getCharge()) * 720;
+	if(chargedvy > 1000)
+	{
+		chargedvy = 1000;
+	}
+	float chargenum = chargedvy / 1000 * 100;
+	
         // draw chargebar frame
         sf::RectangleShape chargeBarFrame;
         chargeBarFrame.setPosition(650, player->getY() + 20 - (250) + 20);
