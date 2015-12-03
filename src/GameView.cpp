@@ -40,7 +40,7 @@ namespace lava
        		jumpBuffer.loadFromFile("jump.wav");
 		jumpSound.setBuffer(jumpBuffer);
 
-      		gameOverBuffer.loadFromFile("Game_Over.ogg");
+      		gameOverBuffer.loadFromFile("Game_Over.wav");
 		gameOverSound.setBuffer(gameOverBuffer);
 
 		gamePlayMusic.openFromFile("Game_Play_Music.ogg");
