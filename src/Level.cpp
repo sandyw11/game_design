@@ -74,7 +74,9 @@ namespace lava
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
 				int powerupY = lastY - Powerup::HEIGHT;
-				powerups.push_back(new Powerup(powerupX, powerupY, this->hazardTexture));
+				//int type = Equilikely(0, 2);
+				int type = 2;
+				powerups.push_back(new Powerup(powerupX, powerupY, type, this->hazardTexture));
 			}
 		}
 

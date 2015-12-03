@@ -47,6 +47,7 @@ namespace lava
 		bool isFalling() { return vy > 0; }
 		bool faceLeft;
 		void hitByFire();
+		bool immune;
 		
 		int score; 
 		bool alive;

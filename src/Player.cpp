@@ -15,7 +15,8 @@ namespace lava
 	landed(true),
 	alive(true),
 	powerupDelta(0),
-	isHit(false)
+	isHit(false),
+	immune(false)
 	{
 		score = 0;
 		playerSprite.setTexture(*playerTexture);
@@ -31,6 +32,13 @@ namespace lava
 	{
 		if (alive)
 		{
+			if (powerup == "LIFEGAIN"){
+				life += 1; 
+			}
+			if (powerup == "SHIELD"){
+				immune = true;
+				playerSprite.setColor(sf::Color::Green);
+			}
 			if (!isHit){
 				if (playerSprite.getPosition().x > 800){
 					playerSprite.setPosition(0, playerSprite.getPosition().y);
@@ -175,6 +183,10 @@ namespace lava
 		 	{
 		 		powerup = "NONE";
 		 		powerupDelta = 0;
+				if (immune){
+					immune = false;
+					playerSprite.setColor(sf::Color::White);
+				}
 		 	}
 		}
 	}
@@ -263,19 +275,23 @@ namespace lava
 	void Player::hitByRock(float rockVy)
 	{
 		// push player down
-		vy += rockVy / 2;
-		landed = false;
+		if (!immune){
+			vy += rockVy / 2;
+			landed = false;
 
-		// lose powerup when hit
- 		powerup = "NONE";
-		powerupDelta = 0;
+			// lose powerup when hit
+			powerup = "NONE";
+			powerupDelta = 0;
+		}
 	}
 
 	void Player::hitByFire(){
-		landed = false;
-		powerup = "NONE";
-		powerupDelta = 0;
-		life -= 1;
+		if (!immune){
+			landed = false;
+			powerup = "NONE";
+			powerupDelta = 0;
+			life -= 1;
+		}
 	}
 
 	void Player::applyPowerup(int type)
@@ -285,9 +301,17 @@ namespace lava
 			powerup = "JETPACK";
 			powerupDelta = 0;
 		}
+		else if (type == 1){
+			powerup = "LIFEGAIN";
+			powerupDelta = 8;
+		}
+		else if (type == 2){
+			powerup = "SHIELD";
+			powerupDelta = 0;
+		}
 		else
 		{
-			powerup = "SHIELD";
+			powerup = "HIGHJUMP";
 			powerupDelta = 0;
 		}
 		charging = false;

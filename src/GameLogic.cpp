@@ -71,16 +71,18 @@ namespace lava
 			{
 				FallingHazard* hazard = *hazardIt;
 				hazard->update(delta);
-
 				// check collision
 				if (hazard->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
-					player->hitByRock(hazard->getVy());
 					hazardIt = level->getFallingHazards()->erase(hazardIt);
-					manager->queueEvent(&hazardEvent);
+					if (!player->immune){
+						player->hitByRock(hazard->getVy());
+						manager->queueEvent(&hazardEvent);
+					}
 				} else {
 					++hazardIt;
 				}
+				
 			}
 
 			std::vector<Fireball*>::iterator fireballIt = level->getFireballs()->begin();
@@ -92,14 +94,16 @@ namespace lava
 				// check collision
 				if (fireball->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
-  					if (player->life != 0){
-						player->hitByFire();
-						fireballIt = level->getFireballs()->erase(fireballIt);
-						manager->queueEvent(&hazardEvent);
-					}
-					else{
-						player->die();
-						manager->queueEvent(&gameOver);
+					fireballIt = level->getFireballs()->erase(fireballIt);
+					if (!player->immune){
+						if (player->life != 0){
+							player->hitByFire();
+							manager->queueEvent(&hazardEvent);
+						}
+						else{
+							player->die();
+							manager->queueEvent(&gameOver);
+						}
 					}
 				}
 				else {
