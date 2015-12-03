@@ -10,3 +10,4 @@ setup.txt
 .vs/
 Makefile
 *.opensdf
+*.db
