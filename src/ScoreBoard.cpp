@@ -11,7 +11,7 @@ void ScoreBoard::sendInformation(char* message){
 }
 
 ScoreBoard::ScoreBoard() {
-	this->ip = sf::IpAddress("100.96.13.28");
+	this->ip = sf::IpAddress("100.96.11.106");
 }
 
 void ScoreBoard::makePacket(const wchar_t* action, std::wstring name,  float score, sf::Packet &packet)

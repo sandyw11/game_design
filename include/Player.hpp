@@ -48,13 +48,15 @@ namespace lava
 		bool faceLeft;
 		void hitByFire();
 		bool immune;
+		void highJump();
 		
 		int score; 
+		int extra = 0;
 		bool alive;
 		bool landed;
 		const char* powerup;
 		float powerupDelta;
-		int life = 1;
+		int life = 2;
 
 		float getX() { return playerSprite.getPosition().x; }
 		float getY() { return playerSprite.getPosition().y; }

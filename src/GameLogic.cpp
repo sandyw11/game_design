@@ -15,9 +15,6 @@ namespace lava
 		EventDelegate delegate(std::bind(&GameLogic::respond, this, std::placeholders::_1), (int)this);
 
 		// respond to state changes
-		buffer.loadFromFile("Sound_Barrier.wav");
-		barrier.setBuffer(buffer);
-		barrier.setPitch(5);
 		this->manager->registerEvent(delegate, gameOver);
 		this->manager->registerEvent(delegate, gameStart);
 		this->manager->registerEvent(delegate, gamePlay);
@@ -77,7 +74,6 @@ namespace lava
 				// check collision
 				if (hazard->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
-					barrier.play();
 					hazardIt = level->getFallingHazards()->erase(hazardIt);
 					if (!player->immune){
 						player->hitByRock(hazard->getVy());
@@ -98,7 +94,6 @@ namespace lava
 				// check collision
 				if (fireball->getCircle().getGlobalBounds().intersects(player->getSprite().getGlobalBounds()))
 				{
-					barrier.play();
 					fireballIt = level->getFireballs()->erase(fireballIt);
 					if (!player->immune){
 						if (player->life != 0){

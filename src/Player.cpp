@@ -39,6 +39,16 @@ namespace lava
 				immune = true;
 				playerSprite.setColor(sf::Color::Green);
 			}
+			if (powerup == "POINTUP"){
+				std::cout << "score:" << score << std::endl;
+				extra += 2000;
+				score = score + 2000;
+				std::cout << "POWERUP" << score << std::endl;
+			}
+			if (powerup == "HIGHJUMP"){
+				immune = true;
+				playerSprite.setColor(sf::Color::Yellow);
+			}
 			if (!isHit){
 				if (playerSprite.getPosition().x > 800){
 					playerSprite.setPosition(0, playerSprite.getPosition().y);
@@ -185,8 +195,8 @@ namespace lava
 		 		powerupDelta = 0;
 				if (immune){
 					immune = false;
-					playerSprite.setColor(sf::Color::White);
 				}
+				playerSprite.setColor(sf::Color::White);
 		 	}
 		}
 	}
@@ -242,6 +252,25 @@ namespace lava
 		landed = false;
 	}
 
+	void Player::highJump()
+	{
+		if (vy == 0){
+			if (faceLeft)
+			{
+				playerSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+				vy = -MAXJUMP- 500;
+			}
+			else
+			{
+				playerSprite.setTextureRect(sf::IntRect(0, 64, 32, 32));
+				playerSprite.setScale(1.5f, 1.5f);
+				vy = -MAXJUMP - 500;
+			}
+			charge = 0;
+			landed = false;
+		}
+	}
 
 	void Player::land(float y)
 	{
@@ -249,8 +278,8 @@ namespace lava
 		{
 			isHit = false;
 			vy = 0;
-			if (score < GameLogic::START_Y - playerSprite.getPosition().y){
-				score = GameLogic::START_Y - playerSprite.getPosition().y;
+			if (score - extra < GameLogic::START_Y - playerSprite.getPosition().y){
+				score = GameLogic::START_Y - playerSprite.getPosition().y + extra;
 			}
 
 			playerSprite.setPosition(this->getX(), y - this->getSprite().getGlobalBounds().height);
@@ -300,6 +329,7 @@ namespace lava
 		{
 			powerup = "JETPACK";
 			powerupDelta = 0;
+			charging = false;
 		}
 		else if (type == 1){
 			powerup = "LIFEGAIN";
@@ -309,12 +339,16 @@ namespace lava
 			powerup = "SHIELD";
 			powerupDelta = 0;
 		}
-		else
+		else if (type == 3)
 		{
-			powerup = "HIGHJUMP";
-			powerupDelta = 0;
+			powerup = "POINTUP";
+			powerupDelta = 8;
 		}
-		charging = false;
+		else{
+			powerup = "HIGHJUMP";
+			powerupDelta = 3;
+			charging = false;
+		}
 	}
 
 	void Player::die()

@@ -284,7 +284,7 @@ namespace lava
 				                level->reset();
 				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
 				                player->score = 0;
-								player->life = 1;
+								player->life = 2;
 				                break;
 				        case 1:
 				                isInstruct = true;
@@ -347,11 +347,15 @@ namespace lava
 		            	switch(Event.key.code)
 		            	{
 		                	case sf::Keyboard::Space:
-		                		if (strcmp(player->powerup,"JETPACK") != 0)
+		                		if (strcmp(player->powerup,"JETPACK") == 0)
 		                		{
-		        		        	player->charging = true;
-		                		} else {
-		                			player->jetpackJump();
+									player->jetpackJump();
+		                		} 
+								else if (strcmp(player->powerup, "HIGHJUMP") == 0){
+									player->highJump();
+								}
+								else {
+									player->charging = true;
 		                		}
 		                		break;
 		                	case sf::Keyboard::D:
@@ -400,7 +404,7 @@ namespace lava
 		//std::cout << position.y << std::endl;
 		//draw background
 		background.setPosition(sf::Vector2f(position.x, position.y));
-		background.setTextureRect(sf::IntRect(0, position.y, window->getSize().x, window->getSize().y));
+		background.setTextureRect(sf::IntRect(position.x, position.y, window->getSize().x, window->getSize().y));
 		window->draw(background);
 
 		lifeSprite.setPosition(650, player->getY() + 20 - (250) + 20 + 20);

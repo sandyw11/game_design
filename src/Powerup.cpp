@@ -23,6 +23,15 @@ namespace lava
 			powerupSprite.setTextureRect(sf::IntRect(32, 0, 32, 32));
 			powerupSprite.setScale(1.5f, 1.5f);
 		}
+		else if (chosentype == 3){
+			powerupSprite.setPosition(x, y - 20);
+			powerupSprite.setTextureRect(sf::IntRect(0, 32, 32, 32));
+			powerupSprite.setScale(1.5f, 1.5f);
+		}
+		else if (chosentype == 4){
+			powerupSprite.setPosition(x, y - 20);
+			powerupSprite.setTextureRect(sf::IntRect(96, 64, 32, 32));
+		}
 		else{
 			std::cout << "Unknown Powerup" << std::endl;
 		}

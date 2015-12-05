@@ -70,12 +70,12 @@ namespace lava
 			std::cout << "Platform at " << lastX << ", " << lastY << "\n";
 
 			// random chance of a powerup
-			if (Equilikely(0, 35) == 1)
+			if (Equilikely(0, 30) == 1)
 			{
 				int powerupX = lastX + width/2 - Powerup::WIDTH/2;
 				int powerupY = lastY - Powerup::HEIGHT;
-				//int type = Equilikely(0, 2);
-				int type = 2;
+				int type = Equilikely(0, 4);
+				//int type = 4;
 				powerups.push_back(new Powerup(powerupX, powerupY, type, this->hazardTexture));
 			}
 		}
@@ -108,12 +108,23 @@ namespace lava
 			int degrees = Equilikely(20, 80);
 			float theta2 = (float)degrees / 180 * 3.14159;
 			int side = Equilikely(0, 1);
+			int top = Equilikely(0, 1);
 			if (side == 0){
-				theta2 = theta2 *-1;
-				degrees = degrees * -1;
+				std::cout << " Create on other side\n";
+				if (top == 0){
+					theta2 = theta2 + 1.56579;
+				}
+				else{
+					theta2 = theta2 + 3.14159 + 1.56579;
+				}
+			}
+			else{
+				if (top == 0){
+					theta2 = theta2 + 3.14159;
+				}
 			}
 			int y = playerY;
-			fireballs.push_back(new Fireball(theta2, degrees, y, this->hazardTexture));
+			fireballs.push_back(new Fireball(theta2, top, y, this->hazardTexture));
 
 			// TODO: use Uniform()?
 			nextFireballTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
