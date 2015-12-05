@@ -1,4 +1,5 @@
 #include "GameView.hpp"
+#include <string>
 
 namespace lava
 {
@@ -102,32 +103,32 @@ namespace lava
     {
 		sf::Text gameOverMessage(" ",font);
 		sf::Text title(" ", font);
-		title.setString("Current High Scores!\n");
+		title.setString("Your score: " + std::to_string(player->score) + "\n");
 		title.setCharacterSize(100);
 		title.setPosition(140, 0);
 		title.setColor(sf::Color::Yellow);
 		//sf::Text gameOverMessage;
 		//text.setFont(font);
-		if (jsonHighScores == nullptr){
-			//char* message = "bob";
-			//std::wstring something = std::wstring(message, message + std::strlen(message));
-			//scores.addEntry(something, (float)player->score);
-			jsonHighScores = scores.getEntry();
-			JSONObject root = jsonHighScores->AsObject();
-			if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
-			{
-				JSONArray scores = root[L"Scores"]->AsArray();
-				for (int i = 0; i < scores.size(); i++)
-				{
-					JSONObject curObj = scores[i]->AsObject();
-					std::string notSoWide;
-					std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
-					std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
-					notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
-					highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
-				}
-			}
-		}
+//		if (jsonHighScores == nullptr){
+//			//char* message = "bob";
+//			//std::wstring something = std::wstring(message, message + std::strlen(message));
+//			//scores.addEntry(something, (float)player->score);
+//			jsonHighScores = scores.getEntry();
+//			JSONObject root = jsonHighScores->AsObject();
+//			if (root.find(L"Scores") != root.end() && root[L"Scores"]->IsArray())
+//			{
+//				JSONArray scores = root[L"Scores"]->AsArray();
+//				for (int i = 0; i < scores.size(); i++)
+//				{
+//					JSONObject curObj = scores[i]->AsObject();
+//					std::string notSoWide;
+//					std::string score = static_cast<std::ostringstream*>(&(std::ostringstream() << curObj[L"Score"]->AsNumber()))->str();
+//					std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i+1))->str();
+//					notSoWide.assign(curObj[L"Name"]->AsString().begin(), curObj[L"Name"]->AsString().end());
+//					highscorelist += "Rank "+ rank + "  Name: " + notSoWide + "  High Score: " + score + "\n";
+//				}
+//			}
+//		}
 		gameOverMessage.setString(highscorelist);
 		gameOverMessage.setCharacterSize(50);
 		gameOverMessage.setPosition(200, 100);
