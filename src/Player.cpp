@@ -16,9 +16,9 @@ namespace lava
 	alive(true),
 	powerupDelta(0),
 	isHit(false),
-	immune(false)
+	immune(false),
+	score(0)
 	{
-		score = 0;
 		playerSprite.setTexture(*playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(0,0,32,32));
 		playerSprite.setScale(1.5f,1.5f);
