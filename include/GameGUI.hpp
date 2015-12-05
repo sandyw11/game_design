@@ -16,7 +16,7 @@ namespace lava
         void draw(sf::RenderWindow *window);
         void MoveUp();
         void MoveDown();
-        int GetPressedItem() {return selectedItemIndex;}
+        int GetPressedItem() { return selectedItemIndex; }
         sf::Font font;
         
     private:

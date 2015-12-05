@@ -3,33 +3,39 @@
 
 #include "Actor.hpp"
 #include "SFML/Graphics.hpp"
+#include <cstdlib>
+#include <iostream>
 
 namespace lava
 {
 	class Powerup : public Actor
 	{
 	public:
-		Powerup(int x, int y);
+		Powerup(int x, int y, int type,sf::Texture *powerupTexture);
 		~Powerup();
+
+		const static int WIDTH = 32;
+		const static int HEIGHT = 32;
 
 		void update(float delta);
 		void render(sf::RenderWindow* window);
-		enum PowerupType { JETPACK, HIGHJUMP };
+		enum PowerupType { JETPACK, LIFEGAIN ,SHIELD,POINTUP,HIGHJUMP };
 
 		float getTime() { return time; }
-		float getX() { return rect.getPosition().x; }
-		float getY() { return rect.getPosition().y; }
+		float getX() { return powerupSprite.getPosition().x; }
+		float getY() { return powerupSprite.getPosition().y; }
+
+		sf::Sprite getSprite() { return powerupSprite; }
+		PowerupType getType() { return chosentype; }
 
 	private:
-		sf::RectangleShape rect;
-		PowerupType type;
+		sf::Sprite powerupSprite;
+		PowerupType chosentype;
+
+		const static int START_TIME = 20;
 
 		float time;
 		bool active;
-
-		const static int WIDTH = 20;
-		const static int HEIGHT = 20;
-		const static int START_TIME = 20;
 	};
 }
 

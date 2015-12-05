@@ -1,0 +1,10 @@
+{
+"Scores" :
+  [ 
+	{"Name" : "Mike", "Score" : 2},
+	{"Name" :"Bob", "Score" :  14},
+	{"Name" :"Steve", "Score" :  12},
+	{"Name" :"John", "Score" :  10},
+	{"Name" :"Henry", "Score" : 8}
+  ]
+}
