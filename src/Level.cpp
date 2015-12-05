@@ -25,7 +25,7 @@ namespace lava
 
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
-		nextFireballTime = FIRST_HAZARD_TIME;
+		nextFireballTime = FIRST_FIREBALL_TIME;
 
 		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk
 		generateChunk(this->texture);
@@ -96,10 +96,9 @@ namespace lava
 		// check for new hazard
 		if (nextHazardTime < 0)
 		{
-			int radius = Equilikely(13, 15);
 			int x = Equilikely(0, 800);
 			int y = playerY - Equilikely(HAZARD_MIN_OFFSET, HAZARD_MAX_OFFSET);
-			hazards.push_back(new FallingHazard(x, y, radius, this->hazardTexture));
+			hazards.push_back(new FallingHazard(x, y, HAZARD_RADIUS, this->hazardTexture));
 
 			// TODO: use Uniform()?
 			nextHazardTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
@@ -127,10 +126,11 @@ namespace lava
 			fireballs.push_back(new Fireball(theta2, top, y, this->hazardTexture));
 
 			// TODO: use Uniform()?
-			nextFireballTime = Equilikely(MIN_HAZARD_TIME, MAX_HAZARD_TIME);
+			nextFireballTime = Equilikely(MIN_FIREBALL_TIME, MAX_FIREBALL_TIME);
 		}
+
 		nextHazardTime -= delta;
-		nextFireballTime -= delta*1.5;
+		nextFireballTime -= delta;
 
 		// accelerate and move lava
 		lavaVy = (lavaVy < MAX_LAVA_VY) ? lavaVy + delta : MAX_LAVA_VY; // lava velocity increases 1/second
@@ -197,8 +197,9 @@ namespace lava
 		while (fireballIt != fireballs.end())
 		{
 			Fireball* fire = *fireballIt;
-			if (fire->getY() < playerY - 200){
-				std::cout << "Special: " << fire->getY()<< std::endl;
+			if (fire->getY() < playerY - 300){
+				std::cout << "Deleting above fireball\n";
+				fireballs.erase(fireballIt);
 			}
 			if (fire->getY() > lavaY)
 			{
@@ -226,7 +227,7 @@ namespace lava
 
 		// first hazard created
 		nextHazardTime = FIRST_HAZARD_TIME;
-		nextFireballTime = FIRST_HAZARD_TIME;
+		nextFireballTime = FIRST_FIREBALL_TIME;
 
 		chunkNum = 0;
 		nextChunkY = GameLogic::START_Y - CHUNK_HEIGHT / 2;      // generate new chunk when player is halfway through old chunk

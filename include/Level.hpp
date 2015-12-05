@@ -29,14 +29,17 @@ namespace lava
 		static const int MIN_WIDTH = 75;
 		static const int MAX_WIDTH = 175;
 
-		static const int FIRST_HAZARD_TIME = 8;
-		static const int MIN_HAZARD_TIME = 3;
-		static const int MAX_HAZARD_TIME = 3;
+		static const int FIRST_HAZARD_TIME = 30;
+		static const int MIN_HAZARD_TIME = 2;
+		static const int MAX_HAZARD_TIME = 5;
+
 		static const int HAZARD_MIN_OFFSET = 325;
 		static const int HAZARD_MAX_OFFSET = 400;
-		static const int HAZARD_MIN_RADIUS = 13;
-		static const int HAZARD_MAX_RADIUS = 15;
+		static const int HAZARD_RADIUS = 16;
 
+		static const int FIRST_FIREBALL_TIME = 60;
+		static const int MIN_FIREBALL_TIME = 5;
+		static const int MAX_FIREBALL_TIME = 8;
 
 
 		int chunkNum;

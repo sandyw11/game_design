@@ -137,9 +137,7 @@ namespace lava
 			running = false;
 		}
 		// events that resume/start gameplay
-		else if (events.getEventType() == GameStartEvent::eventId
-		|| events.getEventType() == GamePlayEvent::eventId
-		|| events.getEventType() == GameRestartEvent::eventId)
+		else if (events.getEventType() == GamePlayEvent::eventId)
 		{
 			running = true;
 		}

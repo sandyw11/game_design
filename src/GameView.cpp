@@ -142,12 +142,12 @@ namespace lava
 
     void GameView::drawChargeBar()
     {
-		float chargedvy = std::sqrt(player->getCharge()) * 720;
-		if (chargedvy > 1000)
-		{
-			chargedvy = 1000;
-		}
-		float chargenum = chargedvy / 1000 * 100;
+	float chargedvy = std::sqrt(player->getCharge()) * 720;
+	if (chargedvy > 1000)
+	{
+		chargedvy = 1000;
+	}
+	float chargenum = chargedvy / 1000 * 100;
 
 
         // draw chargebar frame
@@ -177,8 +177,8 @@ namespace lava
     void GameView::update(sf::Clock clock)
     {
         processInput(clock);
-		sf::View view;
-		view.reset(sf::FloatRect(0, 0, 800, 600));
+	sf::View view;
+	view.reset(sf::FloatRect(0, 0, 800, 600));
 
         window->clear(sf::Color::Black);
         if(isPlaying)
@@ -193,8 +193,8 @@ namespace lava
             }
             if(isWait)
             {
-				window->setView(view);
-				earthquakeSound.stop();
+		window->setView(view);
+		earthquakeSound.stop();
                 setPauseMessage();
             }
             else
@@ -485,13 +485,13 @@ namespace lava
 
      void GameView::respond(const EventInterface& events)
      {
-		if (events.getEventType() == GameOverEvent::eventId)
-		{
-			isGameover = true;
-			isPlaying = false;
-			gamePlayMusic.stop();
-			manager->queueEvent(&loser);
-		}
+	if (events.getEventType() == GameOverEvent::eventId)
+	{
+		isGameover = true;
+		isPlaying = false;
+		gamePlayMusic.stop();
+		manager->queueEvent(&loser);
+	}
         else if (events.getEventType() == GameStartEvent::eventId)
         {
             isPlaying = false;
@@ -530,8 +530,8 @@ namespace lava
         }
         else if ((events.getEventType() == HitByFallingHazardEvent::eventId))
         {
-            hazardSound.play();
-			player->isHit = true;
+            	hazardSound.play();
+		player->isHit = true;
         }
         else if (events.getEventType() == PlayMusicEvent::eventId)
         {
