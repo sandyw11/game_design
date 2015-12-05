@@ -2,7 +2,7 @@
 
 namespace lava
 {
-	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager) :
+	GameView::GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager, LocalScoreboard *localscores) :
 	isWait(false),
 	isPlaying(false),
 	isGameover(false),
@@ -12,12 +12,12 @@ namespace lava
 		this->window = window;
 		this->level = level;
 		this->player = player;
-        	this->view = view;
+        this->view = view;
 		this->manager = manager;
+		this->localscores = localscores;
 		background.setTexture(*backgroundTexture);
 
 		lifeSprite.setTexture(*life);
-
 
 		lavaSprite.setTexture(*lavaTexture);
 		lavaSprite.setTextureRect(sf::IntRect(0, 0, 2400, 2000));
@@ -108,6 +108,7 @@ namespace lava
 		title.setColor(sf::Color::Yellow);
 		//sf::Text gameOverMessage;
 		//text.setFont(font);
+		/*
 		if (jsonHighScores == nullptr){
 			//char* message = "bob";
 			//std::wstring something = std::wstring(message, message + std::strlen(message));
@@ -130,7 +131,24 @@ namespace lava
 		}
 		gameOverMessage.setString(highscorelist);
 		gameOverMessage.setCharacterSize(50);
+		gameOverMessage.setPosition(200, 100);*/
+		if (highscorelist.empty()){
+			localscores->load("Highscores.txt");
+			for (int i = 0; i< localscores->size(); ++i) {
+				LocalScoreboard::Entry e = localscores->getEntry(i);
+				std::string rank = static_cast<std::ostringstream*>(&(std::ostringstream() << i + 1))->str();
+				std::string scores = static_cast<std::ostringstream*>(&(std::ostringstream() << e.score))->str();
+				std::cout << e.name << "\t-\t" << e.score << std::endl;
+				highscorelist += "Rank " + rank + "  Name: " + e.name + "  High Score: " + scores + "\n";
+			}
+			localscores->save("Highscores.txt");
+		}
+			//
+			//highscorelist.clear();
+		gameOverMessage.setString(highscorelist);
+		gameOverMessage.setCharacterSize(50);
 		gameOverMessage.setPosition(200, 100);
+
 		sf::Text gameoverMessage("     GAME OVER\npress [R] to restart\n  press Esc to quit", font, 30);
 		gameoverMessage.setPosition(320, 450);
 		gameoverMessage.setColor(sf::Color::Red);
@@ -207,8 +225,7 @@ namespace lava
             window->setView(view);
             if(isGameover)
             {
-
-                setGameoverMessage();
+				setGameoverMessage();
             }
             else
             {
@@ -285,6 +302,7 @@ namespace lava
 				                lavaSprite.setPosition(sf::Vector2f(-600, level->getLavaY()));
 				                player->score = 0;
 								player->life = 2;
+								player->extra = 0;
 				                break;
 				        case 1:
 				                isInstruct = true;
@@ -553,6 +571,15 @@ namespace lava
         {
             earthquakeSound.stop();
             gamePlayMusic.stop();
+			localscores->load("Highscores.txt");
+			LocalScoreboard::Entry entry;
+			entry.setName("You!");
+			entry.score = player->score;
+			localscores->addEntry(entry);
+			localscores->prune(5);
+			localscores->save("Highscores.txt");
+			highscorelist.clear();
+
             gameOverSound.play();
         }
         /*

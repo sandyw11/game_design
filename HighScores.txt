@@ -1,10 +1,5 @@
-{
-"Scores" :
-  [ 
-	{"Name" : "Mike", "Score" : 2},
-	{"Name" :"Bob", "Score" :  14},
-	{"Name" :"Steve", "Score" :  12},
-	{"Name" :"John", "Score" :  10},
-	{"Name" :"Henry", "Score" : 8}
-  ]
-}
+"Name" : "Mike", "Score" : 1000
+"Name" :"Bob", "Score" :  2000
+"Name" :"Steve", "Score" :  3000
+"Name" :"John", "Score" :  999
+"Name" :"Henry", "Score" : 1

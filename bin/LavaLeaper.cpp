@@ -20,12 +20,13 @@
 #include "GameOverSoundEvent.hpp"
 #include "StartSoundEvent.hpp"
 #include "PauseSoundEvent.hpp"
+#include "LocalScoreBoard.hpp"
 #include <ctime>
 
 int main(int argc, char** argv)
 {
 	// create main window
-	ScoreBoard scores;
+	LocalScoreboard scores;
 	//JSONValue *jsonHighScores;
 	//char* message = " Hello bob";
 	//char *score = "1000";
@@ -83,7 +84,7 @@ int main(int argc, char** argv)
 		}
 	}
 	std::cout << highscorelist << std::endl;*/
-
+	
 	lava::eventManager eventManager;
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, 800, 600));
@@ -158,7 +159,7 @@ int main(int argc, char** argv)
 	eventManager.enterMapValue(PauseSoundEvent::eventId, pauseMusic);
 
 	// init game view and logic
-	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&lifeTexture,&eventManager);
+	lava::GameView gameView(&window, &level, &player, view, &lavaTexture,&backgroundTexture,&lifeTexture,&eventManager, &scores);
 	lava::GameLogic gameLogic(&level, &player, &eventManager);
 
 	// start main loop

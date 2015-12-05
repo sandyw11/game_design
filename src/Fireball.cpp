@@ -10,7 +10,9 @@ namespace lava
 		hazardSprite.setTexture(*boulderTexture);
 		this->dy = (float)std::sin(theta) ;
 		this->dx = (float)std::cos(theta);
-
+		std::cout << (float)std::sin(theta) << std::endl;
+		std::cout << (float)std::cos(theta) << std::endl;
+		
 		if (dy < 0 && dx > 0){
 			hazardSprite.setPosition(0, y + 300);
 			hazardSprite.setTextureRect(sf::IntRect(32, 32, 32, 32));

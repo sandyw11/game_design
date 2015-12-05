@@ -10,6 +10,8 @@
 #include <utility>
 #include <iostream>
 
+#define DESC_LENGTH	50
+
 class ScoreBoard{
 public:
 	ScoreBoard();

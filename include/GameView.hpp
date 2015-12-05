@@ -8,6 +8,7 @@
 #include "Player.hpp"
 #include "Level.hpp"
 #include "GameOverEvent.hpp"
+#include "LocalScoreBoard.hpp"
 #include "GameStartEvent.hpp"
 #include "GamePlayEvent.hpp"
 #include "GamePauseEvent.hpp"
@@ -32,7 +33,8 @@ namespace lava
 	class GameView
 	{
 	public:
-		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager);
+		GameView(sf::RenderWindow* window, Level* level, Player* player, sf::View view, sf::Texture *lavaTexture, sf::Texture *backgroundTexture, sf::Texture *life, lava::eventManager *manager,
+			LocalScoreboard *localscores);
 		~GameView();
 
 		void update(sf::Clock clock);
@@ -60,6 +62,8 @@ namespace lava
 		StartSoundEvent startMusic;
 		PauseSoundEvent pauseMusic;
 		HitByFallingHazardEvent hazardEvent;
+		bool highscoremade;
+		//char * highscorelist;
 
 	protected:
 		sf::RenderWindow* window;
@@ -98,6 +102,7 @@ namespace lava
 		sf::Music startScreenMusic;
 		sf::Music pauseScreenMusic;
 
+		LocalScoreboard *localscores;
 
 		bool isWait;
 		bool isPlaying;
